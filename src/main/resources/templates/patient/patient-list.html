@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <p th:text="Patients" style="font-weight: bold"></p>
+
+
+    <!--    Add a button-->
+    <a th:href="@{/patients/showFormForAddPatient}"
+       class="btn btn-primary btn-sm mb-3">
+        Add new patient
+    </a>
+
+    <table class="table table-striped table-hover table-sm">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>PESEL</th>
+            <th>SURNAME</th>
+            <th>NAME</th>
+            <th>BIRTHDAY</th>
+            <th>COMMUNITY</th>
+            <th>ZIP CODE</th>
+            <th>CITY</th>
+            <th>HOUSE NR</th>
+            <th>APARTMENT NR</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patientList}">
+            <td th:text="${patient.patientId}" ></td>
+            <td th:text="${patient.pesel}" ></td>
+            <td th:text="${patient.surname}" ></td>
+            <td th:text="${patient.name}" ></td>
+            <td th:text="${patient.birthday}" ></td>
+            <td th:text="${patient.community}" ></td>
+            <td th:text="${patient.zipCode}" ></td>
+            <td th:text="${patient.city}" ></td>
+            <td th:text="${patient.street}" ></td>
+            <td th:text="${patient.houseNumber}" ></td>
+            <td th:text="${patient.apartmentNumber}" ></td>
+
+            <td>
+                <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}"
+                   class="btn btn-info btn-sm">Update</a>
+            </td>
+            <td>
+                <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>
