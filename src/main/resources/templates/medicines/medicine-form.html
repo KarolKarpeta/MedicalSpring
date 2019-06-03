@@ -42,17 +42,17 @@
             </div>
 
             <div class="mb-4">
-                <input type="text" th:field="*{medicineCode}" th:class="${#fields.hasErrors('medicineCode')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Medicine code" class="form-control mb-4 col-4"/>
+                <input type="text" th:field="*{medicineCode}" th:class="${#fields.hasErrors('medicineCode')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Medicine code" />
                 <mark class="error-sign small" th:if="${#fields.hasErrors('medicineCode')}" th:errors="*{medicineCode}"></mark>
             </div>
             <div class="mb-4">
-                <input type="text" th:field="*{medicineDescription}" th:class="${#fields.hasErrors('medicineDescription')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Description" class="form-control mb-4 col-4"/>
+                <input type="text" th:field="*{medicineDescription}" th:class="${#fields.hasErrors('medicineDescription')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Description"/>
                 <mark class="error-sign small" th:if="${#fields.hasErrors('medicineDescription')}" th:errors="*{medicineDescription}"></mark>
             </div>
 
 
-            <button type="submit" class="btn btn-info col-2">Save</button>
-            <button type="reset" class="btn btn-info col-2">Reset</button>
+            <input type="submit" class="btn btn-outline-primary col-4">
+            <input type="reset" class="btn btn-outline-secondary col-1">
         </div>
 
     </form>
