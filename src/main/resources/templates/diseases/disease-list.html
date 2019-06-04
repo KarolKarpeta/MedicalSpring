@@ -34,16 +34,16 @@
         </thead>
         <tbody>
             <tr th:each="disease : ${diseaseList}">
-                <td th:text="${disease.diseasesId}"></td>
+                <td th:text="${disease.diseaseId}"></td>
                 <td th:text="${disease.name}"></td>
                 <td th:text="${disease.code}"></td>
 
                 <td>
-                    <a th:href="@{/diseases/edit-disease-form(diseaseIdToEdit=${disease.diseasesId})}"
+                    <a th:href="@{/diseases/edit-disease-form(diseaseIdToEdit=${disease.diseaseId})}"
                        class="btn btn-info btn-sm">Update</a>
                 </td>
                 <td>
-                    <a th:href="@{/diseases/delete/(diseaseIdToDelete=${disease.diseasesId})}"
+                    <a th:href="@{/diseases/delete/(diseaseIdToDelete=${disease.diseaseId})}"
                     class="btn btn-danger btn-sm"
                     onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
                 </td>

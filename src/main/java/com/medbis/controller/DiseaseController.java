@@ -3,7 +3,6 @@ package com.medbis.controller;
 
 import com.medbis.entity.Disease;
 import com.medbis.service.interfaces.DiseaseService;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

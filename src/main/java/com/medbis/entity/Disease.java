@@ -9,10 +9,6 @@ import javax.validation.constraints.Size;
 @Table(name="diseases", schema="public")
 public class Disease {
 
-    public int getDiseasesId() {
-        return diseaseId;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="diseases_id")
@@ -38,5 +34,22 @@ public class Disease {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getDiseaseId() {
+        return diseaseId;
+    }
+
+    public void setDiseaseId(int diseaseId) {
+        this.diseaseId = diseaseId;
+    }
+
+    @Override
+    public String toString() {
+        return "Disease{" +
+                "diseaseId=" + diseaseId +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
