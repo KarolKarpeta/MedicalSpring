@@ -21,7 +21,6 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<Medicine> findAll() {
-        System.out.println("medicineRepository");
         return medicineRepository.findAll();
     }
 
