@@ -1,7 +1,8 @@
-package com.medbis.service;
+package com.medbis.service.impl;
 
 import com.medbis.entity.Medicine;
 import com.medbis.repository.MedicineRepository;
+import com.medbis.service.interfaces.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

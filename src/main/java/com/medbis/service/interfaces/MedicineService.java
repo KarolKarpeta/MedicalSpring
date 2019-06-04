@@ -1,4 +1,4 @@
-package com.medbis.service;
+package com.medbis.service.interfaces;
 
 
 import com.medbis.entity.Medicine;
