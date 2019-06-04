@@ -10,9 +10,7 @@ import java.time.LocalDate;
 public class User {
 
     @NotNull(message = "is required")
-    @Min(value = 11, message = "must be 11 digits")
-    @Max(value = 11, message = "must be 11 digits ")
-//    @Pattern(regexp = "^[0-9]{3}",message = "only 3 digits")
+    @Pattern(regexp = "^[0-9]{11}",message = "only 11 digits")
     @Column(name = "pesel")
     private String pesel;
 
@@ -27,7 +25,6 @@ public class User {
     private String name;
 
     @NotNull(message = "is required")
-    @Size(min = 3, message = "to short")
     @Column(name = "birthday")
     private LocalDate birthday;
 
@@ -42,7 +39,7 @@ public class User {
     private String community;
 
     @NotNull(message = "is required")
-    @Pattern(regexp = "^[0-9]{3}",message = "only 3 digits")
+    @Pattern(regexp = "^[0-9]{5}",message = "only 5 digits")
     @Column(name = "zip_code")
     private String zipCode;
 
