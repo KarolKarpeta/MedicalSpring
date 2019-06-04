@@ -26,7 +26,7 @@ public class MedicineController {
     public String showFormForAddMedicine(Model theModel){
         Medicine newMedicine = new Medicine();
         theModel.addAttribute("medicine", newMedicine);
-        return "medicines/medicine-form";
+        return "medicine/medicine-form";
     }
 
     //EDITING NEW MEDICINE
@@ -35,7 +35,7 @@ public class MedicineController {
                                           Model theModel){
         Medicine newMedicine = medicineService.findById(theId);
         theModel.addAttribute("medicine", newMedicine);
-        return "medicines/medicine-form";
+        return "medicine/medicine-form";
     }
 
     @PostMapping("/medicines/addNewMedicine")
@@ -43,7 +43,7 @@ public class MedicineController {
                                          Medicine theMedicine,
                                  BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "medicines/medicine-form";
+            return "medicine/medicine-form";
         }else{
 //            theMedicine.setMedicineId(0);
             medicineService.save(theMedicine);
@@ -58,15 +58,10 @@ public class MedicineController {
         return "redirect:/medicines";
     }
 
-
-
-
-
-
     @GetMapping ("/medicines")
     public String findAll(Model theModel){
         theModel.addAttribute("medicineList", medicineService.findAll());
-        return "medicines/medicine-list";
+        return "medicine/medicine-list";
     }
 
     @GetMapping ("/medicines/{id}")
