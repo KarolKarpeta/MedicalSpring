@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Disease</title>
-
+    <title>Medical Spring</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style>
-        .error-sign {
-            color:red;
-        }
-        .errorBorder {
-            color:red;
-            border-style: solid;
-            border-color: coral;
-        }
-    </style>
-
 </head>
 <body>
+
+<div class="mt-10">
+    <header id="header" class="alt" th:include="menu :: title-menu" />
+</div>
+
 <div class="container">
-    <p class="h4 mb-4">    Add new disease</p>
+    <p class="btn btn-info btn-sm mb-3 mt-3">Fill form to add new disease</p>
 
 
     <form action="#" th:action="@{/diseases/add-disease}" th:object="${disease}" method="POST">
@@ -47,20 +37,17 @@
             </div>
 
 
-
-            <input type="submit" class="btn btn-outline-primary col-4">
+            <input type="submit" class="btn btn-outline-primary col-4" value="SAVE">
             <input type="reset" class="btn btn-outline-secondary col-1">
         </div>
 
     </form>
 
-
-
-    <a th:href="@{/diseases}">Back to diseases List</a>
-
+    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/diseases}">Back to list</a>
 
 
 </div>
 
 
 </body>
+</html>

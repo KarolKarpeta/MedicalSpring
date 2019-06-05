@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Medicines</title>
-
+    <title>Medical Spring</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
-    <p th:text="diseases" style="font-weight: bold">Diseases:</p>
 
+<div class="mt-10">
+    <header id="header" class="alt" th:include="menu :: title-menu" />
+</div>
+<div class="container">
 
     <!--    Add a button-->
     <a th:href="@{/diseases/add-disease-form}"
-        class="btn btn-primary btn-sm mb-3">
-        Add disease
+       class="btn btn-info btn-sm mb-3 mt-3">
+        Add new disease
     </a>
 
     <table class="table table-striped table-hover table-sm">
