@@ -9,6 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script type="text/javascript" th:src="@{/static/js/searchPatient.js}"></script>
+
+
+<style>
+    .searchTh{
+        background-color: whitesmoke;
+    }
+
+</style>
 </head>
 <body>
 
@@ -17,13 +27,33 @@
 </div>
 <div class="container">
 
+
     <!--    Add a button-->
     <a th:href="@{/patients/showFormForAddPatient}"
        class="btn btn-info btn-sm mb-3 mt-3">
         Add new patient
     </a>
+    <input type="text" id="myInput" onkeyup="function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById('myInput');
+        filter = input.value.toUpperCase();
+        table = document.getElementById('myTable');
+        tr = table.getElementsByTagName('tr');
+        for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName('td')[2];
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = '';
+        } else {
+        tr[i].style.display = 'none';
+        }
+        }
+        }
+    }
+    myFunction()" placeholder="Search for names..">
 
-    <table class="table table-striped table-hover table-sm table-bordered">
+    <table  id="myTable" class="table table-striped table-hover table-sm table-bordered">
         <thead class="thead-dark">
         <tr class="text-sm-center">
             <th>ID</th>
@@ -39,6 +69,30 @@
             <th>/NR</th>
             <th>ACTION</th>
             <th>DELETE</th>
+        </tr>
+        <tr>
+            <th >ID</th>
+            <th><input type="text" style="width: 100%" id="1" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="2" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="3" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="4" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="5" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="6" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="7" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="8" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="9" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+            <th><input type="text" style="width: 100%" id="10" onkeyup="myFunction()" placeholder="Search.." >
+            </th>
+
         </tr>
         </thead>
         <tbody class="text-sm-right">
