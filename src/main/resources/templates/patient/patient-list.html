@@ -9,6 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!--    //<link rel="stylesheet" th:src="@{/css/table.scss}" >-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tableC.css}"/>
+
+    <script type="text/javascript" th:src="@{/js/searchPatient.js}"></script>
+
+<!--    static/js/searchPatient.js-->
+
+    <style>
+    .searchTh{
+        background-color: whitesmoke;
+    }
+    </style>
 </head>
 <body>
 
@@ -23,54 +35,92 @@
         Add new patient
     </a>
 
-    <table class="table table-striped table-hover table-sm table-bordered">
-        <thead class="thead-dark">
-        <tr class="text-sm-center">
-            <th>ID</th>
-            <th>PESEL</th>
-            <th>SURNAME</th>
-            <th>NAME</th>
-            <th>BIRTHDAY</th>
-            <th>COMMUNITY</th>
-            <th>CODE</th>
-            <th>CITY</th>
-            <th>STREET</th>
-            <th>NR/</th>
-            <th>/NR</th>
-            <th>ACTION</th>
-            <th>DELETE</th>
-        </tr>
-        </thead>
-        <tbody class="text-sm-right">
-        <tr th:each="patient : ${patientList}">
-            <td th:text="${patient.patientId}" ></td>
-            <td th:text="${patient.pesel}" ></td>
-            <td th:text="${patient.surname}" ></td>
-            <td th:text="${patient.name}" ></td>
-            <td th:text="${patient.birthday}" ></td>
-            <td th:text="${patient.community}" ></td>
-            <td th:text="${patient.zipCode}" ></td>
-            <td th:text="${patient.city}" ></td>
-            <td th:text="${patient.street}" ></td>
-            <td th:text="${patient.houseNumber}" ></td>
-            <td th:text="${patient.apartmentNumber}" ></td>
+    <div class="container">
 
-            <td>
-                <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}"
-                   class="btn btn-info btn-sm">Update</a>
-            </td>
-            <td>
-                <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
-            </td>
+        <table  id="myTable" class=" fixed_headers table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <td colspan="13">
+                    <a class="text-right" data-toggle="collapse" data-target="#target2">
+                        Advanced search...
+                    </a>
+                </td>
+            </tr>
+            <tr class="text-sm-center">
+                <th>ID</th>
+                <th>PESEL</th>
+                <th>SURNAME</th>
+                <th>NAME</th>
+                <th>BIRTHDAY</th>
+                <th>COMMUNITY</th>
+                <th>CODE</th>
+                <th>CITY</th>
+                <th>STREET</th>
+                <th>HOME</th>
+                <th>FLAT</th>
+                <th>UPDATE</th>
+                <th>DELETE</th>
+            </tr>
+            <tr id="target2" class="collapse">
+                <th></th>
+                <th><input type="text" style="width: 100%" id="pesel" onkeyup="searchByPesel()" placeholder="pesel" >            </th>
+                <th><input type="text" style="width: 100%" id="surname" onkeyup="searchBySurname()" placeholder="surname" >            </th>
+                <th><input type="text" style="width: 100%" id="name" onkeyup="searchByName()" placeholder="name" >            </th>
+                <th><input type="text" style="width: 100%" id="birthday" onkeyup="birthday()" placeholder="birthday" >            </th>
+                <th><input type="text" style="width: 100%" id="comunnity" onkeyup="comunnity()" placeholder="comunnity" >            </th>
+                <th><input type="text" style="width: 100%" id="zip" onkeyup="zip()" placeholder="zip" >            </th>
+                <th><input type="text" style="width: 100%" id="city" onkeyup="city()" placeholder="city" >            </th>
+                <th><input type="text" style="width: 100%" id="street" onkeyup="street()" placeholder="street" >            </th>
+                <th><input type="text" style="width: 100%" id="hNumber" onkeyup="hNumber()" placeholder="..." >            </th>
+                <th><input type="text" style="width: 100%" id="aNumber" onkeyup="aNumber()" placeholder="..." >            </th>
+                <th>-</th>
+                <th>-</th>
+            </tr>
+            </thead>
 
-        </tr>
-        </tbody>
-    </table>
+            <tbody class="text-right">
+            <tr th:each="patient : ${patientList}">
+                <td th:text="${patient.patientId}" ></td>
+                <td th:text="${patient.pesel}" ></td>
+                <td th:text="${patient.surname}" ></td>
+                <td th:text="${patient.name}" ></td>
+                <td th:text="${patient.birthday}" ></td>
+                <td th:text="${patient.community}" ></td>
+                <td th:text="${patient.zipCode}" ></td>
+                <td th:text="${patient.city}" ></td>
+                <td th:text="${patient.street}" ></td>
+                <td th:text="${patient.houseNumber}" ></td>
+                <td th:text="${patient.apartmentNumber}" ></td>
+
+                <td>
+                    <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}"
+                       class="btn-info btn-xs">Update</a>
+                </td>
+                <td>
+                    <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
+                       class="btn-danger btn-xs"
+                       onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+
+
 
 
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+
 
 </body>
 </html>
