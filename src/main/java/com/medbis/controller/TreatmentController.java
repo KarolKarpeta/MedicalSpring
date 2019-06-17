@@ -75,8 +75,10 @@ public class TreatmentController {
 
     @GetMapping("/treatments/show-edit-form")
     public String showEditTreatmentForm(@RequestParam("treatmentIdToEdit") int id, Model model){
-        Treatment treatment = new Treatment();
+        Treatment treatment = treatmentService.findById(id);
         model.addAttribute("treatment", treatment);
+        Category category = categoryService.findById(treatment.getCategoryId());
+        model.addAttribute("category", category);
         return "treatment/treatment-form";
     }
 
