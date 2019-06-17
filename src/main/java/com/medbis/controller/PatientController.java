@@ -40,14 +40,12 @@ public class PatientController {
 
 
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(@Valid @ModelAttribute("patient")
-                                             Patient thePatient,
-                                            BindingResult bindingResult){
+    public String addNewPatient(
+            @Valid @ModelAttribute("patient") Patient thePatient,
+            BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            System.out.println("Binding: " + bindingResult);
             return "patient/patient-form";
         }else{
-//            theMedicine.setMedicineId(0);
             patientService.save(thePatient);
             return "redirect:/patients";
         }

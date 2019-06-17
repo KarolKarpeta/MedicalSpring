@@ -7,7 +7,11 @@ import javax.persistence.*;
 public class Patient extends User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue( generator = "patients_patient_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "patients_patient_id_seq",
+            allocationSize = 10
+    )
     @Column(name = "patient_id")
     private int patientId;
 
