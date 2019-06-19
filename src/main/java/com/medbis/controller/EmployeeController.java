@@ -4,6 +4,7 @@ import com.medbis.entity.Employee;
 import com.medbis.entity.User;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.interfaces.UserService;
+import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -27,14 +28,15 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public String findAll(Model theModel){
-        theModel.addAttribute("EmployeeList", userService.findAll());
+        theModel.addAttribute("employees", userService.findAll());
         return "users/employee-list";
     }
 
     //ADDING NEW Employee
     @GetMapping("/employees/showFormForAddEmployee")
-    public String showFormForAddEmployee(Model theModel){
-        theModel.addAttribute("Employee", userFactory.getNewUser("employee"));
+    public String showFormForAddEmployee(Model model){
+        User employee = userFactory.getNewUser("employee");
+        model.addAttribute("employee", employee);
         return "users/employee-form";
     }
 
@@ -42,8 +44,8 @@ public class EmployeeController {
     @PostMapping("/employees/addNewEmployee")
     public String addNewEmployee(
             @Valid @ModelAttribute("employee") Employee theEmployee,
-            BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+            BindingResult result){
+        if (result.hasErrors()){
             return "users/employee-form";
         }else{
             userService.save(theEmployee);
@@ -55,8 +57,8 @@ public class EmployeeController {
     @GetMapping ("/employees/showFormForEditEmployee")
     public String showFormForEditMedicine(@RequestParam("employeeIdToEdit")int theId,
                                           Model theModel){
-        Employee newEmployee = (Employee) userService.findById(theId);
-        theModel.addAttribute("employee", newEmployee);
+        Employee employee = (Employee) userService.findById(theId);
+        theModel.addAttribute("employee", employee);
         return "users/employee-form";
     }
 
