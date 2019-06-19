@@ -1,8 +1,10 @@
 package com.medbis.controller;
 
 import com.medbis.entity.Patient;
-import com.medbis.service.interfaces.PatientService;
+import com.medbis.factory.UserFactory;
+import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,26 +18,29 @@ import javax.validation.Valid;
 @Controller
 public class PatientController {
 
-    private PatientService patientService;
+
+    private UserService userService;
+    private UserFactory userFactory;
 
     @Autowired
-    public PatientController(PatientService patientService) {
-        this.patientService = patientService;
+    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory) {
+        this.userService = userService;
+        this.userFactory = userFactory;
     }
 
 
     @GetMapping("/patients")
     public String findAll(Model theModel){
-        theModel.addAttribute("patientList", patientService.findAll());
-        return "patient/patient-list";
+        theModel.addAttribute("patientList", userService.findAll());
+        return "users/patient-list";
     }
 
     //ADDING NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
-        Patient newPatient = new Patient();
-        theModel.addAttribute("patient", newPatient);
-        return "patient/patient-form";
+
+        theModel.addAttribute("patient", userFactory.getNewUser("patient"));
+        return "users/patient-form";
     }
 
 
@@ -44,9 +49,9 @@ public class PatientController {
             @Valid @ModelAttribute("patient") Patient thePatient,
             BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "patient/patient-form";
+            return "users/patient-form";
         }else{
-            patientService.save(thePatient);
+            userService.save(thePatient);
             return "redirect:/patients";
         }
     }
@@ -55,15 +60,15 @@ public class PatientController {
     @GetMapping ("/patients/showFormForEditPatient")
     public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId,
                                           Model theModel){
-        Patient newPatient = patientService.findById(theId);
+        Patient newPatient = (Patient) userService.findById(theId);
         theModel.addAttribute("patient", newPatient);
-        return "patient/patient-form";
+        return "users/patient-form";
     }
 
     //DELETING NEW PATIENT
     @GetMapping("/patients/delete")
     public String delete(@RequestParam("patientIdToDelete")int theId){
-        patientService.deleteById(theId);
+        userService.deleteById(theId);
         return "redirect:/patients";
     }
 

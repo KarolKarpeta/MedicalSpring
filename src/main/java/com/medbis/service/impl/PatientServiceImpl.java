@@ -1,16 +1,17 @@
 package com.medbis.service.impl;
 
 import com.medbis.entity.Patient;
+import com.medbis.entity.User;
 import com.medbis.repository.PatientRepository;
-import com.medbis.service.interfaces.PatientService;
+import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class PatientServiceImpl implements PatientService {
+@Service(value = "PatientServiceImpl")
+public class PatientServiceImpl implements UserService {
 
     private PatientRepository patientRepository;
 
@@ -20,25 +21,25 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> findAll() {
+    public List<? extends User> findAll() {
         return patientRepository.findAll();
     }
 
     @Override
-    public Patient findById(int theId) {
-        Optional<Patient> result = patientRepository.findById(theId);
-        Patient thePatient = null;
+    public Patient findById(int id) {
+        Optional<Patient> result = patientRepository.findById(id);
+        Patient patient;
         if(result.isPresent()){
-            thePatient = result.get();
+            patient = result.get();
         }else{
-            throw new RuntimeException("Dod not find patient id" + theId);
+            throw new RuntimeException("Dod not find patient id" + id);
         }
-        return thePatient;
+        return patient;
     }
 
     @Override
-    public void save(Patient thePatient) {
-        patientRepository.save(thePatient);
+    public void save(User user) {
+        patientRepository.save((Patient) user);
     }
 
     @Override
