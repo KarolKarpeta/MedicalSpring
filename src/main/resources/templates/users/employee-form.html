@@ -24,9 +24,7 @@
             <!--            for UPDATE -->
 
             <div class="mb-3">
-                <label>
-                    <input type="text" th:field="*{pesel}" th:class="${#fields.hasErrors('pesel')} ? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Pesel"/>
-                </label>
+                <input type="text" th:field="*{pesel}" th:class="${#fields.hasErrors('pesel')} ? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Pesel"/>
                 <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}"></mark>
             </div>
 
