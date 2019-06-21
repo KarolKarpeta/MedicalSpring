@@ -77,6 +77,14 @@
 
             <input type="submit" class="btn btn-outline-primary col-4">
             <input type="reset" class="btn btn-outline-secondary col-1">
+
+            <div class="form-group">
+                <label for="selectcategory">Select category</label>
+                <select class="form-control" id="selectcategory" th:field="*{medicineId}">
+                    <option th:each="medicine: ${medicines}" th:value="${medicine.getMedicineId()}" th:text="${medicine.getName()}"></option>
+                </select>
+            </div>
+
         </div>
 
     </form>

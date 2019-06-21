@@ -1,7 +1,10 @@
 package com.medbis.controller;
 
+import com.medbis.entity.Disease;
 import com.medbis.entity.Patient;
 import com.medbis.factory.UserFactory;
+import com.medbis.service.interfaces.DiseaseService;
+import com.medbis.service.interfaces.MedicineService;
 import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,28 +21,32 @@ import javax.validation.Valid;
 @Controller
 public class PatientController {
 
-
+    private MedicineService medicineService;
+    private DiseaseService diseaseService;
     private UserService userService;
     private UserFactory userFactory;
 
     @Autowired
-    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory) {
+    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService) {
         this.userService = userService;
         this.userFactory = userFactory;
+        this.diseaseService = diseaseService;
     }
 
 
     @GetMapping("/patients")
     public String findAll(Model theModel){
         theModel.addAttribute("patientList", userService.findAll());
+
         return "users/patient-list";
     }
 
     //ADDING NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
-
+        theModel.addAttribute("diseases", diseaseService.findAll());
         theModel.addAttribute("patient", userFactory.getNewUser("patient"));
+        theModel.addAttribute("medicines", medicineService.findAll());
         return "users/patient-form";
     }
 
