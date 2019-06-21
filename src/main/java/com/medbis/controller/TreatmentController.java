@@ -77,8 +77,8 @@ public class TreatmentController {
     public String showEditTreatmentForm(@RequestParam("treatmentIdToEdit") int id, Model model){
         Treatment treatment = treatmentService.findById(id);
         model.addAttribute("treatment", treatment);
-        Category category = categoryService.findById(treatment.getCategoryId());
-        model.addAttribute("category", category);
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
         return "treatment/treatment-form";
     }
 
