@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class User {
 
     @NotNull(message = "is required")
-    @Pattern(regexp = "^[0-9]{11}",message = "only 11 digits")
+    @Pattern(regexp = "^[0-9]{11}", message = "only 11 digits")
     @Column(name = "pesel")
     private String pesel;
 
@@ -39,7 +39,7 @@ public class User {
     private String community;
 
     @NotNull(message = "is required")
-    @Pattern(regexp = "^[0-9]{5}",message = "only 5 digits")
+    @Pattern(regexp = "^[0-9]{5}", message = "only 5 digits")
     @Column(name = "zip_code")
     private String zipCode;
 
@@ -69,8 +69,9 @@ public class User {
     @Column(name = "mobile_phone_number")
     private String mobilePhoneNumber;
 
-    @Column(name = "comments")
-    private String comments;
+
+
+
 
 
     public String getPesel() {
@@ -185,13 +186,13 @@ public class User {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-    public String getComments() {
+   /* public String getComments() {
         return comments;
     }
 
     public void setComments(String comments) {
         this.comments = comments;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -210,7 +211,6 @@ public class User {
                 ", homePhoneNumber=" + homePhoneNumber +
                 ", workPhoneNumber=" + workPhoneNumber +
                 ", mobilePhoneNumber=" + mobilePhoneNumber +
-                ", comments=" + comments +
                 '}';
     }
 }

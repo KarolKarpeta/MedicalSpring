@@ -14,6 +14,9 @@ public class Patient extends User {
     @Column(name = "patient_id")
     private int patientId;
 
+    @Column(name = "comments")
+    private String comments;
+
     public int getPatientId() {
         return patientId;
     }
