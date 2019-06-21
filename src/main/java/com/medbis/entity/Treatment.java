@@ -64,9 +64,4 @@ public class Treatment {
         this.categoryId = categoryId;
     }
 
-
-
-
-
-
 }

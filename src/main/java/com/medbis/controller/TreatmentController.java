@@ -87,6 +87,4 @@ public class TreatmentController {
         this.treatmentService.save(treatment);
     }
 
-
-
 }
