@@ -1,10 +1,12 @@
 package com.medbis.entity;
 
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Entity
@@ -22,6 +24,62 @@ public class Employee extends User{
     @Column(name="login")
     @NotEmpty
     private String login;
+
+    private boolean status;
+
+    private String roles;
+
+    private String permissions;
+
+    public Employee(@Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})", message = "illegal sign used or password is too short") String password, @NotEmpty String login, boolean status, String roles, String permissions) {
+        this.password = password;
+        this.login = login;
+        this.status = status;
+        this.roles = roles;
+        this.permissions = permissions;
+
+    }
+
+    public Employee() {
+
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+    public List<String> getRolesAsList() throws NullPointerException{
+        try{
+            return Arrays.asList(this.roles.split(","));
+        }
+        catch (NullPointerException err){
+            return new ArrayList<>();
+        }
+    }
+
+    public List<String> getPermissions() throws NullPointerException {
+        try{
+           return Arrays.asList(permissions.split(","));
+        }
+        catch (NullPointerException err){
+            return new ArrayList<String>();
+        }
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
 
     public int getId() {
         return id;
