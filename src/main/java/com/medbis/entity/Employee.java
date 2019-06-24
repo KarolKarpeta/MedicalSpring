@@ -1,6 +1,8 @@
 package com.medbis.entity;
 
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -9,9 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
+@Component
 @Entity
 @Table(name = "employees", schema = "public")
 public class Employee extends User{
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
@@ -31,7 +37,7 @@ public class Employee extends User{
 
     private String permissions;
 
-    public Employee(@Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})", message = "illegal sign used or password is too short") String password, @NotEmpty String login, boolean status, String roles, String permissions) {
+    public Employee(String password, @NotEmpty String login, boolean status, String roles, String permissions) {
         this.password = password;
         this.login = login;
         this.status = status;

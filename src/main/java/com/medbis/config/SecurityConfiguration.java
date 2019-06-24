@@ -1,7 +1,9 @@
 package com.medbis.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.WebSecurityEnablerConfiguration;
+import com.medbis.service.impl.UserPrinicipalDetailsService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,21 +15,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private UserPrinicipalDetailsService userPrinicipalDetailsService;
 
+    public SecurityConfiguration(UserPrinicipalDetailsService userPrinicipalDetailsService){
+        this.userPrinicipalDetailsService = userPrinicipalDetailsService;
+    }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth
-                .inMemoryAuthentication()
-                .withUser("login3")
-                .password("{noop}passwordlogin3")
-                .roles("NURSE")
-
-                .and()
-
-                .withUser("login2")
-                .password(("{noop}passwordlogin2"))
-                .roles("NURSE");
+                .authenticationProvider(authenticationProvider());
 
 
     }
@@ -45,6 +42,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout();
+    }
+
+
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userPrinicipalDetailsService);
+        return daoAuthenticationProvider;
     }
 
     public PasswordEncoder passwordEncoder(){
