@@ -78,18 +78,20 @@
             <input type="submit" class="btn btn-outline-primary col-4">
             <input type="reset" class="btn btn-outline-secondary col-1">
 
-            <div class="form-group">
-                <label for="selectcategory">Select category</label>
+<!--            <div class="form-group" >-->
+<!--                <label for="selectcategory">Select category</label>-->
 <!--                <select class="form-control" id="selectcategory" th:field="*{medicineId}">-->
-                <select class="form-control" id="selectcategory" >
-                    <option th:each="medicine: ${medicines}" th:value="${medicine.getMedicineId()}" th:text="${medicine.getMedicineName()}"></option>
-                </select>
-            </div>
+<!--                <select class="form-control" id="selectcategory" >-->
+<!--                    <option th:each="medicineIter: ${allMedicines}" th:value="${medicineIter.getMedicineId()}" th:text="${medicineIter.getMedicineName()}"></option>-->
+<!--                    <div th:each="medicines, stat: ${patient.me}">-->
+<!--                        <input type="text" th:field="*{medicines}" />-->
+<!--                    </div>-->
+<!--                </select>-->
+<!--            </div>-->
 
         </div>
 
     </form>
-
 <!--    <a class="btn btn-info btn-sm mb-3 mt-3" th:href="@{/patients}">Back to Patients List</a>-->
     <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/patients}">Back to list</a>
 

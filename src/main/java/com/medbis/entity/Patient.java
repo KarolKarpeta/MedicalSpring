@@ -39,14 +39,14 @@ public class Patient extends User {
             joinColumns = { @JoinColumn(name = "patient_id") },
             inverseJoinColumns = { @JoinColumn(name = "medicine_id") }
     )
-    private Set<Medicine> medicines = new HashSet<>();
+    private Set<Medicine> patientMedicines = new HashSet<>();
 
-    public Set<Medicine> getMedicines() {
-        return medicines;
+    public Set<Medicine> getPatientMedicines() {
+        return patientMedicines;
     }
 
-    public void setMedicines(Set<Medicine> medicines) {
-        this.medicines = medicines;
+    public void setPatientMedicines(Set<Medicine> medicines) {
+        this.patientMedicines = medicines;
     }
 
     public String getComments() {
@@ -62,7 +62,7 @@ public class Patient extends User {
         return "Patient{" +
                 "patientId=" + patientId +
                 ", comments='" + comments + '\'' +
-                ", medicines=" + medicines +
+                ", patientMedicines=" + patientMedicines +
                 '}';
     }
 }

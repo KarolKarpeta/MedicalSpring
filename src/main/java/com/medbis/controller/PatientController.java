@@ -49,7 +49,7 @@ public class PatientController {
     public String showFormForAddPatient(Model theModel){
 //        theModel.addAttribute("diseases", diseaseService.findAll());
         theModel.addAttribute("patient", userFactory.getNewUser("patient"));
-        theModel.addAttribute("medicines", medicineService.findAll());
+        theModel.addAttribute("allMedicines", medicineService.findAll());
         return "users/patient-form";
     }
 
@@ -58,7 +58,7 @@ public class PatientController {
     public String addNewPatient(
             @Valid @ModelAttribute("patient") Patient thePatient,
             BindingResult bindingResult){
-        System.out.println("MOdel patient: " + thePatient.getMedicines());
+        System.out.println("MOdel patient: " + thePatient.getPatientMedicines());
         if (bindingResult.hasErrors()){
             return "users/patient-form";
         }else{
@@ -81,6 +81,14 @@ public class PatientController {
     public String delete(@RequestParam("patientIdToDelete")int theId){
         userService.deleteById(theId);
         return "redirect:/patients";
+    }
+
+    @GetMapping ("/patients/showPatientDetails")
+    public String showPatientDetails(@RequestParam("patientIdDetails")int theId,
+                                          Model theModel){
+        Patient newPatient = (Patient) userService.findById(theId);
+        theModel.addAttribute("patient", newPatient);
+        return "users/patient-details";
     }
 
 
