@@ -34,6 +34,7 @@ public class TreatmentController {
     @GetMapping("/treatments")
     public String findAll(Model model){
         List<Treatment> treatments = this.treatmentService.findAll();
+        System.out.println("Treatments:" + treatments.toString());
         model.addAttribute("treatments" , treatments);
         List<Category> categories = this.categoryService.findAll();
         model.addAttribute("categories", categories);

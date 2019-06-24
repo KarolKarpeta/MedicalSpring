@@ -27,15 +27,18 @@ public class PatientController {
     private UserFactory userFactory;
 
     @Autowired
-    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService) {
+    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService, MedicineService medicineService) {
         this.userService = userService;
         this.userFactory = userFactory;
         this.diseaseService = diseaseService;
+        this.medicineService = medicineService;
     }
 
 
     @GetMapping("/patients")
     public String findAll(Model theModel){
+
+        System.out.println("Patient nr 2: " + userService.findAll().get(2).toString());
         theModel.addAttribute("patientList", userService.findAll());
 
         return "users/patient-list";
@@ -44,7 +47,7 @@ public class PatientController {
     //ADDING NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
-        theModel.addAttribute("diseases", diseaseService.findAll());
+//        theModel.addAttribute("diseases", diseaseService.findAll());
         theModel.addAttribute("patient", userFactory.getNewUser("patient"));
         theModel.addAttribute("medicines", medicineService.findAll());
         return "users/patient-form";
@@ -55,6 +58,7 @@ public class PatientController {
     public String addNewPatient(
             @Valid @ModelAttribute("patient") Patient thePatient,
             BindingResult bindingResult){
+        System.out.println("MOdel patient: " + thePatient.getMedicines());
         if (bindingResult.hasErrors()){
             return "users/patient-form";
         }else{

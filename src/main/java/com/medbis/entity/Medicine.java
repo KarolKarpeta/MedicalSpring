@@ -2,6 +2,8 @@ package com.medbis.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "medicines", schema = "public")
@@ -29,13 +31,31 @@ public class Medicine {
     @Column(name = "medicineDescription")
     private  String medicineDescription;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "medicines")
+    private Set<Patient> patients = new HashSet<>();
+
+
+    public Set<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<Patient> patients) {
+        this.patients = patients;
+    }
+
     public Medicine() {
     }
 
-    public Medicine(int medicineCode, String medicineName, String medicineDescription) {
+    public Medicine(@NotNull(message = "is required") @Min(value = 1, message = "must be >= 1") @Max(value = 10000, message = "must be <= 10000") int medicineCode, @NotNull(message = "is required") @Size(min = 3, message = "to short") String medicineName, @NotNull(message = "is required") @Size(min = 3, message = "to short") String medicineDescription, Set<Patient> patients) {
         this.medicineCode = medicineCode;
         this.medicineName = medicineName;
         this.medicineDescription = medicineDescription;
+        this.patients = patients;
     }
 
     @Override

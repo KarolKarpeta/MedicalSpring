@@ -80,8 +80,9 @@
 
             <div class="form-group">
                 <label for="selectcategory">Select category</label>
-                <select class="form-control" id="selectcategory" th:field="*{medicineId}">
-                    <option th:each="medicine: ${medicines}" th:value="${medicine.getMedicineId()}" th:text="${medicine.getName()}"></option>
+<!--                <select class="form-control" id="selectcategory" th:field="*{medicineId}">-->
+                <select class="form-control" id="selectcategory" >
+                    <option th:each="medicine: ${medicines}" th:value="${medicine.getMedicineId()}" th:text="${medicine.getMedicineName()}"></option>
                 </select>
             </div>
 

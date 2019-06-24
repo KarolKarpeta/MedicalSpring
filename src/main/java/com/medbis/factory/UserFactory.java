@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserFactory {
 
+    public UserFactory() {
+    }
+
+
     public User getNewUser(String type){
         User user = null;
         if (type.equals("employee")){
