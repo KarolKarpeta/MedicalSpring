@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 public class PatientController {
@@ -46,35 +43,53 @@ public class PatientController {
         return "users/patient-list";
     }
 
-    //ADDING NEW PATIENT
+    //Show form for ADD NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
 //        theModel.addAttribute("diseases", diseaseService.findAll());
         Patient newPatient = (Patient) userFactory.getNewUser("patient");
-//        newPatient.getPatientMedicines().add(new Medicine());
-//        newPatient.getPatientMedicines().add(new Medicine());
-//        newPatient.getPatientMedicines().add(new Medicine());
         theModel.addAttribute("patient",newPatient);
-
         theModel.addAttribute("allMedicines", medicineService.findAll());
         return "users/patient-form";
     }
-
+    //Add NEW ROW FOR MEDICINE, look params!
     @PostMapping(value="/patients/addNewPatient", params={"addRow"})
     public String addRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
         thePatient.getPatientMedicines().add(new Medicine()); //.getRows().add(new Row());
         theModel.addAttribute("allMedicines", medicineService.findAll());
-        System.out.println("Add new row -----------------");
         return "users/patient-form";
     }
 
+    //DELETE ONE ROW OF MEDICINE, look params!
+    @PostMapping(value="/patients/addNewPatient", params={"removeRow"})
+    public String delRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
+        theModel.addAttribute("allMedicines", medicineService.findAll());
+        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+        System.out.println("Row to delete: " + rowId);
+        System.out.println("Size: "+ thePatient.getPatientMedicines().size() );
+        for(Medicine med : thePatient.getPatientMedicines()){
+            System.out.println(med.toString());
+        }
 
+        thePatient.getPatientMedicines().remove(rowId.intValue());
+        System.out.println("Size: "+ thePatient.getPatientMedicines().size() );
+        for(Medicine med : thePatient.getPatientMedicines()){
+            System.out.println(med.toString());
+        }
+
+        return "users/patient-form";
+    }
+
+//    @RequestMapping(value="/seedstartermng", params={"removeRow"})
+//    public String removeRow(final SeedStarter seedStarter, final BindingResult bindingResult,final HttpServletRequest req) {
+//        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+//        seedStarter.getRows().remove(rowId.intValue());
+//        return "seedstartermng";
+//    }
+
+    //ADD NEW PATIENT
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(Model theModel,
-            @Valid @ModelAttribute("patient") Patient thePatient,
-            BindingResult bindingResult){
-        System.out.println("MOdel patient: " + thePatient.getPatientMedicines());
-
+    public String addNewPatient(Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             return "users/patient-form";
@@ -86,12 +101,9 @@ public class PatientController {
 
     //EDITING NEW PATIENT
     @GetMapping ("/patients/showFormForEditPatient")
-    public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId,
-                                          Model theModel){
-
-//        Set<Medicine> medicineSet = new HashSet<>(Arrays.asList(new Medicine(), new Medicine()));
-//        newPatient.setPatientMedicines(medicineSet);
+    public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
+        theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("patient", newPatient);
         return "users/patient-form";
     }
@@ -103,6 +115,7 @@ public class PatientController {
         return "redirect:/patients";
     }
 
+    //Show patient details, all
     @GetMapping ("/patients/showPatientDetails")
     public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
