@@ -1,6 +1,7 @@
 package com.medbis.controller;
 
 import com.medbis.entity.Disease;
+import com.medbis.entity.Medicine;
 import com.medbis.entity.Patient;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.interfaces.DiseaseService;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class PatientController {
@@ -37,10 +41,7 @@ public class PatientController {
 
     @GetMapping("/patients")
     public String findAll(Model theModel){
-
-        System.out.println("Patient nr 2: " + userService.findAll().get(2).toString());
         theModel.addAttribute("patientList", userService.findAll());
-
         return "users/patient-list";
     }
 
@@ -48,7 +49,12 @@ public class PatientController {
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
 //        theModel.addAttribute("diseases", diseaseService.findAll());
-        theModel.addAttribute("patient", userFactory.getNewUser("patient"));
+        Patient newPatient = (Patient) userFactory.getNewUser("patient");
+        newPatient.getPatientMedicines().add(new Medicine());
+        newPatient.getPatientMedicines().add(new Medicine());
+        newPatient.getPatientMedicines().add(new Medicine());
+        theModel.addAttribute("patient",newPatient);
+
         theModel.addAttribute("allMedicines", medicineService.findAll());
         return "users/patient-form";
     }
@@ -71,6 +77,9 @@ public class PatientController {
     @GetMapping ("/patients/showFormForEditPatient")
     public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId,
                                           Model theModel){
+
+//        Set<Medicine> medicineSet = new HashSet<>(Arrays.asList(new Medicine(), new Medicine()));
+//        newPatient.setPatientMedicines(medicineSet);
         Patient newPatient = (Patient) userService.findById(theId);
         theModel.addAttribute("patient", newPatient);
         return "users/patient-form";
@@ -84,9 +93,9 @@ public class PatientController {
     }
 
     @GetMapping ("/patients/showPatientDetails")
-    public String showPatientDetails(@RequestParam("patientIdDetails")int theId,
-                                          Model theModel){
+    public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
+        System.out.println("Patient details: " + newPatient.toString());
         theModel.addAttribute("patient", newPatient);
         return "users/patient-details";
     }

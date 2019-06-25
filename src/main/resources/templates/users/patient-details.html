@@ -40,11 +40,9 @@
     </ul>
 
     <p class="text-uppercase font-weight-bold">Medicines:</p>
-    <ul class="list-group list-group-flush" th:each="medicine : ${patient.patientMedicines}" >
-        <li class="list-group-item" th:text="${medicine.medicineName}"></li>
+    <ul class="list-group list-group-flush" th:each="medicine, medicineStat : ${patient.patientMedicines}" >
+        <li class="list-group-item" th:text="${medicineStat.count+ ' '+ medicine.medicineName}"></li>
     </ul>
-
-
 
     <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/patients}">Back to list</a>
 </div>

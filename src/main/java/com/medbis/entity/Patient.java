@@ -1,7 +1,9 @@
 package com.medbis.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,14 +41,14 @@ public class Patient extends User {
             joinColumns = { @JoinColumn(name = "patient_id") },
             inverseJoinColumns = { @JoinColumn(name = "medicine_id") }
     )
-    private Set<Medicine> patientMedicines = new HashSet<>();
+    private List<Medicine> patientMedicines = new ArrayList<>();
 
-    public Set<Medicine> getPatientMedicines() {
+    public List<Medicine> getPatientMedicines() {
         return patientMedicines;
     }
 
-    public void setPatientMedicines(Set<Medicine> medicines) {
-        this.patientMedicines = medicines;
+    public void setPatientMedicines(List<Medicine> patientMedicines) {
+        this.patientMedicines = patientMedicines;
     }
 
     public String getComments() {

@@ -75,17 +75,52 @@
                 <mark class="error-sign small" th:if="${#fields.hasErrors('apartmentNumber')}" th:errors="*{apartmentNumber}"></mark>
             </div>
 
+
+
+
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th th:text="LP">Row</th>
+                        <th th:text="Medicine">Variety</th>
+
+                        <!--                        <th>-->
+                        <!--                            <button type="submit" name="addRow" th:text="Add row">Add row</button>-->
+                        <!--                        </th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="medicine,medicineStat : *{patientMedicines}">
+                        <td th:text="${medicineStat.count}">1</td>
+                        <td>
+                            <label for="selectMedicine">Select medicine</label>
+                                <select class="form-control" id="selectMedicine" th:field="*{patientMedicines[__${medicineStat.index}__]}">
+                                    <option th:each="medicineToAdd : ${allMedicines}" th:value="${medicineToAdd.getMedicineId()}" th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi</option>
+                                </select>
+                        </td>
+                        <!--                        <td>-->
+                        <!--                            <input type="text" th:field="*{patientMedicines[__${medicineStat.index}__].seedsPerCell}" th:errorclass="fieldError" />-->
+                        <!--                        </td>-->
+                        <!--                        <td>-->
+                        <!--                            <button type="submit" name="removeRow" th:value="${medicineStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>-->
+                        <!--                        </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <input type="submit" class="btn btn-outline-primary col-4">
             <input type="reset" class="btn btn-outline-secondary col-1">
 
 <!--            <div class="form-group" >-->
 <!--                <label for="selectcategory">Select category</label>-->
-<!--                <select class="form-control" id="selectcategory" th:field="*{medicineId}">-->
+<!--&lt;!&ndash;                <select class="form-control" id="selectcategory" th:field="*{medicineId}">&ndash;&gt;-->
 <!--                <select class="form-control" id="selectcategory" >-->
 <!--                    <option th:each="medicineIter: ${allMedicines}" th:value="${medicineIter.getMedicineId()}" th:text="${medicineIter.getMedicineName()}"></option>-->
-<!--                    <div th:each="medicines, stat: ${patient.me}">-->
-<!--                        <input type="text" th:field="*{medicines}" />-->
-<!--                    </div>-->
+<!--&lt;!&ndash;                    <div th:each="medicines, stat: ${patient.me}">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="text" th:field="*{medicines}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
 <!--                </select>-->
 <!--            </div>-->
 
@@ -100,3 +135,37 @@
 
 </body>
 </html>
+
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<div>-->
+<!--    <label th:text="ROWS">Rows</label>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th th:text="cda1">Row</th>-->
+<!--            <th th:text="cda2">Variety</th>-->
+<!--            <th th:text="cda3">Seeds per cell</th>-->
+<!--            &lt;!&ndash;                        <th>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <button type="submit" name="addRow" th:text="Add row">Add row</button>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </th>&ndash;&gt;-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="medicine,medicineStat : *{patientMedicines}">-->
+<!--            <td th:text="${medicineStat.count}">1</td>-->
+<!--            <td>-->
+<!--                <label for="selectMedicine">Select medicine</label>-->
+<!--                <select class="form-control" id="selectMedicine" th:field="*{patientMedicines[__${medicineStat.index}__].medicineName}">-->
+<!--                    <option th:each="medicineToAdd : ${allMedicines}" th:value="${medicineToAdd.getMedicineId()}" th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi</option>-->
+<!--                </select>-->
+<!--            </td>-->
+<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <input type="text" th:field="*{patientMedicines[__${medicineStat.index}__].seedsPerCell}" th:errorclass="fieldError" />&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <button type="submit" name="removeRow" th:value="${medicineStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
