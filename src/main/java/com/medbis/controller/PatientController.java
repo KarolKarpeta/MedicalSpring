@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -50,22 +51,32 @@ public class PatientController {
     public String showFormForAddPatient(Model theModel){
 //        theModel.addAttribute("diseases", diseaseService.findAll());
         Patient newPatient = (Patient) userFactory.getNewUser("patient");
-        newPatient.getPatientMedicines().add(new Medicine());
-        newPatient.getPatientMedicines().add(new Medicine());
-        newPatient.getPatientMedicines().add(new Medicine());
+//        newPatient.getPatientMedicines().add(new Medicine());
+//        newPatient.getPatientMedicines().add(new Medicine());
+//        newPatient.getPatientMedicines().add(new Medicine());
         theModel.addAttribute("patient",newPatient);
 
         theModel.addAttribute("allMedicines", medicineService.findAll());
         return "users/patient-form";
     }
 
+    @PostMapping(value="/patients/addNewPatient", params={"addRow"})
+    public String addRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
+        thePatient.getPatientMedicines().add(new Medicine()); //.getRows().add(new Row());
+        theModel.addAttribute("allMedicines", medicineService.findAll());
+        System.out.println("Add new row -----------------");
+        return "users/patient-form";
+    }
+
 
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(
+    public String addNewPatient(Model theModel,
             @Valid @ModelAttribute("patient") Patient thePatient,
             BindingResult bindingResult){
         System.out.println("MOdel patient: " + thePatient.getPatientMedicines());
+
         if (bindingResult.hasErrors()){
+            theModel.addAttribute("allMedicines", medicineService.findAll());
             return "users/patient-form";
         }else{
             userService.save(thePatient);
