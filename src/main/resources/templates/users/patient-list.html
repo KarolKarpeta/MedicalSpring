@@ -80,7 +80,10 @@
 
             <tbody class="text-right">
             <tr th:each="patient : ${patientList}">
-                <td th:text="${patient.patientId}" ></td>
+                <td>
+                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}"
+                       th:text="${patient.patientId}"></a>
+                </td>
                 <td th:text="${patient.pesel}" ></td>
                 <td th:text="${patient.surname}" ></td>
                 <td th:text="${patient.name}" ></td>

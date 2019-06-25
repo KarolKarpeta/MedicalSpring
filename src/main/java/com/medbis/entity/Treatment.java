@@ -64,4 +64,13 @@ public class Treatment {
         this.categoryId = categoryId;
     }
 
+    @Override
+    public String toString() {
+        return "Treatment{" +
+                "treatmentId=" + treatmentId +
+                ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

@@ -21,66 +21,130 @@
     <form action="#" th:action="@{/patients/addNewPatient}" th:object="${patient}" method="POST">
         <div class="container">
 
-            <!--            for UPDATE -->
-            <input type="hidden" th:field="*{patientId}"/>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{pesel}" th:class="${#fields.hasErrors('pesel')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Pesel"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}"></mark>
+            <div class="row">
+                <div class="col-md-5">
+
+                    <h3>PERSONAL DATA:</h3>
+                    <!--            for UPDATE -->
+                    <input type="hidden" th:field="*{patientId}"/>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{pesel}" th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '" placeholder="Pesel"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{surname}" th:class="${#fields.hasErrors('surname')}? 'form-control is-invalid' : 'form-control'" placeholder="Surname" />
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></mark>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')}? 'form-control is-invalid' : 'form-control'" placeholder="Name"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'" placeholder="Birthday"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{sex}" th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'" placeholder="Sex"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></mark>
+                    </div>
+
+                    <h3>ADDRESS:</h3>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{community}" th:class="${#fields.hasErrors('community')}? 'form-control is-invalid' : 'form-control'" placeholder="Comunity" />
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('community')}" th:errors="*{community}"></mark>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{zipCode}" th:class="${#fields.hasErrors('zipCode')}? 'form-control is-invalid' : 'form-control'" placeholder="Zip code"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{city}" th:class="${#fields.hasErrors('city')}? 'form-control  is-invalid' : 'form-control'" placeholder="City"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" th:field="*{street}" th:class="${#fields.hasErrors('street')}? 'form-control is-invalid' : 'form-control'" placeholder="Street" />
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></mark>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{houseNumber}" th:class="${#fields.hasErrors('houseNumber')}? 'form-control is-invalid' : 'form-control'" placeholder="House number"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}"></mark>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{apartmentNumber}" th:class="${#fields.hasErrors('apartmentNumber')}? 'form-control is-invalid' : 'form-control'" placeholder="Apartment number"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('apartmentNumber')}" th:errors="*{apartmentNumber}"></mark>
+                    </div>
+
+
+
+
+                </div>
+                <div class="col-md-7">
+                    <h3>MEDICINES:</h3>
+                    <div class="card">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th style="width: 20px" class="align-middle text-center" th:text="LP">Row</th>
+                                <th class="align-middle" th:text="Medicine"></th>
+                                <th style="width: 170px;" class="text-center">
+                                    <button type="submit" name="addRow" value="addRow" class="btn btn-outline-info btn-block">Add medicine:</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="medicine,medicineStat : *{patientMedicines}">
+                                <td class="align-middle text-center" th:text="${medicineStat.count}">1</td>
+                                <td>
+                                    <select class="form-control" id="selectMedicine" th:field="*{patientMedicines[__${medicineStat.index}__]}">
+                                        <option th:each="medicineToAdd : ${allMedicines}" th:value="${medicineToAdd.getMedicineId()}" th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi</option>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <button type="submit" name="removeRow" th:value="${medicineStat.index}" class="btn btn-outline-danger" >Delete medicine</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
             </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{surname}" th:class="${#fields.hasErrors('surname')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Surname" />
-                <mark class="error-sign small" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></mark>
-            </div>
-            <div class="mb-3">
-                <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Name"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></mark>
+            <div class="row">
+                <input type="submit" class="btn btn-outline-primary col-4">
+                <input type="reset" class="btn btn-outline-secondary col-1">
             </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Birthday"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></mark>
-            </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{sex}" th:class="${#fields.hasErrors('sex')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Sex"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></mark>
-            </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{community}" th:class="${#fields.hasErrors('community')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Comunity" />
-                <mark class="error-sign small" th:if="${#fields.hasErrors('community')}" th:errors="*{community}"></mark>
-            </div>
-            <div class="mb-3">
-                <input type="text" th:field="*{zipCode}" th:class="${#fields.hasErrors('zipCode')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Zip code"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></mark>
-            </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{city}" th:class="${#fields.hasErrors('city')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="City"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></mark>
-            </div>
 
-            <div class="mb-3">
-                <input type="text" th:field="*{street}" th:class="${#fields.hasErrors('street')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Street" />
-                <mark class="error-sign small" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></mark>
-            </div>
-            <div class="mb-3">
-                <input type="text" th:field="*{houseNumber}" th:class="${#fields.hasErrors('houseNumber')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="House number"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}"></mark>
-            </div>
-            <div class="mb-3">
-                <input type="text" th:field="*{apartmentNumber}" th:class="${#fields.hasErrors('apartmentNumber')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Apartment number"/>
-                <mark class="error-sign small" th:if="${#fields.hasErrors('apartmentNumber')}" th:errors="*{apartmentNumber}"></mark>
-            </div>
 
-            <input type="submit" class="btn btn-outline-primary col-4">
-            <input type="reset" class="btn btn-outline-secondary col-1">
+
+
+
+<!--            <div class="form-group" >-->
+<!--                <label for="selectcategory">Select category</label>-->
+<!--&lt;!&ndash;                <select class="form-control" id="selectcategory" th:field="*{medicineId}">&ndash;&gt;-->
+<!--                <select class="form-control" id="selectcategory" >-->
+<!--                    <option th:each="medicineIter: ${allMedicines}" th:value="${medicineIter.getMedicineId()}" th:text="${medicineIter.getMedicineName()}"></option>-->
+<!--&lt;!&ndash;                    <div th:each="medicines, stat: ${patient.me}">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="text" th:field="*{medicines}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                </select>-->
+<!--            </div>-->
+
         </div>
 
     </form>
-
 <!--    <a class="btn btn-info btn-sm mb-3 mt-3" th:href="@{/patients}">Back to Patients List</a>-->
     <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/patients}">Back to list</a>
 
@@ -89,3 +153,37 @@
 
 </body>
 </html>
+
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--<div>-->
+<!--    <label th:text="ROWS">Rows</label>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th th:text="cda1">Row</th>-->
+<!--            <th th:text="cda2">Variety</th>-->
+<!--            <th th:text="cda3">Seeds per cell</th>-->
+<!--            &lt;!&ndash;                        <th>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <button type="submit" name="addRow" th:text="Add row">Add row</button>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </th>&ndash;&gt;-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="medicine,medicineStat : *{patientMedicines}">-->
+<!--            <td th:text="${medicineStat.count}">1</td>-->
+<!--            <td>-->
+<!--                <label for="selectMedicine">Select medicine</label>-->
+<!--                <select class="form-control" id="selectMedicine" th:field="*{patientMedicines[__${medicineStat.index}__].medicineName}">-->
+<!--                    <option th:each="medicineToAdd : ${allMedicines}" th:value="${medicineToAdd.getMedicineId()}" th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi</option>-->
+<!--                </select>-->
+<!--            </td>-->
+<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <input type="text" th:field="*{patientMedicines[__${medicineStat.index}__].seedsPerCell}" th:errorclass="fieldError" />&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            <button type="submit" name="removeRow" th:value="${medicineStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>&ndash;&gt;-->
+<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
