@@ -36,7 +36,6 @@ public class PatientController {
         this.medicineService = medicineService;
     }
 
-
     @GetMapping("/patients")
     public String findAll(Model theModel){
         theModel.addAttribute("patientList", userService.findAll());
@@ -65,27 +64,9 @@ public class PatientController {
     public String delRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-        System.out.println("Row to delete: " + rowId);
-        System.out.println("Size: "+ thePatient.getPatientMedicines().size() );
-        for(Medicine med : thePatient.getPatientMedicines()){
-            System.out.println(med.toString());
-        }
-
         thePatient.getPatientMedicines().remove(rowId.intValue());
-        System.out.println("Size: "+ thePatient.getPatientMedicines().size() );
-        for(Medicine med : thePatient.getPatientMedicines()){
-            System.out.println(med.toString());
-        }
-
         return "users/patient-form";
     }
-
-//    @RequestMapping(value="/seedstartermng", params={"removeRow"})
-//    public String removeRow(final SeedStarter seedStarter, final BindingResult bindingResult,final HttpServletRequest req) {
-//        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-//        seedStarter.getRows().remove(rowId.intValue());
-//        return "seedstartermng";
-//    }
 
     //ADD NEW PATIENT
     @PostMapping("/patients/addNewPatient")
