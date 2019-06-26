@@ -65,14 +65,7 @@ public class Employee extends User{
     public void setRoles(String roles) {
         this.roles = roles;
     }
-    public List<String> getRolesAsList() throws NullPointerException{
-        try{
-            return Arrays.asList(this.roles.split(","));
-        }
-        catch (NullPointerException err){
-            return new ArrayList<>();
-        }
-    }
+
 
     public List<String> getPermissions() throws NullPointerException {
         try{
