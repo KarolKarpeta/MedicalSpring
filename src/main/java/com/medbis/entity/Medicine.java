@@ -39,7 +39,6 @@ public class Medicine {
             mappedBy = "patientMedicines")
     private Set<Patient> patients = new HashSet<>();
 
-
     public Set<Patient> getPatients() {
         return patients;
     }
@@ -58,15 +57,15 @@ public class Medicine {
         this.patients = patients;
     }
 
-    @Override
-    public String toString() {
-        return "Medicine{" +
-                "medicineId=" + medicineId +
-                ", medicineCode=" + medicineCode +
-                ", medicineName='" + medicineName + '\'' +
-                ", medicineDescription='" + medicineDescription + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Medicine{" +
+//                "medicineId=" + medicineId +
+//                ", medicineCode=" + medicineCode +
+//                ", medicineName='" + medicineName + '\'' +
+//                ", medicineDescription='" + medicineDescription + '\'' +
+//                '}';
+//    }
 
 
     public int getMedicineId() {
@@ -99,5 +98,15 @@ public class Medicine {
 
     public void setMedicineDescription(String medicineDescription) {
         this.medicineDescription = medicineDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "Medicine{" +
+                "medicineId=" + medicineId +
+                ", medicineCode=" + medicineCode +
+                ", medicineName='" + medicineName + '\'' +
+                ", medicineDescription='" + medicineDescription + '\''  +
+                '}';
     }
 }

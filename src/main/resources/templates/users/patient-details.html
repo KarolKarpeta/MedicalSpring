@@ -44,6 +44,11 @@
         <li class="list-group-item" th:text="${medicineStat.count+ ' '+ medicine.medicineName}"></li>
     </ul>
 
+    <p class="text-uppercase font-weight-bold">Diseases:</p>
+    <ul class="list-group list-group-flush" th:each="disease, diseaseStat : ${patient.patientDiseases}" >
+        <li class="list-group-item" th:text="${diseaseStat.count+ ' '+ disease.diseaseName}"></li>
+    </ul>
+
     <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/patients}">Back to list</a>
 </div>
 

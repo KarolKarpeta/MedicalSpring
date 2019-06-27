@@ -4,6 +4,8 @@ package com.medbis.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity()
 @Table(name="diseases", schema="public")
@@ -15,25 +17,26 @@ public class Disease {
     private int diseaseId;
     @Column(name = "diseases_code")
     @Size(min=1, max=6)
-    private String code;
+    private String diseaseCode;
     @Column(name="diseases_name")
     @NotEmpty
-    private String name;
+    private String diseaseName;
 
-    public String getCode() {
-        return code;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "patientDiseases")
+    private Set<Patient> patients = new HashSet<>();
+
+    public Disease() {
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Disease(@Size(min = 1, max = 6) String diseaseCode, @NotEmpty String diseaseName, Set<Patient> patients) {
+        this.diseaseCode = diseaseCode;
+        this.diseaseName = diseaseName;
+        this.patients = patients;
     }
 
     public int getDiseaseId() {
@@ -44,12 +47,36 @@ public class Disease {
         this.diseaseId = diseaseId;
     }
 
+    public String getDiseaseCode() {
+        return diseaseCode;
+    }
+
+    public void setDiseaseCode(String diseaseCode) {
+        this.diseaseCode = diseaseCode;
+    }
+
+    public String getDiseaseName() {
+        return diseaseName;
+    }
+
+    public void setDiseaseName(String diseaseName) {
+        this.diseaseName = diseaseName;
+    }
+
+    public Set<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<Patient> patients) {
+        this.patients = patients;
+    }
+
     @Override
     public String toString() {
         return "Disease{" +
                 "diseaseId=" + diseaseId +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
+                ", diseaseCode='" + diseaseCode + '\'' +
+                ", diseaseName='" + diseaseName + '\'' +
                 '}';
     }
 }

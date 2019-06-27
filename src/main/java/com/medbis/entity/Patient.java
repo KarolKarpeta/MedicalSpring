@@ -17,6 +17,7 @@ public class Patient extends User {
         this.comments = comments;
     }
 
+
     @Id
     @GeneratedValue(  strategy = GenerationType.IDENTITY)
     //@SequenceGenerator(name = "patients_patient_id_seq") generator = "patients_patient_id_seq",
@@ -25,14 +26,6 @@ public class Patient extends User {
 
     @Column(name = "comments")
     private String comments;
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -43,12 +36,21 @@ public class Patient extends User {
     )
     private List<Medicine> patientMedicines = new ArrayList<>();
 
-    public List<Medicine> getPatientMedicines() {
-        return patientMedicines;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "patient_diseases",
+            joinColumns = { @JoinColumn(name = "patient_id") },
+            inverseJoinColumns = { @JoinColumn(name = "diseases_id") }
+    )
+    private List<Disease> patientDiseases = new ArrayList<>();
+
+    public int getPatientId() {
+        return patientId;
     }
 
-    public void setPatientMedicines(List<Medicine> patientMedicines) {
-        this.patientMedicines = patientMedicines;
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public String getComments() {
@@ -59,12 +61,29 @@ public class Patient extends User {
         this.comments = comments;
     }
 
+    public List<Medicine> getPatientMedicines() {
+        return patientMedicines;
+    }
+
+    public void setPatientMedicines(List<Medicine> patientMedicines) {
+        this.patientMedicines = patientMedicines;
+    }
+
+    public List<Disease> getPatientDiseases() {
+        return patientDiseases;
+    }
+
+    public void setPatientDiseases(List<Disease> patientDiseases) {
+        this.patientDiseases = patientDiseases;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
                 "patientId=" + patientId +
                 ", comments='" + comments + '\'' +
                 ", patientMedicines=" + patientMedicines +
+                ", patientDiseases=" + patientDiseases +
                 '}';
     }
 }
