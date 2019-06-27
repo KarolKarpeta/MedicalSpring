@@ -16,8 +16,17 @@ import java.lang.reflect.Method;
 
 @ControllerAdvice(basePackages = "com.medbis.controller")
 public class GlobalController {
+
+    private EmployeeRepository employeeRepository;
+
     @Autowired
-    EmployeeRepository employeeRepository;
+    public GlobalController(EmployeeRepository employeeRepository) {
+       this.employeeRepository = employeeRepository;
+    }
+
+
+
+
 
     @ModelAttribute
     public void addLoggedUserAttribute(Model model, Authentication auth) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
