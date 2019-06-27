@@ -31,11 +31,13 @@ public class GlobalController {
     @ModelAttribute
     public void addLoggedUserAttribute(Model model, Authentication auth) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     String name = auth.getName();
-    Employee employee = employeeRepository.findByName(name);
-    String surname = (String) employee.getClass().getSuperclass().getMethod("getSurname").invoke(employee);
+
+    User employee = employeeRepository.findByName(name);
+    String surname = employee.getClass().getMethod("getSurname").invoke(employee).toString();
+
     model.addAttribute("name", name);
     model.addAttribute("surname", surname);
- /*   model.addAttribute("authentication", auth);*/
+
 }
 
 }

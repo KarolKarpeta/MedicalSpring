@@ -31,7 +31,7 @@ public class PatientController {
     }
 
 
-    @GetMapping("/patients")
+    @RequestMapping(value = {"/patients", "", "/"})
     public String findAll(Model theModel){
         theModel.addAttribute("patientList", userService.findAll());
         return "users/patient-list";
