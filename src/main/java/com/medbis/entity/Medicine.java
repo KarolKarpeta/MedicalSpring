@@ -37,6 +37,7 @@ public class Medicine {
                     CascadeType.MERGE
             },
             mappedBy = "patientMedicines")
+
     private Set<Patient> patients = new HashSet<>();
 
     public Set<Patient> getPatients() {

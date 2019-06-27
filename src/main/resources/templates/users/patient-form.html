@@ -10,6 +10,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- JS and JQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/theSameContent.js}"></script>
+
+
+
 </head>
 <body>
 
@@ -116,8 +125,10 @@
                             <tr th:each="medicine,medicineStat : *{patientMedicines}">
                                 <td class="align-middle text-center" th:text="${medicineStat.count}">1</td>
                                 <td>
-                                    <select class="form-control" id="selectMedicine"
-                                            th:field="*{patientMedicines[__${medicineStat.index}__]}">
+                                    <select class="diffrentMedicine form-control" onchange="checkMedicine()" id="selectMedicine"
+                                            th:field="*{patientMedicines[__${medicineStat.index}__]}" th:required="true">
+                                        <option value="" th:disabled="false" th:selected="true">
+                                            Choose medicine >> </option>
                                         <option th:each="medicineToAdd : ${allMedicines}"
                                                 th:value="${medicineToAdd.getMedicineId()}"
                                                 th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi
@@ -134,7 +145,7 @@
                         </table>
                     </div>
 
-                    <h3>DISEASES:</h3>
+                    <br><h3>DISEASES:</h3>
                     <div class="card">
                         <table class="table">
                             <thead>
@@ -152,8 +163,10 @@
                             <tr th:each="disease,diseaseStat : *{patientDiseases}">
                                 <td class="align-middle text-center" th:text="${diseaseStat.count}">1</td>
                                 <td>
-                                    <select class="form-control" id="selectDisease"
-                                            th:field="*{patientDiseases[__${diseaseStat.index}__]}">
+                                    <select class="diffrentDisease form-control" onchange="checkContent()" id="selectDisease"
+                                            th:field="*{patientDiseases[__${diseaseStat.index}__]}" th:required="true">
+                                        <option value="" th:disabled="false" th:selected="true">
+                                            Choose disease >> </option>
                                         <option th:each="diseaseToAdd : ${allDiseases}"
                                                 th:value="${diseaseToAdd.getDiseaseId()}"
                                                 th:text="${diseaseToAdd.getDiseaseName()}">Thymus Thymi
