@@ -40,7 +40,6 @@ public class PatientController {
     //ADDING NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
-
         theModel.addAttribute("patient", userFactory.getNewUser("patient"));
         return "users/patient-form";
     }
