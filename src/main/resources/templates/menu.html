@@ -34,15 +34,16 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/employees">Employees <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active" style="background-color: red">
+        <!--        <li class="nav-item active" style="background-color: red">
                     <a class="nav-link" href="/logout">Log out!<span class="sr-only">(current)</span></a>
-                </li>
+                </li>-->
 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+           <span style="color: white">Logged as: </span>
+            <span style="color: white" th:text ="${authentication.name}"></span>
+            <a href="/logout" class="btn btn-info btn-lg" style="background-color: red;">
+                <span class="glyphicon glyphicon-log-out" ></span> Log out!
+            </a>
         </div>
         </nav>
 
