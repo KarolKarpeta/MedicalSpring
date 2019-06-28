@@ -16,11 +16,12 @@
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/theSameContent.js}"></script>
+    <script type="text/javascript" th:src="@{/js/peselValidation.js}"></script>
 
 
 
 </head>
-<body>
+<body onload="ParsePesel();">
 
 <div class="mt-10">
     <header id="header" class="alt" th:include="menu :: title-menu"/>
@@ -40,10 +41,24 @@
                     <input type="hidden" th:field="*{patientId}"/>
 
                     <div class="mb-3">
-                        <input type="text" th:field="*{pesel}"  th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"  placeholder="Pesel"/>
+                        <input id="pesel" onkeyup="ParsePesel();" type="text" th:field="*{pesel}"  th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"  placeholder="Pesel"/>
                         <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}"
                               th:errors="*{pesel}"></mark>
                     </div>
+
+                    <div class="mb-3">
+                        <input readonly id="birthday" type="text" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Birthday"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('birthday')}"
+                              th:errors="*{birthday}"></mark>
+                    </div>
+
+                    <div class="mb-3">
+                        <input readonly id="sex" type="text" th:field="*{sex}"  th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Sex"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></mark>
+                    </div>
+
+
+
 
                     <div class="mb-3">
                         <input type="text" th:field="*{surname}"    th:class="${#fields.hasErrors('surname')}? 'form-control is-invalid' : 'form-control'" placeholder="Surname"/>
@@ -55,16 +70,7 @@
                         <mark class="error-sign small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></mark>
                     </div>
 
-                    <div class="mb-3">
-                        <input type="text" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Birthday"/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('birthday')}"
-                              th:errors="*{birthday}"></mark>
-                    </div>
 
-                    <div class="mb-3">
-                        <input type="text" th:field="*{sex}"  th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Sex"/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></mark>
-                    </div>
 
                     <h3>ADDRESS:</h3>
                     <div class="mb-3">
