@@ -31,10 +31,9 @@ public class GlobalController {
     String name = auth.getName();
 
     User employee = employeeRepository.findByName(name);
-    String surname = employee.getSurname();
 
-    model.addAttribute("name", name);
-    model.addAttribute("surname", surname);
+    model.addAttribute("name", employeeRepository.findByName(name));
+    model.addAttribute("surname", employee.getSurname());
 }
 
 }
