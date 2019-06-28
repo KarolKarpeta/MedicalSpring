@@ -17,7 +17,7 @@ public class UserFactory {
         if (type.equals("employee")){
             user = new Employee();
         }
-        if(type.equals("patient")){
+        else if(type.equals("patient")){
             user = new Patient();
         }
         return user;

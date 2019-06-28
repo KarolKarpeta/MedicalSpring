@@ -7,15 +7,14 @@ import com.medbis.factory.UserFactory;
 import com.medbis.service.interfaces.DiseaseService;
 import com.medbis.service.interfaces.MedicineService;
 import com.medbis.service.interfaces.UserService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -36,7 +35,8 @@ public class PatientController {
         this.medicineService = medicineService;
     }
 
-    @GetMapping("/patients")
+
+    @RequestMapping(value = {"/patients", "", "/"})
     public String findAll(Model theModel){
         theModel.addAttribute("patientList", userService.findAll());
         return "users/patient-list";

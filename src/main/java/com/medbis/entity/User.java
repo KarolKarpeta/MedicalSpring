@@ -70,10 +70,6 @@ public class User {
     private String mobilePhoneNumber;
 
 
-
-
-
-
     public String getPesel() {
         return pesel;
     }

@@ -1,15 +1,21 @@
 package com.medbis.entity;
 
-import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
+@Component
 @Entity
 @Table(name = "employees", schema = "public")
 public class Employee extends User{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
@@ -22,6 +28,44 @@ public class Employee extends User{
     @Column(name="login")
     @NotEmpty
     private String login;
+
+    private boolean status;
+
+
+    private String permissions;
+
+    public Employee(String password, @NotEmpty String login, boolean status, String roles, String permissions) {
+        this.password = password;
+        this.login = login;
+        this.status = status;
+        this.permissions = permissions;
+
+    }
+
+    public Employee() {
+
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public List<String> getPermissions() throws NullPointerException {
+        try{
+           return Arrays.asList(permissions.split(","));
+        }
+        catch (NullPointerException err){
+            return new ArrayList<String>();
+        }
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
 
     public int getId() {
         return id;
