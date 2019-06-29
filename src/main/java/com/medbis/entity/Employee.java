@@ -34,7 +34,7 @@ public class Employee extends User{
 
     private String permissions;
 
-    public Employee(String password, @NotEmpty String login, boolean status, String roles, String permissions) {
+    public Employee(String password, @NotEmpty String login, boolean status, String permissions) {
         this.password = password;
         this.login = login;
         this.status = status;

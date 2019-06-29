@@ -16,9 +16,13 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private UserPrinicipalDetailsService userPrinicipalDetailsService;
+    private LoginSuccessHandler loginSuccessHandler;
+    private CustomAccessDeniedHandler  customAccessDeniedHandler;
 
-    public SecurityConfiguration(UserPrinicipalDetailsService userPrinicipalDetailsService){
+    SecurityConfiguration(UserPrinicipalDetailsService userPrinicipalDetailsService, LoginSuccessHandler loginSuccessHandler, CustomAccessDeniedHandler customAccessDeniedHandler){
         this.userPrinicipalDetailsService = userPrinicipalDetailsService;
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Override
@@ -27,12 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authenticationProvider());
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/employees/**")
+                .antMatchers("/employees/**" , "/categories/**", "/treatments/**")
                 .hasRole("ADMIN")
                 .and()
                 .authorizeRequests()
@@ -40,18 +43,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                .successHandler(new LoginSuccessHandler())
+                .successHandler(loginSuccessHandler)
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .logout();
 
     }
-
-
-
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -61,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
+    @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }

@@ -28,12 +28,18 @@ public class GlobalController {
 
     @ModelAttribute
     public void addLoggedUserAttribute(Model model, Authentication auth) {
-    String name = auth.getName();
-
-    User employee = employeeRepository.findByName(name);
-
-    model.addAttribute("name", employeeRepository.findByName(name).getName());
-    model.addAttribute("surname", employee.getSurname());
+        String name = auth.getName();
+        User employee = employeeRepository.findByName(name);
+        model.addAttribute("name", employee.getName());
+        model.addAttribute("surname", employee.getSurname());
+        model.addAttribute("isAdmin", isAdmin(auth));
 }
 
-}
+    private boolean isAdmin(Authentication authentication){
+        Employee employee = employeeRepository.findByName(authentication.getName());
+        return String.valueOf(employee.getPermissions()).contains("ADMIN");
+
+    }
+
+
+    }
