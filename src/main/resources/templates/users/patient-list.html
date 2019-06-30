@@ -36,7 +36,7 @@
 
     <div class="container">
 
-        <table  id="myTable" class=" fixed_headers table table-striped table-hover table-sm table-bordered">
+        <table  id="myTable" class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered">
             <thead class="thead-dark">
             <tr>
                 <td colspan="13">
@@ -82,11 +82,17 @@
             <tbody class="text-right">
             <tr th:each="patient : ${patientList}">
                 <td>
-                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}"
-                       th:text="${patient.patientId}"></a>
+                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}">
+                        <span th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"><i class="far fa-user"></i></span>
+                        <span th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"><i class="far fa-user"></i></span>
+
+                        <span th:text="${patient.patientId}" th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"></span>
+                        <span th:text="${patient.patientId}" th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"></span>
+
+                    </a>
                 </td>
-                <td th:text="${patient.pesel}" ></td>
-                <td th:text="${patient.surname}" ></td>
+                <td th:text="${patient.pesel}" > </td>
+                <td th:text="${patient.surname}"></td>
                 <td th:text="${patient.name}" ></td>
                 <td th:text="${patient.birthday}" ></td>
                 <td th:text="${patient.community}" ></td>
@@ -96,12 +102,13 @@
                 <td th:text="${patient.houseNumber}" ></td>
                 <td th:text="${patient.apartmentNumber}" ></td>
 
-                <td class="text-center">
-                    <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
-                    <span style="font-size: 1em; color: green;">
-                            <i class="fas fa-user-nurse"></i>
+                <td class="text-center text-nowrap">
+                    <span class="text-center text-nowrap">
+                        <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
+                        <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}"></a>
                     </span>
-                    </a>
+
+
                 </td>
                 <td class="text-center">
                     <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}">
