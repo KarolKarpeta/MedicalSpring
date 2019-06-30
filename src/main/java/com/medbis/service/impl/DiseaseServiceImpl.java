@@ -19,8 +19,6 @@ public class DiseaseServiceImpl implements DiseaseService {
     }
 
 
-
-
     @Override
     public List<Disease> findAll() {
         return diseaseRepository.findAll();
