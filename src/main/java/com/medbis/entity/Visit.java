@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,8 @@ public class Visit {
     @Column(name = "patient_id")
     private int visitPatientId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "is required")
     @Column(name = "date")
     private LocalDate visitDate;
 

@@ -1,9 +1,12 @@
 package com.medbis.controller;
 
+import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
+import com.medbis.service.interfaces.UserService;
 import com.medbis.service.interfaces.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,10 +21,12 @@ import javax.validation.Valid;
 public class VisitController {
 
     private VisitService visitService;
+    private UserService userService;
 
     @Autowired
-    public VisitController(VisitService visitService) {
+    public VisitController(VisitService visitService, @Qualifier("PatientServiceImpl") UserService userService) {
         this.visitService = visitService;
+        this.userService = userService;
     }
 
 
@@ -36,34 +41,32 @@ public class VisitController {
     //Show form for ADD NEW PATIENT
     @GetMapping("/visits/showFormForAddVisit")
     public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, Model theModel){
-        //Patient newPatient = (Patient) userFactory.getNewUser("patient");
         Visit newVisit = new Visit();
-        theModel.addAttribute("visit", newVisit);
+        Patient thePatient = (Patient) userService.findById(thePatientId);
         theModel.addAttribute("patientId", thePatientId);
+        theModel.addAttribute("visit", newVisit);
         return "visits/visit-form";
     }
 
     //ADDING NEW VISITS
     @PostMapping("/visits/addNewNewVisit")
-    public String addNewMedicine(@Valid @ModelAttribute("visit") Visit theVisit,
-                                 BindingResult bindingResult){
+    public String addNewMedicine(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "medicine/visit-form";
+            theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
+            return "visits/visit-form";
         }else{
-            System.out.println("Visit to save:" + theVisit.toString());
             visitService.save(theVisit);
             return "redirect:/visits";
         }
     }
 
-//    @GetMapping ("/patients/showPatientDetails")
-//    public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
-//        Patient newPatient = (Patient) userService.findById(theId);
-//        System.out.println("Patient details: " + newPatient.toString());
-//        theModel.addAttribute("patient", newPatient);
-//        return "users/patient-details";
-//    }
-
+    @GetMapping ("/visits/showFormForEditVisit")
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel){
+        Visit visitToEdit = visitService.findById(theId);
+        theModel.addAttribute("visit", visitToEdit);
+        theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
+        return "visits/visit-form";
+    }
 
 
 }
