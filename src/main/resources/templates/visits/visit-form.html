@@ -19,11 +19,14 @@
     <p class="btn btn-info btn-sm mb-3 mt-3">Fill form to add new visit</p>
 
 
-    <form action="#" th:action="@{/medicines/addNewMedicine}" th:object="${medicine}" method="POST">
+    <form action="#" th:action="@{/visits/addNewNewVisit}" th:object="${visit}" method="POST">
         <div class="container">
 
-            <!--            for UPDATE -->
-<!--            <input type="hidden" th:field="*{patientId}"/>-->
+            <span th:text="${'patientID: ' + patientId }"></span>
+            <span th:text="${'employeID: ' + employeeId }"></span>
+
+            <input type="number" th:field="*{visitPatientId}"  th:value="${patientId}"/>
+            <input type="number" th:field="*{visitEmployeeId}" th:value="${employeeId}"/>
 
             <div class="form-group row">
                 <label for="example-date-input" class="col-2 col-form-label">Date</label>
@@ -31,19 +34,16 @@
                     <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
                 </div>
             </div>
-<!--            <div class="mb-4">-->
-<!--                <input type="text" th:field="*{medicineName}" th:class="${#fields.hasErrors('medicineName')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Medicine name"/>-->
-<!--                <mark class="error-sign small" th:if="${#fields.hasErrors('medicineName')}" th:errors="*{medicineName}"></mark>-->
-<!--            </div>-->
+            <div class="mb-3">
+                <input  id="visitDate" type="text" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Birthday"/>
+                <mark class="error-sign small" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></mark>
+            </div>
 
-<!--            <div class="mb-4">-->
-<!--                <input type="text" th:field="*{medicineCode}" th:class="${#fields.hasErrors('medicineCode')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Medicine code" />-->
-<!--                <mark class="error-sign small" th:if="${#fields.hasErrors('medicineCode')}" th:errors="*{medicineCode}"></mark>-->
-<!--            </div>-->
-<!--            <div class="mb-4">-->
-<!--                <input type="text" th:field="*{medicineDescription}" th:class="${#fields.hasErrors('medicineDescription')}? 'form-control col-5 is-invalid' : 'form-control col-5'" placeholder="Description"/>-->
-<!--                <mark class="error-sign small" th:if="${#fields.hasErrors('medicineDescription')}" th:errors="*{medicineDescription}"></mark>-->
-<!--            </div>-->
+            <div class="mb-3">
+<!--                <input type="checkbox" name="active" th:checked="${user.active}" />-->
+                <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
+                <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
+            </div>
 
             <input type="submit" class="btn btn-outline-primary col-4">
             <input type="reset" class="btn btn-outline-secondary col-1">
@@ -51,7 +51,7 @@
 
     </form>
 
-    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/medicines}">Back to list</a>
+    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/visits}">Back to list</a>
 
 </div>
 

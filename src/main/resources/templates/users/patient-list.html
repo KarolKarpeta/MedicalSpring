@@ -103,10 +103,11 @@
                 <td th:text="${patient.apartmentNumber}" ></td>
 
                 <td class="text-center text-nowrap">
-                    <span class="text-center text-nowrap">
+
+                    <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
                         <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
-                        <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}"></a>
-                    </span>
+                    </a>
+
 
 
                 </td>
