@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Integer> {
 
-    @Query("select v, p from Visit v left join  v.patient p") //JPQL
+    @Query("select v, p from Visit v left join  v.patient p order by v.visitDate") //JPQL
     List<Visit> findAllVisits();
 
 //    @Query("select p from Planet p where p.planetName  = ?1") //JPQL
