@@ -20,8 +20,9 @@ public class UserPrinicipalDetailsService implements UserDetailsService {
      }
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Employee employee = this.employeeRepository.findByLogin(name);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(username);
+        Employee employee = this.employeeRepository.findByLogin(username);
         return new UserPrincipal(employee);
     }
 }

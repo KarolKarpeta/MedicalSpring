@@ -38,17 +38,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employees/**" , "/categories/**", "/treatments/**")
                 .hasRole("ADMIN")
                 .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
                 .formLogin()
+                .loginProcessingUrl("/signin")
+                .loginPage("/login").permitAll()
+                .passwordParameter("password")
+                .usernameParameter("username")
                 .successHandler(loginSuccessHandler)
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
-                .logout();
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated();
 
     }
 

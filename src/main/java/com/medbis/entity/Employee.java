@@ -46,14 +46,6 @@ public class Employee extends User{
 
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public List<String> getPermissions() throws NullPointerException {
         try{
            return Arrays.asList(permissions.split(","));

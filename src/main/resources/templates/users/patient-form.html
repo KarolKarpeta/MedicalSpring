@@ -45,9 +45,10 @@
                         <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}"
                               th:errors="*{pesel}"></mark>
                     </div>
+<!--                    <input type="date" th:value="*{date}" th:field="*{date}" />-->
 
                     <div class="mb-3">
-                        <input readonly id="birthday" type="text" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Birthday"/>
+                        <input  id="birthday" type="date" th:field="*{birthday}" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Birthday"/>
                         <mark class="error-sign small" th:if="${#fields.hasErrors('birthday')}"
                               th:errors="*{birthday}"></mark>
                     </div>
