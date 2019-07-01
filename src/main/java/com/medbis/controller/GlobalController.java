@@ -29,7 +29,8 @@ public class GlobalController {
     @ModelAttribute
     public void addLoggedUserAttribute(Model model, Authentication auth) {
         String name = auth.getName();
-        User employee = employeeRepository.findByName(name);
+        Employee employee = employeeRepository.findByName(name);
+        model.addAttribute("employeeId", employee.getId());
         model.addAttribute("name", employee.getName());
         model.addAttribute("surname", employee.getSurname());
         model.addAttribute("isAdmin", isAdmin(auth));
