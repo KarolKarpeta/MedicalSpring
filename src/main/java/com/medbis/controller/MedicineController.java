@@ -31,21 +31,17 @@ public class MedicineController {
 
     //EDITING NEW MEDICINE
     @GetMapping ("/medicines/showFormForEditMedicine")
-    public String showFormForEditMedicine(@RequestParam("medicineIdToEdit")int theId,
-                                          Model theModel){
+    public String showFormForEditMedicine(@RequestParam("medicineIdToEdit")int theId, Model theModel){
         Medicine newMedicine = medicineService.findById(theId);
         theModel.addAttribute("medicine", newMedicine);
         return "medicine/medicine-form";
     }
 
     @PostMapping("/medicines/addNewMedicine")
-    public String addNewMedicine(@Valid @ModelAttribute("medicine")
-                                         Medicine theMedicine,
-                                 BindingResult bindingResult){
+    public String addNewMedicine(@Valid @ModelAttribute("medicine")Medicine theMedicine, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "medicine/medicine-form";
         }else{
-//            theMedicine.setMedicineId(0);
             medicineService.save(theMedicine);
             return "redirect:/medicines";
         }
