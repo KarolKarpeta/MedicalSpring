@@ -8,8 +8,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
+<!--    <link type="text/css" th:href="@{/fontawesome-free-5.9.0-web/css/all.css}" rel="stylesheet"> &lt;!&ndash;load all styles &ndash;&gt;-->
+<!--    <script th:defer="" src="https://kit.fontawesome.com/a22dd9be7e.js"></script>-->
+    <link rel="stylesheet" type="text/css" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css}"/>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!--    //<link rel="stylesheet" th:src="@{/css/table.scss}" >-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/tableC.css}"/>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -17,13 +20,6 @@
             crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/searchPatient.js}"></script>
 
-<!--    static/js/searchPatient.js-->
-
-    <style>
-    .searchTh{
-        background-color: whitesmoke;
-    }
-    </style>
 </head>
 <body>
 
@@ -35,12 +31,12 @@
     <!--    Add a button-->
     <a th:href="@{/patients/showFormForAddPatient}"
        class="btn btn-info btn-sm mb-3 mt-3">
-        Add new patient
+        Add new patient <i class="fas fa-user-edit"></i>
     </a>
 
     <div class="container">
 
-        <table  id="myTable" class=" fixed_headers table table-striped table-hover table-sm table-bordered">
+        <table  id="myTable" class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered">
             <thead class="thead-dark">
             <tr>
                 <td colspan="13">
@@ -61,8 +57,9 @@
                 <th>STREET</th>
                 <th>HOME</th>
                 <th>FLAT</th>
-                <th>UPDATE</th>
-                <th>DELETE</th>
+                <th>V</th>
+                <th>U</th>
+                <th>D</th>
             </tr>
             <tr id="target2" class="collapse">
                 <th></th>
@@ -78,17 +75,24 @@
                 <th><input type="text" style="width: 100%" id="aNumber" onkeyup="aNumber()" placeholder="..." >            </th>
                 <th>-</th>
                 <th>-</th>
+                <th>-</th>
             </tr>
             </thead>
 
             <tbody class="text-right">
             <tr th:each="patient : ${patientList}">
                 <td>
-                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}"
-                       th:text="${patient.patientId}"></a>
+                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}">
+                        <span th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"><i class="far fa-user"></i></span>
+                        <span th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"><i class="far fa-user"></i></span>
+
+                        <span th:text="${patient.patientId}" th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"></span>
+                        <span th:text="${patient.patientId}" th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"></span>
+
+                    </a>
                 </td>
-                <td th:text="${patient.pesel}" ></td>
-                <td th:text="${patient.surname}" ></td>
+                <td th:text="${patient.pesel}" > </td>
+                <td th:text="${patient.surname}"></td>
                 <td th:text="${patient.name}" ></td>
                 <td th:text="${patient.birthday}" ></td>
                 <td th:text="${patient.community}" ></td>
@@ -98,14 +102,32 @@
                 <td th:text="${patient.houseNumber}" ></td>
                 <td th:text="${patient.apartmentNumber}" ></td>
 
-                <td>
-                    <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}"
-                       class="btn-info btn-xs">Update</a>
+                <td class="text-center text-nowrap">
+
+                    <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
+                        <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
+                    </a>
+
+
+
                 </td>
-                <td>
+                <td class="text-center">
+                    <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}">
+                    <span style="font-size: 1em; color: dodgerblue;">
+                            <i class="fas fa-user-edit"></i>
+                    </span>
+                    </a>
+                </td>
+                <td class="text-center">
                     <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
-                       class="btn-danger btn-xs"
-                       onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
+                       onclick="if(!(confirm('Are you sure?')))return false">
+                        <span style="font-size: 1em; color: firebrick;">
+                            <i class="fas fa-trash-alt"></i>
+                        </span>
+
+
+
+                    </a>
                 </td>
 
             </tr>

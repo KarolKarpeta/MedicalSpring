@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -31,15 +32,18 @@ public class Employee extends User{
 
     private boolean status;
 
+    @OneToMany(mappedBy="employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<Visit> visitsEmployee;
+
 
     private String permissions;
 
-    public Employee(String password, @NotEmpty String login, boolean status, String permissions) {
+    public Employee(@Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})", message = "illegal sign used or password is too short") String password, @NotEmpty String login, boolean status, Set<Visit> visitsEmployee, String permissions) {
         this.password = password;
         this.login = login;
         this.status = status;
+        this.visitsEmployee = visitsEmployee;
         this.permissions = permissions;
-
     }
 
     public Employee() {
@@ -89,5 +93,13 @@ public class Employee extends User{
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Set<Visit> getVisitsEmployee() {
+        return visitsEmployee;
+    }
+
+    public void setVisitsEmployee(Set<Visit> visitsEmployee) {
+        this.visitsEmployee = visitsEmployee;
     }
 }

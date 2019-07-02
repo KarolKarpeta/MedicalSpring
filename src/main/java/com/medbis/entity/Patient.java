@@ -24,6 +24,9 @@ public class Patient extends User {
     @Column(name = "patient_id")
     private int patientId;
 
+    @OneToMany(mappedBy="patient", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<Visit> visitsPatients;
+
     @Column(name = "comments")
     private String comments;
 
@@ -75,6 +78,14 @@ public class Patient extends User {
 
     public void setPatientDiseases(List<Disease> patientDiseases) {
         this.patientDiseases = patientDiseases;
+    }
+
+    public Set<Visit> getVisitsPatients() {
+        return visitsPatients;
+    }
+
+    public void setVisitsPatients(Set<Visit> visitsPatients) {
+        this.visitsPatients = visitsPatients;
     }
 
     @Override
