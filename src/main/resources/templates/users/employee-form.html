@@ -17,6 +17,10 @@
     <script type="text/javascript" th:src="@{/js/peselValidation.js}"></script>
 </head>
 <body onload="ParsePesel();">
+<div class="mt-10">
+    <header id="header" class="alt" th:include="menu :: title-menu" />
+</div>
+
 
 <form action="#" th:action="@{/employees/addNewEmployee}" th:object="${employee}" method="POST">
     <div class="container">
