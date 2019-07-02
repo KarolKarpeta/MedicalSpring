@@ -1,16 +1,17 @@
 package com.medbis.controller;
 
 import com.medbis.entity.Employee;
-import com.medbis.entity.User;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.interfaces.UserService;
-import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -35,7 +36,7 @@ public class EmployeeController {
     //ADDING NEW Employee
     @GetMapping("/employees/showFormForAddEmployee")
     public String showFormForAddEmployee(Model model){
-        User employee = userFactory.getNewUser("employee");
+        Employee employee = (Employee) userFactory.getNewUser("employee");
         model.addAttribute("employee", employee);
         return "users/employee-form";
     }

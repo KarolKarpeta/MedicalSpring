@@ -26,7 +26,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-//    @DateTimeFormat(pattern = "dd.MM.yyyy")
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "is required")
     @Column(name = "birthday")

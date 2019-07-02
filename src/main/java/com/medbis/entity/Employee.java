@@ -1,9 +1,11 @@
 package com.medbis.entity;
 
 
+import com.sun.istack.internal.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
@@ -22,22 +24,28 @@ public class Employee extends User{
     private int id;
 
     @Column(name="password")
-    @Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})",message = "illegal sign used or password is too short")
+    @Min(value = 8)
     private String password;
 
     @Column(name="login")
     @NotEmpty
     private String login;
 
-    private boolean status;
+    @Column(name="status")
+    @NotNull
+    private int status;
 
+
+    public String getPermissions() {
+        return permissions;
+    }
 
     private String permissions;
 
-    public Employee(String password, @NotEmpty String login, boolean status, String permissions) {
+    public Employee(String password, @NotEmpty String login, String permissions) {
         this.password = password;
         this.login = login;
-        this.status = status;
+        this.status = 0;
         this.permissions = permissions;
 
     }
@@ -46,7 +54,7 @@ public class Employee extends User{
 
     }
 
-    public List<String> getPermissions() throws NullPointerException {
+    public List<String> getPermissionsList() throws NullPointerException {
         try{
            return Arrays.asList(permissions.split(","));
         }
@@ -82,4 +90,14 @@ public class Employee extends User{
     public void setLogin(String login) {
         this.login = login;
     }
+
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }
