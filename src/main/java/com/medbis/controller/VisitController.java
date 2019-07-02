@@ -44,6 +44,7 @@ public class VisitController {
         Visit newVisit = new Visit();
         Patient thePatient = (Patient) userService.findById(thePatientId);
         theModel.addAttribute("patientId", thePatientId);
+        newVisit.setPatient(thePatient);
         theModel.addAttribute("visit", newVisit);
         return "visits/visit-form";
     }
@@ -52,6 +53,8 @@ public class VisitController {
     @PostMapping("/visits/addNewNewVisit")
     public String addNewMedicine(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
+            Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
+            theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
             return "visits/visit-form";
         }else{

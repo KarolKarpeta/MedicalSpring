@@ -18,37 +18,54 @@
 <div class="container">
     <p class="btn btn-info btn-sm mb-3 mt-3">Fill form to add new visit</p>
 
-
-
     <form action="#" th:action="@{/visits/addNewNewVisit}" th:object="${visit}" method="POST">
         <input type="hidden" th:value="${patientId}" name="visitPatientId" />
         <input type="hidden" th:value="${employeeId}" name="visitEmployeeId" />
-        <span th:text="${'patientID: ' + patientId}"></span>
+        <!--            for UPDATE -->
+        <input type="hidden" th:field="*{visitId}"/>
 
         <div class="container">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-4">
 
-                    <!--            for UPDATE -->
-                    <input type="hidden" th:field="*{visitId}"/>
+                    <div class="row">
+                        <div class="card" style="width:100%">
+                            <h2 class="text-center" th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h2>
+                            <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%">
+                            <div class="card-body">
+                                <h5 class="card-title">Address:</h5>
+                                    <p class="list-group-item" >
+                                        <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>
+                                        <br/>
+                                        <th:block th:text="${#strings.substring(visit.patient.zipCode,0,2) +'-'+ #strings.substring(visit.patient.zipCode,2,5) +', '+ visit.patient.city}"/>
+                                    </p>
 
-                    <div class="mb-3">
-                        <input  id="visitDate" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Select visit date..."/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></mark>
+                                <h5 class="card-title">Contact:</h5>
+                                    <p class="list-group-item" >
+                                        <th:block th:text="${'+48 ' + visit.patient.mobilePhoneNumber}"/>
+                                        <br/>
+                                        <th:block th:text="${'+48 ' + visit.patient.workPhoneNumber}"/>
+                                        <br/>
+                                        <th:block th:text="${'+48 ' + visit.patient.homePhoneNumber}"/>
+                                    </p>
+                            </div>
+                        </div>
                     </div>
-
                     <div class="mb-3">
                         <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
                         <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
                     </div>
                 </div>
-                <div class="col-md-5">
-
+                <div class="col-md-7">
+                    <div class="mb-3 form-group" style="display: flex">
+                        <label for="visitDate"><h5 class="card-title">Visit date:</h5></label>
+                        <input id="visitDate" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'form-control  is-invalid' : 'form-control'" placeholder="Select visit date..."/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></mark>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <input type="submit" class="btn btn-outline-primary col-4">
-                <input type="reset" class="btn btn-outline-secondary col-1">
             </div>
 
         </div>
