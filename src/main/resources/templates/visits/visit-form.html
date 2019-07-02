@@ -27,44 +27,90 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-
                     <div class="row">
                         <div class="card" style="width:100%">
-                            <h2 class="text-center" th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h2>
+                            <h2 class="text-center mb-2 mt-2" th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h2>
                             <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%">
                             <div class="card-body">
-                                <h5 class="card-title">Address:</h5>
+                                <h6 class="card-title mb-1">Address:</h6>
                                     <p class="list-group-item" >
-                                        <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>
-                                        <br/>
+                                        <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>                                        <br/>
                                         <th:block th:text="${#strings.substring(visit.patient.zipCode,0,2) +'-'+ #strings.substring(visit.patient.zipCode,2,5) +', '+ visit.patient.city}"/>
                                     </p>
 
-                                <h5 class="card-title">Contact:</h5>
+                                <h6 class="card-title mb-1 mt-3">Contact:</h6>
                                     <p class="list-group-item" >
-                                        <th:block th:text="${'+48 ' + visit.patient.mobilePhoneNumber}"/>
-                                        <br/>
-                                        <th:block th:text="${'+48 ' + visit.patient.workPhoneNumber}"/>
-                                        <br/>
+                                        <th:block th:text="${'+48 ' + visit.patient.mobilePhoneNumber}"/> <br/>
+                                        <th:block th:text="${'+48 ' + visit.patient.workPhoneNumber}"/>  <br/>
                                         <th:block th:text="${'+48 ' + visit.patient.homePhoneNumber}"/>
                                     </p>
                             </div>
                         </div>
+
                     </div>
-                    <div class="mb-3">
-                        <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
+                    <div class="row mt-1">
+                        <div class="card" style="width:100%">
+                            <div class="card-body pt-0 pb-0">
+                                <label class="col-form-label" for="visitDate1">Visit date:</label>
+                                <div class="form-group row pl-1">
+                                    <div class="col-8">
+                                        <input id="visitDate1" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="error-sign col-form-label" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-md-8 ">
+                    <div class="row ml-1">
+                        <div class="card" style="width:100%">
+                            <div class="card-body pt-0 pb-0">
+                                <label class="col-form-label" for="visitDate2">Visit date:</label>
+                                <div class="form-group row pl-1">
+                                    <div class="col-4">
+                                        <input id="visitDate2" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="error-sign col-form-label" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
+                            <div class="col-10">
+                                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                            </div>
+                        </div>
+
+                        <div class="card mt-1" style="width:100%">
+                            <label class="col-form-label" for="visitDate1">Services:</label>
+                            <div class="card-body">
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
+                            <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class="mb-3 form-group" style="display: flex">
-                        <label for="visitDate"><h5 class="card-title">Visit date:</h5></label>
-                        <input id="visitDate" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'form-control  is-invalid' : 'form-control'" placeholder="Select visit date..."/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></mark>
-                    </div>
-                </div>
+
             </div>
-            <div class="row">
+            <div class="row mt-1">
                 <input type="submit" class="btn btn-outline-primary col-4">
             </div>
 
