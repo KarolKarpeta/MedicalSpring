@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css}"/>
+
 </head>
 <body>
 
@@ -26,15 +28,17 @@
 
         <div class="container">
             <div class="row">
+
                 <div class="col-md-4">
+
                     <div class="row">
                         <div class="card" style="width:100%">
                             <h2 class="text-center mb-2 mt-2" th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h2>
-                            <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%">
+                            <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%" src="">
                             <div class="card-body">
                                 <h6 class="card-title mb-1">Address:</h6>
                                     <p class="list-group-item" >
-                                        <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>                                        <br/>
+                                        <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>    <br/>
                                         <th:block th:text="${#strings.substring(visit.patient.zipCode,0,2) +'-'+ #strings.substring(visit.patient.zipCode,2,5) +', '+ visit.patient.city}"/>
                                     </p>
 
@@ -46,8 +50,8 @@
                                     </p>
                             </div>
                         </div>
-
                     </div>
+
                     <div class="row mt-1">
                         <div class="card" style="width:100%">
                             <div class="card-body pt-0 pb-0">
@@ -64,57 +68,78 @@
                         </div>
                     </div>
 
-
-
                 </div>
 
                 <div class="col-md-8 ">
-                    <div class="row ml-1">
-                        <div class="card" style="width:100%">
-                            <div class="card-body pt-0 pb-0">
-                                <label class="col-form-label" for="visitDate2">Visit date:</label>
-                                <div class="form-group row pl-1">
-                                    <div class="col-4">
-                                        <input id="visitDate2" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"/>
-                                    </div>
-                                    <div class="col-4">
-                                        <label class="error-sign col-form-label" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></label>
-                                    </div>
-                                </div>
+                    <div class="card w-100 pb-0 mb-0">
+                        <div class="card-body w-100 mt-0 mb-0 pb-1 ">
+                            <label class="card-title" for="visitDate1">Services:</label>
+                            <div class="btn-group btn-group-justified w-100" role="group" aria-label="...">
+                                <button type="button" class=" btn btn-outline-secondary"><i class="far fa-eye"></i></button>
+                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-syringe"></i></button>
+                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-procedures"></i></button>
+                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-stethoscope"></i></button>
+                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-user-shield"></i></button>
+                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-home"></i></button>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-                            <div class="col-10">
-                                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-                            </div>
+
+                        <div class="card">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 20px" class="align-middle text-center" th:text="LP">Row</th>
+                                    <th class="align-middle" th:text="Services"></th>
+                                    <th style="width: 170px;" class="text-center">
+                                        <button type="submit" name="addRow" value="addRow"
+                                                class="btn btn-outline-info btn-block">Add services:
+                                        </button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="service,serviceStat : *{services}">
+                                    <td class="align-middle text-center" th:text="${serviceStat.count}">1</td>
+<!--                                    onchange="checkMedicine()"-->
+                                    <td>
+                                        <select class="diffrentMedicine form-control" id="selectMedicine"
+                                                th:field="*{services[__${serviceStat.index}__]}" th:required="false">
+                                            <option value="" th:disabled="false" th:selected="true">
+                                                Choose service >> </option>
+                                            <option th:each="treatmentToAdd : ${allTreatments}"
+                                                    th:value="${treatmentToAdd.getTreatmentId()}"
+                                                    th:text="${treatmentToAdd.getName()}">Thymus Thymi
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="submit" name="removeRow" th:value="${serviceStat.index}"
+                                                class="btn btn-outline-danger">Delete service
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="card mt-1" style="width:100%">
-                            <label class="col-form-label" for="visitDate1">Services:</label>
-                            <div class="card-body">
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                                <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
-                            <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
-                        </div>
+
+
+                    </div>
+                    <div class="mb-2">
+                        <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
                     </div>
                 </div>
 
             </div>
+        </div>
+
             <div class="row mt-1">
                 <input type="submit" class="btn btn-outline-primary col-4">
             </div>
 
-        </div>
+
     </form>
 
     <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/visits}">Back to list</a>
