@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -48,5 +50,13 @@ public class Visit {
     @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
     private Patient patient;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "visits_services",
+            joinColumns = { @JoinColumn(name = "visit_id") },
+            inverseJoinColumns = { @JoinColumn(name = "service_id") }
+    )
+    private List<Treatment> services = new ArrayList<>();
 
 }
