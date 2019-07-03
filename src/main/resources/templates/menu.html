@@ -17,34 +17,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/visits">Visits <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/visits">Wizyty<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/patients">Patients <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/patients">Pacjenci <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/medicines">Medicines <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/employees">Pracownicy <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/diseases">Diseases <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/medicines">Leki <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/categories">Categories <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/diseases">Choroby <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/employees">Employees <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/treatments">Świadczenia <span class="sr-only">(current)</span></a>
+                </li>
+                <li th:if="${isAdmin} == true" class="nav-item active">
+                    <a class="nav-link" href="/categories">Kategorie <span class="sr-only">(current)</span></a>
                 </li>
         <!--        <li class="nav-item active" style="background-color: red">
                     <a class="nav-link" href="/logout">Log out!<span class="sr-only">(current)</span></a>
                 </li>-->
 
             </ul>
-           <span style="color: white">Logged as: </span>
-            <span style="color: white" th:text ="${name}"> </span>
-            <span style="color: white" th:text ="${surname}"> </span>
-            <a href="/logout" class="btn btn-info btn-lg" style="background-color: red;">
-                <span class="glyphicon glyphicon-log-out" ></span> Log out!
-            </a>
+
+            <a class="btn btn-outline-danger" style="color: white;: red;" th:href="@{/logout}" th:text="'Wyloguj: ' + ${name} +' '+ ${name}"></a>
         </div>
         </nav>
 
