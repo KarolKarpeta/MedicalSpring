@@ -1,6 +1,9 @@
 package com.medbis.entity;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
