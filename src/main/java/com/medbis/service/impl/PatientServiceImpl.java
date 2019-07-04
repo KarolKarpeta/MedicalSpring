@@ -1,5 +1,6 @@
 package com.medbis.service.impl;
 
+import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.User;
 import com.medbis.repository.PatientRepository;
@@ -46,4 +47,10 @@ public class PatientServiceImpl implements UserService {
     public void deleteById(int theId) {
         patientRepository.deleteById(theId);
     }
+
+    @Override
+    public User findByName(String name) {
+      return patientRepository.findByName(name);
+    }
+
 }

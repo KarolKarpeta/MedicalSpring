@@ -1,10 +1,15 @@
 package com.medbis.controller;
 
+import com.medbis.dto.PasswordChangerDto;
 import com.medbis.entity.Employee;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,12 +70,35 @@ public class EmployeeController {
 
     //DELETING NEW Employee
     @GetMapping("/employees/delete")
-    public String delete(@RequestParam("employeeIdToDelete")int theId){
+    public String delete(@RequestParam("employeeIdToDelete") int theId) {
         userService.deleteById(theId);
         return "redirect:/employees";
     }
 
+    public Employee findByName(String name) {
+        return (Employee) userService.findByName(name);
+    }
 
+    @GetMapping("/employees/change-password-form")
+    public String showFormForChangingPassword(PasswordChangerDto passwordChangerDto, Model model) {
+        model.addAttribute("passwordChangerDto", passwordChangerDto);
+        return "users/password-changer";
+    }
 
+    @PostMapping("employees/change-password")
+    public String changePassword(@Valid @ModelAttribute("dto") PasswordChangerDto dto, BindingResult bindingResult, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        if (!bindingResult.hasErrors()) {
+            String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
+            Employee employee = (Employee) userService.findByName(employeeName);
+            employee.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
+            employee.setStatusAfterPasswordChange();
 
+            System.out.println(employee.getName());
+            userService.save(employee);
+            return "redirect:/patients";
+        } else {
+            return "users/password-changer";
+        }
+    }
 }
+

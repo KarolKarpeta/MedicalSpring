@@ -32,8 +32,9 @@ public class Employee extends User{
     private String login;
 
     @Column(name="status")
-    @NotNull
-    private int status;
+    private boolean status;
+
+
 
 
     public String getPermissions() {
@@ -45,7 +46,7 @@ public class Employee extends User{
     public Employee(String password, @NotEmpty String login, String permissions) {
         this.password = password;
         this.login = login;
-        this.status = 0;
+        this.status = false;
         this.permissions = permissions;
 
     }
@@ -92,12 +93,11 @@ public class Employee extends User{
     }
 
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusAfterPasswordChange() {
+        this.status = true;
     }
-
 }
