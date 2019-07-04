@@ -85,8 +85,7 @@ public class Employee extends User{
     }
 
     public void setPassword(String password) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.password = bCryptPasswordEncoder.encode(password);
+        this.password = password;
     }
 
     public String getLogin() {
