@@ -48,4 +48,23 @@ public class EmployeeServiceImpl implements UserService {
     public void deleteById(int id) {
         employeeRepository.deleteById(id);
     }
-}
+
+    @Override
+    public User findByName(String name) {
+        try {
+           return employeeRepository.findByName(name);
+        }
+        catch (NullPointerException err){
+            err.printStackTrace();
+        }
+
+        return null;
+        }
+
+
+    public boolean checkIfPasswordIsChanged(Employee employee){
+        return employee.getStatus();
+    }
+
+
+    }

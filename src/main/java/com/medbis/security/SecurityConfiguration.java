@@ -2,6 +2,9 @@ package com.medbis.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @EnableWebSecurity
@@ -33,23 +39,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http     .authorizeRequests()
+                .antMatchers("/resources/**")
+                .permitAll()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/employees/**" , "/categories/**", "/treatments/**")
+                .antMatchers("/employees3/" , "/categories/**", "/treatments/**")
                 .hasRole("ADMIN")
                 .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
                 .formLogin()
+                .loginProcessingUrl("/signin")
+                .loginPage("/login").permitAll()
+                .passwordParameter("password")
+                .usernameParameter("username")
                 .successHandler(loginSuccessHandler)
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
-                .logout();
-
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated();
     }
 
     @Bean
