@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "services", schema = "public")
@@ -15,7 +17,6 @@ public class Treatment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_id")
     private int treatmentId;
-
 
     @Column(name = "services_name")
     @NotEmpty
@@ -30,6 +31,15 @@ public class Treatment {
     @Column(name = "services_descriptions")
     @NotEmpty
     private String description;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "services")
+    private Set<Visit> visits = new HashSet<>();
+
 
 
     public String getDescription() {

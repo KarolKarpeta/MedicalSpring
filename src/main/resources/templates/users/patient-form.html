@@ -132,7 +132,7 @@
                                 <td class="align-middle text-center" th:text="${medicineStat.count}">1</td>
                                 <td>
                                     <select class="diffrentMedicine form-control" onchange="checkMedicine()" id="selectMedicine"
-                                            th:field="*{patientMedicines[__${medicineStat.index}__]}" th:required="true">
+                                            th:field="*{patientMedicines[__${medicineStat.index}__]}" th:required="false">
                                         <option value="" th:disabled="false" th:selected="true">
                                             Choose medicine >> </option>
                                         <option th:each="medicineToAdd : ${allMedicines}"
@@ -170,7 +170,7 @@
                                 <td class="align-middle text-center" th:text="${diseaseStat.count}">1</td>
                                 <td>
                                     <select class="diffrentDisease form-control" onchange="checkContent()" id="selectDisease"
-                                            th:field="*{patientDiseases[__${diseaseStat.index}__]}" th:required="true">
+                                            th:field="*{patientDiseases[__${diseaseStat.index}__]}" th:required="false">
                                         <option value="" th:disabled="false" th:selected="true">
                                             Choose disease >> </option>
                                         <option th:each="diseaseToAdd : ${allDiseases}"
