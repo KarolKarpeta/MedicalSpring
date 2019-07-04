@@ -18,7 +18,8 @@
     <header id="header" class="alt" th:include="menu :: title-menu" />
 </div>
 <div class="container">
-    <p class="btn btn-info btn-sm mb-3 mt-3">Fill form to add new visit</p>
+
+<!--    <p class="btn btn-info btn-sm mb-1 mt-1">Fill form to add new visit</p>-->
 
     <form action="#" th:action="@{/visits/addNewNewVisit}" th:object="${visit}" method="POST">
         <input type="hidden" th:value="${patientId}" name="visitPatientId" />
@@ -26,7 +27,7 @@
         <!--            for UPDATE -->
         <input type="hidden" th:field="*{visitId}"/>
 
-        <div class="container">
+        <div class="container mt-2">
             <div class="row">
 
                 <div class="col-md-4">
@@ -67,37 +68,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-1">
+                        <input type="submit" class="btn btn-outline-primary w-100">
+                        <a class="btn btn-outline-dark mb-1 mt-1" th:href="@{/visits}">Back to list</a>
+                    </div>
 
                 </div>
 
-                <div class="col-md-8 ">
+                <div class="col-md-8 pr-0">
                     <div class="card w-100 pb-0 mb-0">
-                        <div class="card-body w-100 mt-0 mb-0 pb-1 ">
-                            <label class="card-title" for="visitDate1">Services:</label>
+                        <div class="card-body w-100 mt-0 mb-0 ">
                             <div class="btn-group btn-group-justified w-100" role="group" aria-label="...">
-                                <button type="button" class=" btn btn-outline-secondary"><i class="far fa-eye"></i></button>
-                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-syringe"></i></button>
-                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-procedures"></i></button>
-                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-stethoscope"></i></button>
-                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-user-shield"></i></button>
-                                <button type="button" class=" btn btn-outline-secondary"><i class="fas fa-home"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="far fa-eye"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="fas fa-syringe"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="fas fa-procedures"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="fas fa-stethoscope"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="fas fa-user-shield"></i></button>
+                                <button type="submit" name="addRow" value="addRow" class=" btn btn-outline-secondary"><i class="fas fa-home"></i></button>
                             </div>
                         </div>
 
 
                         <div class="card">
                             <table class="table">
-                                <thead>
-                                <tr>
-                                    <th style="width: 20px" class="align-middle text-center" th:text="LP">Row</th>
-                                    <th class="align-middle" th:text="Services"></th>
-                                    <th style="width: 170px;" class="text-center">
-                                        <button type="submit" name="addRow" value="addRow"
-                                                class="btn btn-outline-info btn-block">Add services:
-                                        </button>
-                                    </th>
-                                </tr>
-                                </thead>
+
                                 <tbody>
                                 <tr th:each="service,serviceStat : *{services}">
                                     <td class="align-middle text-center" th:text="${serviceStat.count}">1</td>
@@ -113,6 +107,9 @@
                                             </option>
                                         </select>
                                     </td>
+<!--                                    <td>-->
+<!--                                        <input type="text" th:value="${service.getDescription()}">-->
+<!--                                    </td>-->
                                     <td class="text-center">
                                         <button type="submit" name="removeRow" th:value="${serviceStat.index}"
                                                 class="btn btn-outline-danger">Delete service
@@ -135,14 +132,7 @@
             </div>
         </div>
 
-            <div class="row mt-1">
-                <input type="submit" class="btn btn-outline-primary col-4">
-            </div>
-
-
     </form>
-
-    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/visits}">Back to list</a>
 
 </div>
 
