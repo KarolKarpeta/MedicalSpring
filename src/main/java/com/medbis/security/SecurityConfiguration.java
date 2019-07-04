@@ -39,9 +39,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http     .authorizeRequests()
+                .antMatchers("/resources/**")
+                .permitAll()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/employees/**" , "/categories/**", "/treatments/**")
+                .antMatchers("/employees3/" , "/categories/**", "/treatments/**")
                 .hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -55,10 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/resources/**")
-                .permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest()

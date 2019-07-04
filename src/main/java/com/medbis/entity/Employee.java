@@ -24,7 +24,6 @@ public class Employee extends User{
     private int id;
 
     @Column(name="password")
-    @Min(value = 8)
     private String password;
 
     @Column(name="login")
@@ -81,7 +80,8 @@ public class Employee extends User{
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.password = bCryptPasswordEncoder.encode(password);
     }
 
     public String getLogin() {
