@@ -33,7 +33,7 @@ public class Employee extends User{
     private String login;
 
     @Column(name="status")
-    private boolean status;
+    private boolean passwordChanged;
 
     @OneToMany(mappedBy="employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Visit> visitsEmployee;
@@ -51,7 +51,7 @@ public class Employee extends User{
         this.password = password;
         this.login = login;
         this.visitsEmployee = visitsEmployee;
-        this.status = false;
+        this.passwordChanged = false;
         this.permissions = permissions;
     }
 
@@ -105,11 +105,11 @@ public class Employee extends User{
     }
 
 
-    public boolean getStatus() {
-        return status;
+    public boolean isPasswordChanged() {
+        return passwordChanged;
     }
 
-    public void setStatusAfterPasswordChange() {
-        this.status = true;
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
     }
 }

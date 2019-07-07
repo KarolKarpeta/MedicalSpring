@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements UserService {
 
 
     public boolean checkIfPasswordIsChanged(Employee employee){
-        return employee.getStatus();
+        return employee.isPasswordChanged();
     }
 
 
