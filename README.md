@@ -19,7 +19,8 @@ List of features ready:
 * store patients data, pesel, adres, diseases, medicines contacts in a local database (PostgreSQL)
 * allows you to record completed visits
 * allow planing new vists with details
-### TO DO
+
+List of features TO DO:
 * create the statistics, raports
 * notification panel
 * prints of patient cards, visits
@@ -42,11 +43,10 @@ There are plans to uplod the project on the web
 ![Example screenshot](./medical2.png)
 
 ## Status
-Project is: _in progress_ : 07.07.2019
+Project is: _in progress: 07.07.2019_
 
 ## Inspiration
 Project inspired by willingness to help nurses in a small town in Zachodniopomorskie.
 
 ## Contact
-Created by [Kamil Woś](mailto:inz.kamil.wos@gmail.com) & [Bartosz Dziedzic](mailto:bartosz.dziedzic94@gmail.com)
-- feel free to contact us!
+Created by [Kamil Woś](mailto:inz.kamil.wos@gmail.com) & [Bartosz Dziedzic](mailto:bartosz.dziedzic94@gmail.com) - feel free to contact us!
