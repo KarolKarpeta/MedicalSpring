@@ -29,8 +29,7 @@
     <header id="header" class="alt" th:include="menu :: title-menu" />
 </div>
 <div class="container">
-    <p class="h4 mb-4">    Add new treatment</p>
-
+    <p class="btn btn-info btn-sm mb-3 mt-3">Wypełnij aby dodać nowe świadczenie</p>
 
     <form action="#" th:action="@{/treatments/add-treatment}" th:object="${treatment}" method="POST">
         <div class="container">
@@ -39,16 +38,16 @@
             <input type="hidden" th:field="*{treatmentId}"/>
 
             <div class="mb-4">
-                <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="name"/>
+                <input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Nazwa"/>
                 <mark class="error-sign small" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></mark>
             </div>
             <div class="mb-4">
-                <input type="text" th:field="*{description}" th:class="${#fields.hasErrors('description')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="description"/>
+                <input type="text" th:field="*{description}" th:class="${#fields.hasErrors('description')}? 'form-control  col-5 is-invalid' : 'form-control col-5'" placeholder="Opis"/>
                 <mark class="error-sign small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></mark>
             </div>
 
             <div class="form-group">
-                <label for="selectcategory">Select category</label>
+                <label for="selectcategory">Wybierz kategorię</label>
                 <select class="form-control" id="selectcategory" th:field="*{categoryId}">
                     <option th:each="category : ${categories}" th:value="${category.getCategoryId()}" th:text="${category.getName()}"></option>
                 </select>
@@ -56,16 +55,14 @@
 
 
 
-            <input type="submit" class="btn btn-outline-primary col-4">
+            <input type="submit" class="btn btn-outline-primary col-4" value="ZAPISZ">
             <input type="reset" class="btn btn-outline-secondary col-1">
         </div>
 
     </form>
 
+    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/treatments}">Powrót do listy</a>
 </div>
 
-    <a th:href="@{/treatments}">Back to treatments List</a>
-
 </body>
-</html>
 </html>

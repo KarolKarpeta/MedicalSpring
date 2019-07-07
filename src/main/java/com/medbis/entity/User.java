@@ -1,5 +1,7 @@
 package com.medbis.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 
 import javax.persistence.MappedSuperclass;
@@ -24,11 +26,13 @@ public class User {
     @Column(name = "name")
     private String name;
 
-//    @NotNull(message = "is required")
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "is required")
     @Column(name = "birthday")
     private LocalDate birthday;
 
-//    @NotNull(message = "is required")
+    @NotNull(message = "is required")
     @Size(min = 3, message = "to short")
     @Column(name = "sex")
     private String sex;

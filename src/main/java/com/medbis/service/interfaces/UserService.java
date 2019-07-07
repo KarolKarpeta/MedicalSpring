@@ -1,5 +1,6 @@
 package com.medbis.service.interfaces;
 
+import com.medbis.entity.Employee;
 import com.medbis.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public interface UserService {
     void deleteById(int id);
 
 
-
+    User findByName(String name);
 
 }
+

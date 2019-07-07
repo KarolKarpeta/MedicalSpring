@@ -14,8 +14,10 @@ import java.io.IOException;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    //TODO: add acces denied alert
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect("/patients");
     }
 }

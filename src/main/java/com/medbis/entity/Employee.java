@@ -1,6 +1,9 @@
 package com.medbis.entity;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -23,26 +26,32 @@ public class Employee extends User{
     private int id;
 
     @Column(name="password")
-    @Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})",message = "illegal sign used or password is too short")
     private String password;
 
     @Column(name="login")
     @NotEmpty
     private String login;
 
+    @Column(name="status")
     private boolean status;
 
     @OneToMany(mappedBy="employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Visit> visitsEmployee;
 
 
+
+
+    public String getPermissions() {
+        return permissions;
+    }
+
     private String permissions;
 
-    public Employee(@Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})", message = "illegal sign used or password is too short") String password, @NotEmpty String login, boolean status, Set<Visit> visitsEmployee, String permissions) {
+    public Employee(String password, @NotEmpty String login, String permissions) {
         this.password = password;
         this.login = login;
-        this.status = status;
         this.visitsEmployee = visitsEmployee;
+        this.status = false;
         this.permissions = permissions;
     }
 
@@ -50,15 +59,7 @@ public class Employee extends User{
 
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public List<String> getPermissions() throws NullPointerException {
+    public List<String> getPermissionsList() throws NullPointerException {
         try{
            return Arrays.asList(permissions.split(","));
         }
@@ -101,5 +102,14 @@ public class Employee extends User{
 
     public void setVisitsEmployee(Set<Visit> visitsEmployee) {
         this.visitsEmployee = visitsEmployee;
+    }
+
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatusAfterPasswordChange() {
+        this.status = true;
     }
 }

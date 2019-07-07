@@ -31,112 +31,116 @@
     <!--    Add a button-->
     <a th:href="@{/patients/showFormForAddPatient}"
        class="btn btn-info btn-sm mb-3 mt-3">
-        Add new patient <i class="fas fa-user-edit"></i>
+        Dodaj nowego pacjenta <i class="fas fa-user-edit"></i>
     </a>
 
     <div class="container">
 
-        <table  id="myTable" class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered">
-            <thead class="thead-dark">
-            <tr>
-                <td colspan="13">
-                    <a class="text-right" data-toggle="collapse" data-target="#target2">
-                        Advanced search...
-                    </a>
-                </td>
-            </tr>
-            <tr class="text-sm-center">
-                <th>ID</th>
-                <th>PESEL</th>
-                <th>SURNAME</th>
-                <th>NAME</th>
-                <th>BIRTHDAY</th>
-                <th>COMMUNITY</th>
-                <th>CODE</th>
-                <th>CITY</th>
-                <th>STREET</th>
-                <th>HOME</th>
-                <th>FLAT</th>
-                <th>V</th>
-                <th>U</th>
-                <th>D</th>
-            </tr>
-            <tr id="target2" class="collapse">
-                <th></th>
-                <th><input type="text" style="width: 100%" id="pesel" onkeyup="searchByPesel()" placeholder="pesel" >            </th>
-                <th><input type="text" style="width: 100%" id="surname" onkeyup="searchBySurname()" placeholder="surname" >            </th>
-                <th><input type="text" style="width: 100%" id="name" onkeyup="searchByName()" placeholder="name" >            </th>
-                <th><input type="text" style="width: 100%" id="birthday" onkeyup="birthday()" placeholder="birthday" >            </th>
-                <th><input type="text" style="width: 100%" id="comunnity" onkeyup="comunnity()" placeholder="comunnity" >            </th>
-                <th><input type="text" style="width: 100%" id="zip" onkeyup="zip()" placeholder="zip" >            </th>
-                <th><input type="text" style="width: 100%" id="city" onkeyup="city()" placeholder="city" >            </th>
-                <th><input type="text" style="width: 100%" id="street" onkeyup="street()" placeholder="street" >            </th>
-                <th><input type="text" style="width: 100%" id="hNumber" onkeyup="hNumber()" placeholder="..." >            </th>
-                <th><input type="text" style="width: 100%" id="aNumber" onkeyup="aNumber()" placeholder="..." >            </th>
-                <th>-</th>
-                <th>-</th>
-                <th>-</th>
-            </tr>
-            </thead>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-            <tbody class="text-right">
-            <tr th:each="patient : ${patientList}">
-                <td>
-                    <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}">
-                        <span th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"><i class="far fa-user"></i></span>
-                        <span th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"><i class="far fa-user"></i></span>
+            <table  id="myTable" class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <td colspan="13">
+                        <a class="text-right" data-toggle="collapse" data-target="#target2">
+                            Zaawansowane wyszukiwanie ...
+                        </a>
+                    </td>
+                </tr>
+                <tr class="text-sm-center">
+                    <th>ID</th>
+                    <th>PESEL</th>
+                    <th>NAZWISKO</th>
+                    <th>IMIĘ</th>
+                    <th>DATA</th>
+                    <th>KOD</th>
+                    <th>MIASTO</th>
+                    <th>ULICA</th>
+                    <th>DOM</th>
+                    <th>NR</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr id="target2" class="collapse">
+                    <th></th>
+                    <th><input type="text" style="width: 100%" id="pesel" onkeyup="searchByPesel()" placeholder="pesel" >            </th>
+                    <th><input type="text" style="width: 100%" id="surname" onkeyup="searchBySurname()" placeholder="nazwisko" >            </th>
+                    <th><input type="text" style="width: 100%" id="name" onkeyup="searchByName()" placeholder="imię" >            </th>
+                    <th><input type="text" style="width: 100%" id="birthday" onkeyup="birthday()" placeholder="data" >            </th>
+                    <th><input type="text" style="width: 100%" id="zip" onkeyup="zip()" placeholder="kod" >            </th>
+                    <th><input type="text" style="width: 100%" id="city" onkeyup="city()" placeholder="miasto" >            </th>
+                    <th><input type="text" style="width: 100%" id="street" onkeyup="street()" placeholder="ulica" >            </th>
+                    <th><input type="text" style="width: 100%" id="hNumber" onkeyup="hNumber()" placeholder="" >            </th>
+                    <th><input type="text" style="width: 100%" id="aNumber" onkeyup="aNumber()" placeholder="" >            </th>
+                    <th>-</th>
+                    <th>-</th>
+                    <th>-</th>
+                </tr>
+                </thead>
 
-                        <span th:text="${patient.patientId}" th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"></span>
-                        <span th:text="${patient.patientId}" th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"></span>
+                <tbody class="text-right">
+                <tr th:each="patient : ${patientList}">
+                    <td>
+                        <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}">
+                            <span th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"><i class="far fa-user"></i></span>
+                            <span th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"><i class="far fa-user"></i></span>
 
-                    </a>
-                </td>
-                <td th:text="${patient.pesel}" > </td>
-                <td th:text="${patient.surname}"></td>
-                <td th:text="${patient.name}" ></td>
-                <td th:text="${patient.birthday}" ></td>
-                <td th:text="${patient.community}" ></td>
-                <td th:text="${patient.zipCode}" ></td>
-                <td th:text="${patient.city}" ></td>
-                <td th:text="${patient.street}" ></td>
-                <td th:text="${patient.houseNumber}" ></td>
-                <td th:text="${patient.apartmentNumber}" ></td>
+                            <span th:text="${patient.patientId}" th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"></span>
+                            <span th:text="${patient.patientId}" th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"></span>
 
-                <td class="text-center text-nowrap">
+                        </a>
+                    </td>
+                    <td th:text="${patient.pesel}" > </td>
+                    <td th:text="${patient.surname}"></td>
+                    <td th:text="${patient.name}" ></td>
+                    <td th:text="${patient.birthday}" ></td>
+                    <td th:text="${patient.zipCode}" ></td>
+                    <td th:text="${patient.city}" ></td>
+                    <td th:text="${patient.street}" ></td>
+                    <td th:text="${patient.houseNumber}" ></td>
+                    <td th:text="${patient.apartmentNumber}" ></td>
 
-                    <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
-                        <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
-                    </a>
+                    <td class="text-center text-nowrap">
 
+                        <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
+                            <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
+                        </a>
 
 
-                </td>
-                <td class="text-center">
-                    <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}">
+
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}">
                     <span style="font-size: 1em; color: dodgerblue;">
                             <i class="fas fa-user-edit"></i>
                     </span>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
-                       onclick="if(!(confirm('Are you sure?')))return false">
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
+                           onclick="if(!(confirm('Czy jesteś pewien?')))return false">
                         <span style="font-size: 1em; color: firebrick;">
                             <i class="fas fa-trash-alt"></i>
                         </span>
 
 
 
-                    </a>
-                </td>
+                        </a>
+                    </td>
 
-            </tr>
-            </tbody>
-        </table>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
 
 
     </div>
-
+    <div class="text-center"><br>
+        <p>@2019 - Medical Spring, All Right Reserved.</p>
+    </div>
 
 
 

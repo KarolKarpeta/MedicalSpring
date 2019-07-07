@@ -22,7 +22,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        employee.getPermissions().forEach(p -> {
+        employee.getPermissionsList().forEach(p -> {
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" +p);
             authorities.add(authority);
         });
