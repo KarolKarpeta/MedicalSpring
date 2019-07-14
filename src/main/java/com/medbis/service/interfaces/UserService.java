@@ -17,6 +17,7 @@ public interface UserService {
 
     void deleteById(int id);
 
+    boolean checkIfPasswordChangeRequired(Employee employee);
 
     User findByName(String name);
 

@@ -80,15 +80,14 @@ public class Employee extends User{
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPassword() throws NullPointerException {
+        return this.password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getLogin() {
+    public String getLogin(){
         return login;
     }
 

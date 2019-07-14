@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <input readonly id="sex" type="text" th:field="*{sex}"  th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Sex"/>
+                    <input id="sex" type="text" th:field="*{sex}"  th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"   placeholder="Sex"/>
                     <mark class="error-sign small" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></mark>
                 </div>
                 <div class="mb-3">
