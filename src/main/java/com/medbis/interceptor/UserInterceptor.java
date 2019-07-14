@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 
 @Component
@@ -32,17 +33,18 @@ public class UserInterceptor implements HandlerInterceptor {
         this.passwordChangerDto = passwordChangerDto;
     }
 
+
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                            @Nullable ModelAndView modelAndView) {
+                            @Nullable ModelAndView modelAndView) throws IOException {
         String employeeName = request.getUserPrincipal().getName();
+        System.out.println("----------------------");
+        System.out.println(employeeName);
         Employee employee = (Employee) employeeService.findByName(employeeName);
-        if(!employeeService.checkIfPasswordIsChanged(employee)){
-            try {
-                response.sendRedirect("/employees/change-password-form");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        System.out.println(employee.getPermissionsList().toString());
+        if(!employeeService.checkIfPasswordChangeRequired(employee)){
+            response.sendRedirect("/employees/change-password-form");
         }
     }
 
