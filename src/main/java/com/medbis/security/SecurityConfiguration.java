@@ -37,32 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authenticationProvider());
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http     .authorizeRequests()
-                .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**")
-                .hasRole("ADMIN")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/css/**").permitAll()
-                .and()
-                .formLogin()
-                .loginProcessingUrl("/signin")
-                .loginPage("/login").permitAll()
-                .passwordParameter("password")
-                .usernameParameter("username")
-                .successHandler(loginSuccessHandler)
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated();
-    }
-*/
 
 
 @Override
