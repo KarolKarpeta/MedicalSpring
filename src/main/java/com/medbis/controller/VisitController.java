@@ -41,7 +41,6 @@ public class VisitController {
     }
 
 
-    //SHOW ALL VISITS
     @GetMapping ("/visits")
     public String findAll(Model theModel){
         theModel.addAttribute("visitsList", visitService.findAllVisits());
