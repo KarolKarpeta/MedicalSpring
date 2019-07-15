@@ -59,6 +59,20 @@ public class TreatmentController {
         return "treatment/treatment-form";
     }
 
+    /*
+        GET treatments/show-form       -> display form
+        POST treatments/add-treatment  -> display form (with errors)   --> someone could bookmark this!
+        POST treatments/add-treatment  -> redirect to /treatments
+        GET treatments                 -> display list
+
+        better:
+        GET  treatments/add-treatment  -> display form
+        POST treatments/add-treatment  -> display form (with errors)
+        POST treatments/add-treatment  -> redirect to /treatments
+        GET treatments                 -> display list
+
+     */
+
     @PostMapping("/treatments/add-treatment")
     public String addTreatment(@Valid @ModelAttribute("treatment") Treatment treatment, BindingResult result){
         if(result.hasErrors()){

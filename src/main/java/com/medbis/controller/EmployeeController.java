@@ -3,11 +3,13 @@ package com.medbis.controller;
 import com.medbis.dto.PasswordChangerDto;
 import com.medbis.entity.Employee;
 import com.medbis.factory.UserFactory;
+import com.medbis.security.RolesEnum;
 import com.medbis.service.interfaces.UserService;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 public class EmployeeController {
@@ -33,14 +36,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public String findAll(Model theModel){
+    public String findAll(Model theModel) {
         theModel.addAttribute("employees", userService.findAll());
         return "users/employee-list";
     }
 
     //ADDING NEW Employee
     @GetMapping("/employees/showFormForAddEmployee")
-    public String showFormForAddEmployee(Model model){
+    public String showFormForAddEmployee(Model model) {
         Employee employee = (Employee) userFactory.getNewUser("employee");
         model.addAttribute("employee", employee);
         return "users/employee-form";
@@ -50,19 +53,19 @@ public class EmployeeController {
     @PostMapping("/employees/addNewEmployee")
     public String addNewEmployee(
             @Valid @ModelAttribute("employee") Employee theEmployee,
-            BindingResult result){
-        if (result.hasErrors()){
+            BindingResult result) {
+        if (result.hasErrors()) {
             return "users/employee-form";
-        }else{
+        } else {
             userService.save(theEmployee);
             return "redirect:/employees";
         }
     }
 
     //EDITING NEW Employee
-    @GetMapping ("/employees/showFormForEditEmployee")
-    public String showFormForEditMedicine(@RequestParam("employeeIdToEdit")int theId,
-                                          Model theModel){
+    @GetMapping("/employees/showFormForEditEmployee")
+    public String showFormForEditMedicine(@RequestParam("employeeIdToEdit") int theId,
+                                          Model theModel) {
         Employee employee = (Employee) userService.findById(theId);
         theModel.addAttribute("employee", employee);
         return "users/employee-form";
@@ -79,26 +82,38 @@ public class EmployeeController {
         return (Employee) userService.findByName(name);
     }
 
+
+
     @GetMapping("/employees/change-password-form")
     public String showFormForChangingPassword(PasswordChangerDto passwordChangerDto, Model model) {
-        model.addAttribute("passwordChangerDto", passwordChangerDto);
-        return "users/password-changer";
+            model.addAttribute("passwordChangerDto", passwordChangerDto);
+            return "users/password-changer";
     }
+
+
+
+
+
 
     @PostMapping("employees/change-password")
     public String changePassword(@Valid @ModelAttribute("dto") PasswordChangerDto dto, BindingResult bindingResult, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee = (Employee) userService.findByName(employeeName);
         if (!bindingResult.hasErrors()) {
-            String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
-            Employee employee = (Employee) userService.findByName(employeeName);
-            employee.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
-            employee.setStatusAfterPasswordChange();
+            if(bCryptPasswordEncoder.matches(dto.getOldPassword(), employee.getPassword())) {
+                    if (dto.getNewPassword().equals(dto.getConfirmedPassword())){
+                        employee.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
+                        employee.setPasswordChanged(true);
+                        userService.save(employee);
+                        return "redirect:/patients";
+                    }
+                }
+            }
 
-            System.out.println(employee.getName());
-            userService.save(employee);
-            return "redirect:/patients";
-        } else {
-            return "users/password-changer";
-        }
+        return "redirect:/employees/change-password-form";
     }
 }
+
+
+
 

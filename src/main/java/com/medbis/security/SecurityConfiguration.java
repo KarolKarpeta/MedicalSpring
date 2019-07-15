@@ -37,28 +37,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authenticationProvider());
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http     .authorizeRequests()
-                .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees")
-                .hasRole("ADMIN")
-                .and()
-                .formLogin()
-                .loginProcessingUrl("/signin")
-                .loginPage("/login").permitAll()
-                .passwordParameter("password")
-                .usernameParameter("username")
-                .successHandler(loginSuccessHandler)
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated();
-    }
+
+
+@Override
+public void configure(HttpSecurity http) throws Exception{
+    http
+            .authorizeRequests()
+            .antMatchers("/css/**").permitAll()
+            .antMatchers("/js/**").permitAll()
+            .antMatchers("/employees/change-password", "/employees/change-password-form").hasAnyRole("NURSE", "ADMIN")
+            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines").hasRole("ADMIN")
+            .and()
+            .formLogin()
+            .loginProcessingUrl("/signin").permitAll()
+            .loginPage("/login").permitAll()
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .successHandler(loginSuccessHandler)
+            .and()
+            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+            .and()
+            .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
+            .and()
+            .authorizeRequests()
+            .anyRequest()
+            .authenticated();
+}
+
+
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){

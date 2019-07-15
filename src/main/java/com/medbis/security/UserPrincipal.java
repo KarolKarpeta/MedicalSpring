@@ -31,7 +31,11 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.employee.getPassword();
+        try {
+            return this.employee.getPassword();
+        } catch (NullPointerException err) {
+            return "redirect:/login";
+        }
     }
 
     @Override

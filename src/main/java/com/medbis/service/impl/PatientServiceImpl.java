@@ -49,6 +49,11 @@ public class PatientServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkIfPasswordChangeRequired(Employee employee) {
+        return false;
+    }
+
+    @Override
     public User findByName(String name) {
       return patientRepository.findByName(name);
     }
