@@ -40,8 +40,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http     .authorizeRequests()
-                .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees")
+                .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**")
                 .hasRole("ADMIN")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/css/**").permitAll()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/signin")
@@ -59,6 +62,36 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated();
     }
+*/
+
+
+@Override
+public void configure(HttpSecurity http) throws Exception{
+    http
+            .authorizeRequests()
+            .antMatchers("/css/**").permitAll()
+            .antMatchers("/js/**").permitAll()
+            .antMatchers("/employees/change-password", "/employees/change-password-form").hasAnyRole("NURSE", "ADMIN")
+            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines").hasRole("ADMIN")
+            .and()
+            .formLogin()
+            .loginProcessingUrl("/signin").permitAll()
+            .loginPage("/login").permitAll()
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .successHandler(loginSuccessHandler)
+            .and()
+            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+            .and()
+            .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
+            .and()
+            .authorizeRequests()
+            .anyRequest()
+            .authenticated();
+}
+
+
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){

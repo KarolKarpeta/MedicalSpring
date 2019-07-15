@@ -9,9 +9,7 @@
 <header th:fragment="title-menu">
     <div class="container pt-2">
         <nav class="navbar navbar-expand-lg navbar-dark bg-info" >
-            <img class="" th:src="@{/images/cep.png}" alt="Card image" style="width:6%" src="">
-
-<!--        <a style="background-color: white; color: red" class="navbar-brand text-danger" href="/patients">Medical Spring</a>-->
+        <a class="navbar-brand text-warning" href="/patients">Medical Spring</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -19,11 +17,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/patients">PACJENCI <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/patients">Pacjenci <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/visits">WIZYTY<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/visits">Wizyty<span class="sr-only">(current)</span></a>
                 </li>
+
                 <li th:if="${isAdmin} == true" class="nav-item active">
                     <a class="nav-link" href="/medicines">LEKI<span class="sr-only">(current)</span></a>
                 </li>

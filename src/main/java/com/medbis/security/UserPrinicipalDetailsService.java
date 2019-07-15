@@ -28,7 +28,8 @@ public class UserPrinicipalDetailsService implements UserDetailsService {
             Employee employee = this.employeeRepository.findByLogin(username);
             return new UserPrincipal(employee);
         }
-        catch (UsernameNotFoundException | NullPointerException err){
+        catch (NullPointerException err){
+            System.out.println("NullPointerException in UserPrincipalDetailservice.loadByUserName");
             //todo:add message to login form about an error;
           homeController.showLoginForm();
         }
