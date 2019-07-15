@@ -39,10 +39,7 @@ public class UserInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                             @Nullable ModelAndView modelAndView) throws IOException {
         String employeeName = request.getUserPrincipal().getName();
-        System.out.println("----------------------");
-        System.out.println(employeeName);
         Employee employee = (Employee) employeeService.findByName(employeeName);
-        System.out.println(employee.getPermissionsList().toString());
         if(!employeeService.checkIfPasswordChangeRequired(employee)){
             response.sendRedirect("/employees/change-password-form");
         }

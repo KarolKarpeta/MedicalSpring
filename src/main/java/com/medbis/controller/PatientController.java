@@ -137,7 +137,6 @@ public class PatientController {
     @GetMapping ("/patients/showPatientDetails")
     public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
-        System.out.println("Patient details: " + newPatient.toString());
         theModel.addAttribute("patient", newPatient);
         return "users/patient-details";
     }
