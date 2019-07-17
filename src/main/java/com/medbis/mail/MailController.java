@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
+import java.util.Properties;
 
 @AllArgsConstructor
 @RestController
@@ -19,6 +20,8 @@ public class MailController {
     @GetMapping("/mails/send-mail")
     public void sendRemindMail() {
        JavaMailSenderImpl mailSender = mailService.creeteMailSender();
+       Properties properties = mailSender.getJavaMailProperties();
+       properties.setProperty("mail.smtp.starttls.enable", "true");
        SimpleMailMessage mailMessage = mailService.createMail(mail);
 
        mailSender.send(mailMessage);

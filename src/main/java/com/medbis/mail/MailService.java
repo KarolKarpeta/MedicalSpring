@@ -38,7 +38,7 @@ public class MailService {
     SimpleMailMessage createMail(Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(mail.getMail());
-        mailMessage.setTo("mail@gmail.com");
+        mailMessage.setTo("bartosz.dziedzic94@gmail.com");
         mailMessage.setSubject("Subject Example");
         mailMessage.setText("text example");
         return mailMessage;
