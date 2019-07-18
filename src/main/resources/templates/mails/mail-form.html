@@ -1,18 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
+    <title>Medical Spring</title>
     <meta charset="UTF-8">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
 <body>
-    <div class="container">
-        <form action="#" th:action="/" method="POST">
-            <input type="text" placeholder="Adresat">
-            <input type="text" placeholder="Treść maila">
-            <input type="text" placeholder="podpis...">
+<div class="mt-10">
+    <header id="header" class="alt" th:include="menu :: title-menu" />
+</div>
+<div class="container" th:object="${patient}">
+    <p th:text="${patient.name}"></p>
+    <p th:text="${patient.surname}"></p>
+    <p th:text="${patient.mail}"></p>
 
-            <button type="submit" value="Wyślij!"></button>
-        </form>
-    </div>
+    <form action="#" th:action="@{/mails/send-mail(patientId=patientId)}" th:object="${mailDto}" method="POST">
+
+        <div class="input-table">
+            <div class="mb-4">
+                <input th:class="${#fields.hasErrors('subject')}? 'form-control  is-invalid' : 'form-control'"  type="text" th:field="*{subject}" placeholder="Temat..."/>
+            </div>
+            <div class="mb-4">
+                <input th:class="${#fields.hasErrors('message')}? 'form-control  is-invalid' : 'form-control'"  style="height: 15%" type="text" th:field="*{message}" placeholder="Wiadomość..."/>
+            </div>
+        </div>
+
+
+            <input type="submit" class="btn btn-outline-primary col-4">
+
+
+
+            <input type="reset" class="btn btn-outline-primary col-1">
+
+    </form>
+    <button class="btn btn-outline-primary col-4" >
+        <a th:href="@{/patients}">Powrót</a>
+    </button>
+</div>
+
+
+
 </body>
+
 </html>

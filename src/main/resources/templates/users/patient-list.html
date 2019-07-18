@@ -57,6 +57,7 @@
                 <th>STREET</th>
                 <th>HOME</th>
                 <th>FLAT</th>
+                <th>M</th>
                 <th>V</th>
                 <th>U</th>
                 <th>D</th>
@@ -101,6 +102,12 @@
                 <td th:text="${patient.street}" ></td>
                 <td th:text="${patient.houseNumber}" ></td>
                 <td th:text="${patient.apartmentNumber}" ></td>
+
+                <td class="text center text-nowrap">
+                    <a th:href="@{mails/show-mail-form(patientId=${patient.patientId})}">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </td>
 
                 <td class="text-center text-nowrap">
 

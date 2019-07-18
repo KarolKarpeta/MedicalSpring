@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 
@@ -15,12 +16,12 @@ import javax.validation.constraints.NotNull;
 public class Mail {
 
     @NotNull
-    private String name;
+    private int id;
 
     @NotNull
     @Email
     private String mail;
 
-    @NotNull
+    @NotEmpty
     private String message;
 }
