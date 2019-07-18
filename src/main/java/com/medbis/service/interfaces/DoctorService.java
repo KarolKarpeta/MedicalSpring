@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface DoctorService {
 
-    List<Category> findAll();
+    List<Doctor> findAll();
 
-    Category findById(int id);
+    Doctor findById(int id);
 
     void save(Doctor doctor);
 

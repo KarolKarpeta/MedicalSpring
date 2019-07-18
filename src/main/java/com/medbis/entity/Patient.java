@@ -48,6 +48,12 @@ public class Patient extends User {
     )
     private List<Disease> patientDiseases = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name="doctor_id", referencedColumnName = "doctor_id", insertable = false, updatable = false)
+    private Doctor doctor;
+
+
+
     public int getPatientId() {
         return patientId;
     }
