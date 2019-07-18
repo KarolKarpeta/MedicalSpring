@@ -184,6 +184,14 @@
                                             class="btn btn-outline-danger">Usuń chorobę
                                     </button>
                                 </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label for="selectdoctor">Wybierz Lekarza prowadzącego</label>
+                                        <select class="form-control" id="selectdoctor" th:field="*{doctorId}">
+                                            <option th:each="doctor : ${doctors}" th:value="${doctor.getId()}" th:text="${doctor.getName() + ' ' + doctor.getSurname()}"></option>
+                                        </select>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
