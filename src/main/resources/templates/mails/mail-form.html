@@ -20,7 +20,7 @@
     <p th:text="${patient.surname}"></p>
     <p th:text="${patient.mail}"></p>
 
-    <form action="#" th:action="@{/mails/send-mail(patientId=patientId)}" th:object="${mailDto}" method="POST">
+    <form action="#" th:action="@{/mails/send-mail(patientId=${patient.patientId})}" th:object="${mailDto}" method="POST">
 
         <div class="input-table">
             <div class="mb-4">
