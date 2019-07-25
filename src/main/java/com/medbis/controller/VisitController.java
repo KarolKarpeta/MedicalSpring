@@ -1,14 +1,18 @@
 package com.medbis.controller;
 
+import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
+import com.medbis.mail.MailService;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
 import com.medbis.service.interfaces.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class VisitController {
@@ -28,16 +31,23 @@ public class VisitController {
     private UserService userService;
     private CategoryService categoryService;
     private TreatmentService treatmentService;
+    private MailService mailService;
+    private UserService employeeService;
+
 
     @Autowired
     public VisitController(VisitService visitService,
                            @Qualifier("PatientServiceImpl") UserService userService,
                            CategoryService categoryService,
-                           TreatmentService treatmentService) {
+                           TreatmentService treatmentService,
+                           MailService mailService,
+                           @Qualifier("EmployeeServiceImpl") UserService employeeService) {
         this.visitService = visitService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.treatmentService = treatmentService;
+        this.mailService = mailService;
+        this.employeeService = employeeService;
     }
 
 
@@ -68,14 +78,18 @@ public class VisitController {
     //ADDING NEW VISITS
     @PostMapping("/visits/addNewNewVisit")
     public String addNewMedicine(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
+        Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         if (bindingResult.hasErrors()){
-            Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
             theModel.addAttribute("allTreatments", treatmentService.findAll());
             return "visits/visit-form";
         }else{
             visitService.save(theVisit);
+            Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
+            JavaMailSenderImpl mailSender = mailService.createMailSender();
+            SimpleMailMessage mailMessage = this.mailService.createMailMessage(thePatient.getMail(),theVisit, employee);
+            mailSender.send(mailMessage);
             return "redirect:/visits";
         }
     }

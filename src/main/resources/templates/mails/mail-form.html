@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Medical Spring</title>
     <meta charset="UTF-8">
@@ -23,19 +23,17 @@
     <form action="#" th:action="@{/mails/send-mail(patientId=${patient.patientId})}" th:object="${mailDto}" method="POST">
 
         <div class="input-table">
-            <div class="mb-4">
-                <input th:class="${#fields.hasErrors('subject')}? 'form-control  is-invalid' : 'form-control'"  type="text" th:field="*{subject}" placeholder="Temat..."/>
+            <div class="mb-3">
+                <label>
+                    <input th:id="subject" th:field="*{subject}"  th:class="form-control" type="text" placeholder="Temat..."/>
+                </label>
             </div>
-            <div class="mb-4">
-                <input th:class="${#fields.hasErrors('message')}? 'form-control  is-invalid' : 'form-control'"  style="height: 15%" type="text" th:field="*{message}" placeholder="Wiadomość..."/>
+            <div class="mb-3">
+                <input th:id="message" th:field="*{message}" th:class="form-control" style="height: 15%" type="text" placeholder="Wiadomość..."/>
             </div>
         </div>
 
-
-            <input type="submit" class="btn btn-outline-primary col-4">
-
-
-
+            <input th:id="sumbitBtn" type="submit" class="btn btn-outline-primary col-4">
             <input type="reset" class="btn btn-outline-primary col-1">
 
     </form>
