@@ -1,10 +1,14 @@
 package com.medbis.controller;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
 import com.medbis.mail.MailService;
+import com.medbis.pdf.PdfGenerator;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 @Controller
 public class VisitController {
@@ -95,13 +101,38 @@ public class VisitController {
     }
 
     @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel){
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel) throws DocumentException, FileNotFoundException {
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
         theModel.addAttribute("allTreatments", treatmentService.findAll());
+
+
+
         return "visits/visit-form";
     }
+
+    @GetMapping("/visits/generate-document")
+    public String generatePdfRaport(@RequestParam("visitId") int visitId) throws DocumentException {
+        Document document = new Document();
+        Visit raportedVisit = visitService.findById(visitId);
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(raportedVisit.getVisitDate() + "-" + raportedVisit.getVisitId()+".pdf");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, fileOutputStream);
+        PdfGenerator pdfGenerator = new PdfGenerator(raportedVisit);
+
+        document.open();
+        pdfGenerator.setDocumentContent(document);
+        document.close();
+        pdfWriter.close();
+
+        return "redirect:/visits/showFormForEditVisit" + "?visitIdToEdit=" + visitId;
+    }
+
 
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
