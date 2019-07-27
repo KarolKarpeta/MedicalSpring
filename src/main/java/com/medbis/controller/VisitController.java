@@ -1,8 +1,5 @@
 package com.medbis.controller;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
@@ -27,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.util.List;
 
 @Controller
 public class VisitController {
@@ -100,8 +96,37 @@ public class VisitController {
         }
     }
 
+
+    @GetMapping("/visits/showVisitsTodo")
+    public String getPlannedVisits(Model model){
+        List<Visit> plannedVisits = visitService.findPlannedVisits();
+        model.addAttribute("visitsList", plannedVisits);
+        return "visits/visit-list";
+    }
+
+    @GetMapping("/visits/showVisitsDone")
+    public String getAccomplishedVisits(Model model){
+        List<Visit> accomplishedVisits = visitService.findAccomplishedVisits();
+        model.addAttribute("visitsList", accomplishedVisits);
+        return "visits/visit-list";
+    }
+
+    @GetMapping("visits/splitted-list")
+    public String showSplittedList(@RequestParam("status") boolean isVisitDone, Model model){
+        if(isVisitDone){
+            model.addAttribute("visitsList", visitService.findAccomplishedVisits());
+        }
+        else {
+            model.addAttribute("visitsList", visitService.findPlannedVisits());
+        }
+        return "visits/visit-list";
+    }
+
+
+
+
     @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel) throws DocumentException, FileNotFoundException {
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel) {
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
@@ -113,23 +138,10 @@ public class VisitController {
     }
 
     @GetMapping("/visits/generate-document")
-    public String generatePdfRaport(@RequestParam("visitId") int visitId) throws DocumentException {
-        Document document = new Document();
-        Visit raportedVisit = visitService.findById(visitId);
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(raportedVisit.getVisitDate() + "-" + raportedVisit.getVisitId()+".pdf");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, fileOutputStream);
-        PdfGenerator pdfGenerator = new PdfGenerator(raportedVisit);
-
-        document.open();
-        pdfGenerator.setDocumentContent(document);
-        document.close();
-        pdfWriter.close();
-
+    public String generatePdfRaport(@RequestParam("visitId") int visitId) {
+        Visit reportedVisit = this.visitService.findById(visitId);
+        PdfGenerator pdfGenerator = new PdfGenerator(reportedVisit);
+        pdfGenerator.createVisitRaport();
         return "redirect:/visits/showFormForEditVisit" + "?visitIdToEdit=" + visitId;
     }
 

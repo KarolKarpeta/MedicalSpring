@@ -16,23 +16,17 @@
     <header id="header" class="alt" th:include="menu :: title-menu" />
 </div>
 
-<div class="container ">
-
-    <!--    Add a button-->
-    <a th:href="@{/medicines/showFormForAddMedicine}"
-       class="btn btn-info btn-sm mb-3 mt-3"> Add new visit
-    </a>
-    <H3 th:text="${employeeId + ' - ' + name + ' ' + surname}"></H3>
+<td class="container ">
 
     <table class="table table-striped table-hover table-sm">
         <thead class="thead-dark">
         <tr>
             <th>ID</th>
-            <th>NAME</th>
-            <th>DATE</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
-            <th>DELETE</th>
+            <th>Imię i Nazwisko</th>
+            <th>Data wizyty</th>
+            <th>Edytuj</th>
+            <th>Generuj PDF</th>
+            <th>Usuń</th>
         </tr>
         </thead>
         <tbody>
@@ -40,10 +34,12 @@
             <td th:text="${visit.visitId}" ></td>
             <td th:text="${visit.patient.surname + ' ' + visit.patient.name}" ></td>
             <td th:text="${visit.visitDate}" ></td>
-            <td th:text="${visit.visitStatus}" ></td>
             <td>
                 <a th:href="@{/visits/showFormForEditVisit(visitIdToEdit=${visit.visitId})}"
-                   class="btn btn-info btn-sm">Update</a>
+                   class="btn btn-info btn-sm">Edytuj</a>
+            </td>
+            <td>
+                  <span th:if="${visit.getVisitStatus()}"><a th:href="@{/visits/generate-document(visitId=${visit.visitId})}" class="btn btn-info btn-sm">Utwórz raport! </a></span>
             </td>
             <td>
                 <a th:href="@{/medicines/delete(medicineIdToDelete=${visit.visitId})}"
@@ -54,9 +50,6 @@
         </tr>
         </tbody>
     </table>
-
-
-</div>
 
 </body>
 </html>

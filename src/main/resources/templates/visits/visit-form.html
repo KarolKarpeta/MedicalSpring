@@ -127,11 +127,7 @@
                         <input type="checkbox" name="active" th:checked="${visit.visitStatus}" th:field="*{visitStatus}" th:class="${#fields.hasErrors('visitStatus')}? 'form-control  is-invalid' : 'form-control'"   placeholder="City"/>
                         <mark class="error-sign small" th:if="${#fields.hasErrors('visitStatus')}" th:errors="*{visitStatus}"></mark>
                     </div>
-                <div class="mb-2">
-                    <button class="btn btn-primary">
-                        <a th:href="@{/visits/generate-document(visitId=${visit.visitId})}" style="color: white;">Utwórz raport!</a>
-                    </button>
-                </div>
+
                 </div>
 
             </div>
