@@ -61,6 +61,8 @@ public class VisitController {
     }
 
 
+
+
     //Show form for ADD NEW VISIT
     @GetMapping("/visits/showFormForAddVisit")
     public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, Model theModel){

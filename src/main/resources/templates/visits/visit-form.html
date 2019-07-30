@@ -37,13 +37,13 @@
                             <h2 class="text-center mb-2 mt-2" th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h2>
                             <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%" src="">
                             <div class="card-body">
-                                <h6 class="card-title mb-1">Address:</h6>
+                                <h6 class="card-title mb-1">Adres</h6>
                                     <p class="list-group-item" >
                                         <th:block th:text="${visit.patient.street + ' ' + visit.patient.houseNumber + '/' + visit.patient.apartmentNumber}"/>    <br/>
                                         <th:block th:text="${#strings.substring(visit.patient.zipCode,0,2) +'-'+ #strings.substring(visit.patient.zipCode,2,5) +', '+ visit.patient.city}"/>
                                     </p>
 
-                                <h6 class="card-title mb-1 mt-3">Contact:</h6>
+                                <h6 class="card-title mb-1 mt-3">Kontakt</h6>
                                     <p class="list-group-item" >
                                         <th:block th:text="${'+48 ' + visit.patient.mobilePhoneNumber}"/> <br/>
                                         <th:block th:text="${'+48 ' + visit.patient.workPhoneNumber}"/>  <br/>
@@ -56,10 +56,12 @@
                     <div class="row mt-1">
                         <div class="card" style="width:100%">
                             <div class="card-body pt-0 pb-0">
-                                <label class="col-form-label" for="visitDate1">Visit date:</label>
+                                <label class="col-form-label" for="visitDate1">Data wizyty</label>
                                 <div class="form-group row pl-1">
                                     <div class="col-8">
-                                        <input id="visitDate1" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"/>
+                                        <input th:unless="${visit.getVisitStatus()}" id="visitDate1" type="date" th:field="*{visitDate}" th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"  />
+                                        <input th:if="${visit.getVisitStatus()}" id="visitDate1" type="date" th:field="*{visitDate}" th:class="form-control" disabled/>
+
                                     </div>
                                     <div class="col-4">
                                         <label class="error-sign col-form-label" th:if="${#fields.hasErrors('visitDate')}" th:errors="*{visitDate}"></label>
@@ -68,9 +70,11 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="row mt-1">
-                        <input type="submit" class="btn btn-outline-primary w-100">
-                        <a class="btn btn-outline-dark mb-1 mt-1" th:href="@{/visits}">Back to list</a>
+                        <input type="submit" value="Wyślij" class="btn btn-outline-primary w-100">
+                        <a class="btn btn-outline-dark mb-1 mt-1" th:href="@{/visits}">Wstecz</a>
                     </div>
 
                 </div>
@@ -97,10 +101,10 @@
                                     <td class="align-middle text-center" th:text="${serviceStat.count}">1</td>
 <!--                                    onchange="checkMedicine()"-->
                                     <td>
-                                        <select class="diffrentMedicine form-control" id="selectMedicine"
+                                        <select class="diffrentService form-control" id="selectMedicine"
                                                 th:field="*{services[__${serviceStat.index}__]}" th:required="false">
                                             <option value="" th:disabled="false" th:selected="true">
-                                                Choose service >> </option>
+                                                Wybierz</option>
                                             <option th:each="treatmentToAdd : ${allTreatments}"
                                                     th:value="${treatmentToAdd.getTreatmentId()}"
                                                     th:text="${treatmentToAdd.getName()}">
@@ -112,7 +116,7 @@
 <!--                                    </td>-->
                                     <td class="text-center">
                                         <button type="submit" name="removeRow" th:value="${serviceStat.index}"
-                                                class="btn btn-outline-danger">Delete service
+                                                class="btn btn-outline-danger">Usuń
                                         </button>
                                     </td>
                                 </tr>
