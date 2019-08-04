@@ -40,7 +40,7 @@ public class Visit {
     private LocalDate visitDate;
 
     @Column(name = "status")
-    private  Boolean visitStatus;
+    private  Boolean visitStatus = false;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", insertable = false, updatable = false)

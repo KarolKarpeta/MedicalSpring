@@ -20,18 +20,14 @@
                     <a class="nav-link" href="/patients">Pacjenci <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" data-target="dropdown-menu" aria-haspopup="true" aria-expanded="false">
-                            Wizyty
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" th:href="@{visits/splitted-list(status=false)}"><span class="sr-only">(current)</span>Zaplanowane</a></li>
-                            <li><a class="dropdown-item" th:href="@{visits/splitted-list(status=true)}"><span class="sr-only">(current)</span>Zrealizowane</a></li>
-                        </ul>
-                    </div>
+                    <a class="nav-link" th:href="@{/visits(status=false)}"><span class="sr-only">(current)</span>Wizyty zaplanowane</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/visits(status=true)}"><span class="sr-only">(current)</span>Wizyty zrealizowane</a>
+                </li>
 
                    <!-- <a class="nav-link" href="/visits">Wizyty<span class="sr-only">(current)</span></a>-->
-                </li>
+
 
                 <li th:if="${isAdmin} == true" class="nav-item active">
                     <a class="nav-link" href="/employees">Pracownicy <span class="sr-only">(current)</span></a>

@@ -33,12 +33,11 @@
             <td th:text="${visit.patient.surname + ' ' + visit.patient.name}" ></td>
             <td th:text="${visit.visitDate}"></td>
             <td>
-                <a th:href="@{/visits/showFormForEditVisit(visitIdToEdit=${visit.visitId})}"
-                   class="btn btn-info btn-sm center-pill">Edytuj</a>
+                <a class="btn btn-info btn-sm center-pill" th:href="@{/visits/showFormForEditVisit(visitIdToEdit=${visit.visitId},action='edit')}">Edytuj</a>
             </td>
             <td>
                   <span th:if="${visit.getVisitStatus()}"><a th:href="@{/visits/generate-document(visitId=${visit.visitId})}" class="btn btn-info btn-sm">Utwórz raport</a></span>
-                    <span th:unless="${visit.getVisitStatus()}"><a th:href="@{/visits/hold-visit(visitId=${visit.visitId})}" class="btn btn-info btn-sm">Zrealizuj wizytę</a></span>
+                    <span th:unless="${visit.getVisitStatus()}"><a class="btn btn-info btn-sm" th:href="@{/visits/showFormForEditVisit(visitIdToEdit=${visit.visitId}, action='hold')}" >Zrealizuj wizytę</a></span>
             </td>
             <td>
                 <a th:href="@{/medicines/delete(medicineIdToDelete=${visit.visitId})}"

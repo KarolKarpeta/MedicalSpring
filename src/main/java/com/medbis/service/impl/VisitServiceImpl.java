@@ -56,5 +56,10 @@ public class VisitServiceImpl implements VisitService {
         return visitRepository.findByVisitStatusIsTrue();
     }
 
+    @Override
+    public boolean checkIfNewVisitAdded(int initialAmountOfPlannedVisit){
+        int actualAmountOfPlannedVisit = this.visitRepository.findByVisitStatusIsFalse().size();
+        return initialAmountOfPlannedVisit + 1 == actualAmountOfPlannedVisit;
+    }
 
 }

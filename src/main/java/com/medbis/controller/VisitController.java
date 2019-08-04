@@ -17,10 +17,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -53,12 +50,7 @@ public class VisitController {
     }
 
 
-    //SHOW ALL VISITS
-    @GetMapping ("/visits")
-    public String findAll(Model theModel){
-        theModel.addAttribute("visitsList", visitService.findAllVisits());
-        return "visits/visit-list";
-    }
+
 
 
 
@@ -75,27 +67,34 @@ public class VisitController {
 
         theModel.addAttribute("categories", categoryService.findAll());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
-
-        return "visits/visit-form";
+         return "visits/visit-form";
     }
 
     //ADDING NEW VISITS
-    @PostMapping("/visits/addNewNewVisit")
-    public String addNewMedicine(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
+    @PostMapping("/visits/{action}/addNewNewVisit")
+    public String addNewMedicine(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
-        if (bindingResult.hasErrors()){
+        theVisit.setPatient(thePatient);
+        if (bindingResult.hasErrors()) {
             theVisit.setPatient(thePatient);
-            theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
+            theModel.addAttribute("patientId", theVisit.getVisitPatientId());
             theModel.addAttribute("allTreatments", treatmentService.findAll());
             return "visits/visit-form";
-        }else{
-            visitService.save(theVisit);
+        }
+        int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
+        visitService.save(theVisit);
+        if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
             Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
             JavaMailSenderImpl mailSender = mailService.createMailSender();
-            SimpleMailMessage mailMessage = this.mailService.createMailMessage(thePatient.getMail(),theVisit, employee);
+            SimpleMailMessage mailMessage = this.mailService.createMailMessage(thePatient.getMail(), theVisit, employee);
             mailSender.send(mailMessage);
-            return "redirect:/visits";
         }
+        if(action.equals("hold")){
+            theVisit.setVisitStatus(true);
+            visitService.save(theVisit);
+        }
+
+        return "redirect:/visits";
     }
 
 
@@ -113,30 +112,53 @@ public class VisitController {
         return "visits/visit-list";
     }
 
-    @GetMapping("visits/splitted-list")
-    public String showSplittedList(@RequestParam("status") boolean isVisitDone, Model model){
-        if(isVisitDone){
+    @GetMapping("visits")
+    public String showSplittedList(@RequestParam(value = "status", required = false, defaultValue = "all") String isVisitDone, Model model){
+        if(isVisitDone.equals("all") ){
+            model.addAttribute("visitsList", visitService.findAll());
+        }
+        else if(Boolean.valueOf(isVisitDone)){
             model.addAttribute("visitsList", visitService.findAccomplishedVisits());
         }
-        else {
+        else if(!Boolean.valueOf(isVisitDone)){
             model.addAttribute("visitsList", visitService.findPlannedVisits());
         }
         return "visits/visit-list";
     }
 
+    @GetMapping("visits/hold-visit")
+    public String holdVisit(@RequestParam("visitId") int visitId, Model model){
+        Visit visit = visitService.findById(visitId);
+        model.addAttribute("visit", visit);
+        model.addAttribute("patientId", visit.getVisitPatientId());
+        model.addAttribute("allTreatments", treatmentService.findAll());
+        return "visits/visit-form";
+    }
 
-
+    @PostMapping("visits/hold-visit")
+    public String saveVisitAfterHold(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
+        theVisit.setVisitStatus(true);
+        visitService.save(theVisit);
+        return "visits/visit-list";
+    }
 
     @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, Model theModel) {
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action ,Model theModel) {
+
         Visit visitToEdit = visitService.findById(theId);
+
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
         theModel.addAttribute("allTreatments", treatmentService.findAll());
 
+        String holdAction = "hold";
 
-
-        return "visits/visit-form";
+        if(holdAction.equals(action)) {
+            return "visits/visit-hold";
+        }
+        else {
+            return "visits/visit-form";
+        }
     }
 
     @GetMapping("/visits/generate-document")
@@ -150,8 +172,9 @@ public class VisitController {
 
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
-    @PostMapping(value="/visits/addNewNewVisit", params={"addRow"})
-    public String addTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit) {
+    @PostMapping(value="/visits/{action}/addNewNewVisit", params={"addRow"})
+    public String addTreatmentRow(@PathVariable("action") String action,  Model theModel, @ModelAttribute("visit") Visit theVisit) {
+
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);

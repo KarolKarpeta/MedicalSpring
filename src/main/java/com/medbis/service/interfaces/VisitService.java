@@ -18,6 +18,9 @@ public interface VisitService {
     public List<Visit> findPlannedVisits();
 
     public List<Visit> findAccomplishedVisits();
+
+    boolean checkIfNewVisitAdded(int initialAmountOfPlannedVisit);
+
 }
 
 
