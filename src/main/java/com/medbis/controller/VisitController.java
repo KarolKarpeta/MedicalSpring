@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class VisitController {
@@ -49,7 +48,11 @@ public class VisitController {
         this.employeeService = employeeService;
     }
 
-
+    @GetMapping("visits/delete")
+    public String deleteVisit(@RequestParam("visitId") int visitId){
+        this.visitService.deleteById(visitId);
+        return "redirect:/visits";
+    }
 
 
 
@@ -84,33 +87,15 @@ public class VisitController {
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         visitService.save(theVisit);
         if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
-            Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
-            JavaMailSenderImpl mailSender = mailService.createMailSender();
-            SimpleMailMessage mailMessage = this.mailService.createMailMessage(thePatient.getMail(), theVisit, employee);
-            mailSender.send(mailMessage);
+            sendMail(theVisit);
         }
         if(action.equals("hold")){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
-
         return "redirect:/visits";
     }
 
-
-    @GetMapping("/visits/showVisitsTodo")
-    public String getPlannedVisits(Model model){
-        List<Visit> plannedVisits = visitService.findPlannedVisits();
-        model.addAttribute("visitsList", plannedVisits);
-        return "visits/visit-list";
-    }
-
-    @GetMapping("/visits/showVisitsDone")
-    public String getAccomplishedVisits(Model model){
-        List<Visit> accomplishedVisits = visitService.findAccomplishedVisits();
-        model.addAttribute("visitsList", accomplishedVisits);
-        return "visits/visit-list";
-    }
 
     @GetMapping("visits")
     public String showSplittedList(@RequestParam(value = "status", required = false, defaultValue = "all") String isVisitDone, Model model){
@@ -123,22 +108,6 @@ public class VisitController {
         else if(!Boolean.valueOf(isVisitDone)){
             model.addAttribute("visitsList", visitService.findPlannedVisits());
         }
-        return "visits/visit-list";
-    }
-
-    @GetMapping("visits/hold-visit")
-    public String holdVisit(@RequestParam("visitId") int visitId, Model model){
-        Visit visit = visitService.findById(visitId);
-        model.addAttribute("visit", visit);
-        model.addAttribute("patientId", visit.getVisitPatientId());
-        model.addAttribute("allTreatments", treatmentService.findAll());
-        return "visits/visit-form";
-    }
-
-    @PostMapping("visits/hold-visit")
-    public String saveVisitAfterHold(Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult){
-        theVisit.setVisitStatus(true);
-        visitService.save(theVisit);
         return "visits/visit-list";
     }
 
@@ -182,6 +151,8 @@ public class VisitController {
         theModel.addAttribute("allTreatments", treatmentService.findAll());
         return "visits/visit-form";
     }
+
+
     //DELETE ONE ROW OF TREATMENTS, look params!
     @PostMapping(value="/visits/addNewNewVisit", params={"removeRow"})
     public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest req) {
@@ -194,6 +165,14 @@ public class VisitController {
         return "visits/visit-form";
     }
 
+
+    private void sendMail(Visit theVisit){
+        Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
+        JavaMailSenderImpl mailSender = mailService.createMailSender();
+        String mail = theVisit.getPatient().getMail();
+        SimpleMailMessage mailMessage = this.mailService.createMailMessage(mail, theVisit, employee);
+        mailSender.send(mailMessage);
+    }
 
 
 }
