@@ -135,7 +135,7 @@ public class VisitController {
         Visit reportedVisit = this.visitService.findById(visitId);
         PdfGenerator pdfGenerator = new PdfGenerator(reportedVisit);
         pdfGenerator.createVisitRaport();
-        return "redirect:/visits/showFormForEditVisit" + "?visitIdToEdit=" + visitId;
+        return "redirect:/visits";
     }
 
 
