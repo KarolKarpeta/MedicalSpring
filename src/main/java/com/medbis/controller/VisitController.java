@@ -5,7 +5,6 @@ import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
 import com.medbis.mail.MailService;
-import com.medbis.pdf.PdfGenerator;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
@@ -50,6 +49,8 @@ public class VisitController {
 
     @GetMapping("visits/delete")
     public String deleteVisit(@RequestParam("visitId") int visitId){
+        sendMail(visitService.findById(visitId), "deleteVisit");
+
         this.visitService.deleteById(visitId);
         return "redirect:/visits";
     }
@@ -87,7 +88,7 @@ public class VisitController {
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         visitService.save(theVisit);
         if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
-            sendMail(theVisit);
+            sendMail(theVisit, "addVisit");
         }
         if(action.equals("hold")){
             theVisit.setVisitStatus(true);
@@ -130,15 +131,6 @@ public class VisitController {
         }
     }
 
-    @GetMapping("/visits/generate-document")
-    public String generatePdfRaport(@RequestParam("visitId") int visitId) {
-        Visit reportedVisit = this.visitService.findById(visitId);
-        PdfGenerator pdfGenerator = new PdfGenerator(reportedVisit);
-        pdfGenerator.createVisitRaport();
-        return "redirect:/visits";
-    }
-
-
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
     @PostMapping(value="/visits/{action}/addNewNewVisit", params={"addRow"})
@@ -166,11 +158,11 @@ public class VisitController {
     }
 
 
-    private void sendMail(Visit theVisit){
+    private void sendMail(Visit theVisit, String action){
         Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
         JavaMailSenderImpl mailSender = mailService.createMailSender();
         String mail = theVisit.getPatient().getMail();
-        SimpleMailMessage mailMessage = this.mailService.createMailMessage(mail, theVisit, employee);
+        SimpleMailMessage mailMessage = this.mailService.createMailMessage(mail, theVisit, employee, action);
         mailSender.send(mailMessage);
     }
 
