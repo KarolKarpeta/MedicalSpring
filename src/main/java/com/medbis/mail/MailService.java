@@ -37,17 +37,29 @@ public class MailService {
        return mailMessage;
    }
 
-   public SimpleMailMessage createMailMessage(String mail, Visit visit, Employee employee){
+   public SimpleMailMessage createMailMessage(String mail, Visit visit, Employee employee, String action){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(mailCfg.getUsername());
         mailMessage.setTo(mail);
-        mailMessage.setSubject("Biuro Medical Spring");
-        mailMessage.setText(createNewVisitMail(visit, employee));
+
+        switch(action) {
+            case "deleteVisit":
+                mailMessage.setSubject("Informacja o anulowaniu wizyty pielęgniarki w dn. " +
+                        visit.getVisitDate() + ".");
+                mailMessage.setText(createDeleteVisitMail(visit, employee));
+                break;
+            case "addVisit":
+                mailMessage.setSubject("Biuro Medical Spring");
+                mailMessage.setText(createNewVisitMail(visit, employee));
+                break;
+            default:
+                System.out.println("Something with mail sending went wrong.");
+        }
+
         return mailMessage;
     }
 
-
-   public String createNewVisitMail(Visit visit, Employee employee){
+   public String createNewVisitMail(Visit visit, Employee employee) {
         return "Dzień dobry,\n"  +
                 "Przypominamy o zaplanowanej wizycie, która odbędzie się dn. " + visit.getVisitDate() + ". " +
                 "Wizytę przeprowadzi " + employee.getName() + " " + employee.getSurname() +
@@ -55,8 +67,12 @@ public class MailService {
                 "Do zobaczenia!";
     }
 
-
-
+    public String createDeleteVisitMail(Visit visit, Employee employee) {
+        return "Dzień dobry,\n\n"  +
+                "Informujemy, że wizyta pielęgniarki "+ employee.getName() + " " + employee.getSurname() +
+                " zaplanowana na dzień " + visit.getVisitDate() + " została odwołana.\n" +
+                "W celu umówienia nowej wizyty prosimy o kontakt z ww. pielęgniarką pod nr. telefonu: " +
+                employee.getWorkPhoneNumber() +".\n\nPozdrawiamy,\nBiuro Medical Spring";
+    }
 
 }
-
