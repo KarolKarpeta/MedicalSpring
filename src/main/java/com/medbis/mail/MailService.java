@@ -55,6 +55,7 @@ public class MailService {
             case "editVisit":
                 mailMessage.setSubject(("Informacja o zmianie terminu wizyty pielęgniarki"));
                 mailMessage.setText(createEditVisitMail(visit, employee));
+                break;
             default:
                 System.out.println("Something with mail sending went wrong.");
         }
