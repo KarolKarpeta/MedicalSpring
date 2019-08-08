@@ -5,6 +5,7 @@ import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
 import com.medbis.mail.MailService;
+import com.medbis.pdf.PdfGenerator;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
@@ -131,6 +132,15 @@ public class VisitController {
         }
     }
 
+    @GetMapping("/visits/generate-document")
+    public String generatePdfRaport(@RequestParam("visitId") int visitId) {
+        Visit reportedVisit = this.visitService.findById(visitId);
+        PdfGenerator pdfGenerator = new PdfGenerator(reportedVisit);
+        pdfGenerator.createVisitRaport();
+        return "redirect:/visits";
+    }
+
+
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
     @PostMapping(value="/visits/{action}/addNewNewVisit", params={"addRow"})
@@ -141,20 +151,32 @@ public class VisitController {
         theVisit.setPatient(thePatient);
         theVisit.getServices().add(new Treatment()); //.getRows().add(new Row());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
-        return "visits/visit-form";
+
+        if(action.equals("edit")){
+            return "visits/visit-form";
+        }
+        else {
+            return "visits/visit-hold";
+        }
+
     }
 
 
     //DELETE ONE ROW OF TREATMENTS, look params!
-    @PostMapping(value="/visits/addNewNewVisit", params={"removeRow"})
-    public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest req) {
-        theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
+    @PostMapping(value="/visits/{action}/addNewNewVisit", params={"removeRow"})
+    public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest req, @PathVariable String action) {
+        theModel.addAttribute("patientId", theVisit.getVisitPatientId());
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
         theModel.addAttribute("allTreatments", treatmentService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
         theVisit.getServices().remove(rowId.intValue());
-        return "visits/visit-form";
+
+        if (action.equals("edit")) {
+            return "visits/visit-form";
+        } else {
+            return "visits/visit-hold";
+        }
     }
 
 

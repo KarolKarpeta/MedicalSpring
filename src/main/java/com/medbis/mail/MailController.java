@@ -42,12 +42,15 @@ public class MailController {
             redirectAttributes.addAttribute("patientId", id);
             return "redirect:/mails/show-mail-form";
         }
-        Patient patient = (Patient) userService.findById(Integer.parseInt(id));
-
-        JavaMailSenderImpl mailSender = mailService.createMailSender();
-        SimpleMailMessage mailMessage = mailService.createMailMessage(patient.getMail(), mailDto);
-
-        mailSender.send(mailMessage);
+        try {
+            Patient patient = (Patient) userService.findById(Integer.parseInt(id));
+            JavaMailSenderImpl mailSender = mailService.createMailSender();
+            SimpleMailMessage mailMessage = mailService.createMailMessage(patient.getMail(), mailDto);
+            mailSender.send(mailMessage);
+        }
+        catch (NumberFormatException err){
+            err.printStackTrace();
+        }
         return "redirect:/patients";
     }
 }
