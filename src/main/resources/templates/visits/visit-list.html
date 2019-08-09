@@ -40,9 +40,9 @@
                     <span th:unless="${visit.getVisitStatus()}"><a th:href="@{/visits/showFormForEditVisit(visitIdToEdit=${visit.visitId}, action='hold')}" class="btn btn-info btn-sm">Zrealizuj wizytę</a></span>
             </td>
             <td>
-                <a th:href="@{/medicines/delete(medicineIdToDelete=${visit.visitId})}"
+                <a th:href="@{/visits/delete(visitId=${visit.visitId})}"
                    class="btn btn-danger btn-sm"
-                   onclick="if(!(confirm('Are you sure?')))return false">Delete</a>
+                   onclick="if(!(confirm('Are you sure?')))return false">Usuń</a>
             </td>
 
         </tr>

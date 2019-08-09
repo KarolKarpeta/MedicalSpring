@@ -91,13 +91,14 @@ public class VisitController {
         if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
             sendMail(theVisit, "addVisit");
         }
+        else if(action.equals("edit")) {
+            sendMail(theVisit, "editVisit");
+        }
         if(action.equals("hold")){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
-        else if(action.equals("edit")) {
-            sendMail(theVisit, "editVisit");
-        }
+
         return "redirect:/visits";
     }
 
