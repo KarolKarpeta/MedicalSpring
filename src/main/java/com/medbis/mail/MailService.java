@@ -52,6 +52,11 @@ public class MailService {
                 mailMessage.setSubject("Biuro Medical Spring");
                 mailMessage.setText(createNewVisitMail(visit, employee));
                 break;
+            case "editVisit":
+                mailMessage.setSubject(("Informacja o zmianie terminu wizyty pielęgniarki"));
+                mailMessage.setText(createEditVisitMail(visit, employee));
+                break;
+
             default:
                 System.out.println("Something with mail sending went wrong.");
         }
@@ -72,6 +77,14 @@ public class MailService {
                 "Informujemy, że wizyta pielęgniarki "+ employee.getName() + " " + employee.getSurname() +
                 " zaplanowana na dzień " + visit.getVisitDate() + " została odwołana.\n" +
                 "W celu umówienia nowej wizyty prosimy o kontakt z ww. pielęgniarką pod nr. telefonu: " +
+                employee.getWorkPhoneNumber() +".\n\nPozdrawiamy,\nBiuro Medical Spring";
+    }
+
+    public String createEditVisitMail(Visit visit, Employee employee) {
+        return "Dzień dobry,\n\n"  +
+                "Informujemy, że wizyta pielęgniarki "+ employee.getName() + " " + employee.getSurname() +
+                " została przełożona na dzień " + visit.getVisitDate() + ".\n" +
+                "W razie pytań prosimy o kontakt z ww. pielęgniarką pod nr. telefonu: " +
                 employee.getWorkPhoneNumber() +".\n\nPozdrawiamy,\nBiuro Medical Spring";
     }
 

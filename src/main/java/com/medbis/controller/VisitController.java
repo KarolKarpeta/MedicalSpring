@@ -95,6 +95,9 @@ public class VisitController {
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
+        else if(action.equals("edit")) {
+            sendMail(theVisit, "editVisit");
+        }
         return "redirect:/visits";
     }
 
@@ -187,6 +190,4 @@ public class VisitController {
         SimpleMailMessage mailMessage = this.mailService.createMailMessage(mail, theVisit, employee, action);
         mailSender.send(mailMessage);
     }
-
-
 }
