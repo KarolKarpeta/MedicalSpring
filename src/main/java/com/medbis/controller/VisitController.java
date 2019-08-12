@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class VisitController {
@@ -55,11 +54,7 @@ public class VisitController {
         this.visitService.deleteById(visitId);
         return "redirect:/visits";
     }
-    @GetMapping ("/visits")
-    public String findAll(Model theModel){
-        theModel.addAttribute("visitsList", visitService.findAllVisits());
-        return "visits/visit-list";
-    }
+
 
 
     //Show form for ADD NEW VISIT
