@@ -55,7 +55,7 @@ public class Patient extends User {
     private List<Disease> patientDiseases = new ArrayList<>();
 
 
-    @JoinColumn(name="doctorD_id", referencedColumnName = "doctor_id")
+    @JoinColumn(name="doctor_id", referencedColumnName = "doctor_id")
     private int doctorId;
 
 
