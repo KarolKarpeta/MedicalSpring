@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +19,9 @@ public class Patient extends User {
     public Patient() {
     }
 
-    public Patient(int patientId, String comments) {
+    public Patient(int patientId, String comments, String mail) {
         this.patientId = patientId;
+        this.mail = mail;
         this.comments = comments;
     }
 
@@ -35,6 +37,10 @@ public class Patient extends User {
 
     @Column(name = "comments")
     private String comments;
+
+    @Column(name = "mail")
+    @Email
+    private String mail;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = { CascadeType.PERSIST, CascadeType.MERGE })

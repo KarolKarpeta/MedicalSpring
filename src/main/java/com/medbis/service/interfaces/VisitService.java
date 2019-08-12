@@ -14,6 +14,13 @@ public interface VisitService {
     public void deleteById(int theId);
 
     public List<Visit> findAllVisits();
+
+    public List<Visit> findPlannedVisits();
+
+    public List<Visit> findAccomplishedVisits();
+
+    boolean checkIfNewVisitAdded(int initialAmountOfPlannedVisit);
+
 }
 
 

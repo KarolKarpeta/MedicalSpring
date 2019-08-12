@@ -101,7 +101,13 @@
                     <td th:text="${patient.houseNumber}" ></td>
                     <td th:text="${patient.apartmentNumber}" ></td>
 
-                    <td class="text-center text-nowrap">
+                <td class="text center text-nowrap">
+                    <a th:href="@{mails/show-mail-form(patientId=${patient.patientId})}">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </td>
+
+                <td class="text-center text-nowrap">
 
                         <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
                             <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
@@ -141,6 +147,7 @@
     <div class="text-center"><br>
         <p>@2019 - Medical Spring, All Right Reserved.</p>
     </div>
+
 
 
 
