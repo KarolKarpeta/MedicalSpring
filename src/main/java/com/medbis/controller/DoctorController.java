@@ -40,7 +40,7 @@ public class DoctorController {
         return "doctors/doctor-form";
     }
 
-    @PutMapping("/doctors/addNewDoctor")
+    @PostMapping("/doctors/addNewDoctor")
     public String addNewDoctor(
             @Valid @ModelAttribute("doctor") Doctor doctor,
             BindingResult result) {
