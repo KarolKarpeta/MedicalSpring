@@ -24,19 +24,28 @@
                 </li>
 
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/medicines">LEKI<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/medicines">Leki<span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/diseases">CHOROBY <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/diseases">Choroby <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/treatments">ŚWIADCZENIA<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/treatments">Świadczenia<span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/categories">KATEGORIE <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/categories">Kategorie <span class="sr-only">(current)</span></a>
                 </li>
                 <li th:if="${isAdmin} == true" class="nav-item active">
-                    <a class="nav-link" href="/employees">PRACOWNICY<span class="sr-only">(current)</span></a>
+<!--                    <a class="nav-link" href="/employees">PRACOWNICY<span class="sr-only">(current)</span></a>-->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pracownicy
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/employees">Pielęgniarki</a>
+                            <a class="dropdown-item" href="/doctors">Lekarze</a>
+                        </div>
+                    </div>
                 </li>
         <!--        <li class="nav-item active" style="background-color: red">
                     <a class="nav-link" href="/logout">Log out!<span class="sr-only">(current)</span></a>

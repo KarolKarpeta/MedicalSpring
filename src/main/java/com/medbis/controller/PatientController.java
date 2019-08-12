@@ -1,10 +1,13 @@
 package com.medbis.controller;
 
 import com.medbis.entity.Disease;
+import com.medbis.entity.Doctor;
 import com.medbis.entity.Medicine;
 import com.medbis.entity.Patient;
 import com.medbis.factory.UserFactory;
+import com.medbis.service.impl.DoctorServiceImpl;
 import com.medbis.service.interfaces.DiseaseService;
+import com.medbis.service.interfaces.DoctorService;
 import com.medbis.service.interfaces.MedicineService;
 import com.medbis.service.interfaces.UserService;
 import org.apache.tomcat.jni.Local;
@@ -22,6 +25,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class PatientController {
@@ -30,13 +34,15 @@ public class PatientController {
     private DiseaseService diseaseService;
     private UserService userService;
     private UserFactory userFactory;
+    private DoctorServiceImpl doctorService;
 
     @Autowired
-    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService, MedicineService medicineService) {
+    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService, MedicineService medicineService, DoctorServiceImpl doctorService) {
         this.userService = userService;
         this.userFactory = userFactory;
         this.diseaseService = diseaseService;
         this.medicineService = medicineService;
+        this.doctorService = doctorService;
     }
 
 
@@ -54,6 +60,7 @@ public class PatientController {
         theModel.addAttribute("patient",newPatient);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("doctors", doctorService.findAll());
         return "users/patient-form";
     }
 
@@ -137,8 +144,10 @@ public class PatientController {
     @GetMapping ("/patients/showPatientDetails")
     public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
-        System.out.println("Patient details: " + newPatient.toString());
+        Integer doctorId = newPatient.getDoctorId();
+        Doctor doctor = doctorService.findById(doctorId);
         theModel.addAttribute("patient", newPatient);
+        theModel.addAttribute("doctor", doctor);
         return "users/patient-details";
     }
 

@@ -1,14 +1,20 @@
 package com.medbis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "patients", schema = "public")
 public class Patient extends User {
+
     public Patient() {
     }
 
@@ -48,45 +54,10 @@ public class Patient extends User {
     )
     private List<Disease> patientDiseases = new ArrayList<>();
 
-    public int getPatientId() {
-        return patientId;
-    }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
+    @JoinColumn(name="doctorD_id", referencedColumnName = "doctor_id")
+    private int doctorId;
 
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public List<Medicine> getPatientMedicines() {
-        return patientMedicines;
-    }
-
-    public void setPatientMedicines(List<Medicine> patientMedicines) {
-        this.patientMedicines = patientMedicines;
-    }
-
-    public List<Disease> getPatientDiseases() {
-        return patientDiseases;
-    }
-
-    public void setPatientDiseases(List<Disease> patientDiseases) {
-        this.patientDiseases = patientDiseases;
-    }
-
-    public Set<Visit> getVisitsPatients() {
-        return visitsPatients;
-    }
-
-    public void setVisitsPatients(Set<Visit> visitsPatients) {
-        this.visitsPatients = visitsPatients;
-    }
 
     @Override
     public String toString() {

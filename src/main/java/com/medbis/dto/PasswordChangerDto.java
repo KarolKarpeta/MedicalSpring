@@ -1,13 +1,13 @@
 package com.medbis.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
 
-@Getter
-@Setter
+@Data
 @Component
 public class PasswordChangerDto {
 
