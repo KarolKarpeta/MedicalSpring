@@ -60,7 +60,7 @@ public class PatientController {
         theModel.addAttribute("patient",newPatient);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        theModel.addAttribute("doctors", doctorService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         return "users/patient-form";
     }
 
@@ -71,6 +71,7 @@ public class PatientController {
         thePatient.getPatientMedicines().add(new Medicine()); //.getRows().add(new Row());
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         return "users/patient-form";
     }
     //DELETE ONE ROW OF MEDICINE, look params!
@@ -78,6 +79,7 @@ public class PatientController {
     public String delMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
         thePatient.getPatientMedicines().remove(rowId.intValue());
         return "users/patient-form";
@@ -92,6 +94,7 @@ public class PatientController {
         thePatient.getPatientDiseases().add(new Disease()); //.getRows().add(new Row());
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         return "users/patient-form";
     }
     //DELETE ONE ROW OF DISEASE, look params!
@@ -99,6 +102,7 @@ public class PatientController {
     public String delDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeDiseaseRow"));
         thePatient.getPatientDiseases().remove(rowId.intValue());
         return "users/patient-form";
