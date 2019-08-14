@@ -2,20 +2,39 @@ package com.medbis.repository;
 
 import com.medbis.entity.Visit;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Integer> {
 
-    @Query("select v, p from Visit v left join v.patient p order by v.visitDate") //JPQL
-    List<Visit> findAllVisits();
+
+    List<Visit> findAll();
 
     List<Visit> findByVisitStatusIsFalse();
 
     List<Visit> findByVisitStatusIsTrue();
-//    @Query("select p from Planet p where p.planetName  = ?1") //JPQL
-//    Optional<Visit> findVisitsByEmployee_Id2(String employeeId);
+/*
+    @Query("SELECT count(r) as number FROM Visit visits WHERE Visit.visitDate  = '2300-02-01'")*/
+
+
+    int countVisitsByVisitDateBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Visit> findByEmployeeId(int id);
+
+    List<Visit> findByVisitDateAfterAndVisitDateBefore(LocalDate startDate, LocalDate endDate);
+
+
+/*
+   default int countVisitByVisitDateMonthIsLike(String date){
+        System.out.println("jestem przy nativequery");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createNativeQuery("SELECT count(*) as number FROM visits WHERE extract(month FROM date) = 12;");
+        return query.getFirstResult();
+    }
+*/
+
 }

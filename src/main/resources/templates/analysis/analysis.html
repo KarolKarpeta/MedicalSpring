@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Spring</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+<div class="mt-10">
+    <header id="header" class="alt" th:include="menu :: title-menu" />
+</div>
+
+
+
+<div class="container">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container-fluid">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=01)}">Styczeń</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=02)}">Luty</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=03)}">Marzec</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=04)}">Kwiecień</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=05)}">Maj</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=06)}">Czerwiec</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=07)}">Lipiec</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=08)}">Sierpień</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=09)}">Wrzesień</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=10)}">Październik</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=11)}">Listopad</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/analysis(month=12)}">Grudzień</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container-fluid">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item active" th:each="employee : ${employees}"><a th:text="${employee.getName()}" th:value="${employee.getName()}" class="nav-link" th:href="@{/analysis(employee=${employee.name})}"></a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+    <table class="table table-striped table-hover table-sm">
+        <thead class="thead-dark">
+        <tr>
+            <th>Ilosc wizyt</th>
+            <th>RAZEM</th>
+        <th th:each="treatment : ${treatments}"
+            th:text="${treatment.getName()}">
+        </th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--<tr>
+
+            <td th:text="*{counter}"></td>
+        </tr>-->
+        <tr>
+            <td th:text="*{counter}"></td>
+            <td th:text="${treatments.size()}"></td>
+            <td th:each="treatment : ${treatments}">2</td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>
