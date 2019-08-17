@@ -25,13 +25,6 @@ public class AnalysisServiceImpl implements AnalysisService {
         this.visitRepository = visitRepository;
     }
 
-    @Override
-    public int countVisitsMonthly(int month) {
-        LocalDate startDate, endDate;
-        startDate = LocalDate.of(2019, month, 1);
-        endDate = LocalDate.of(2019, month, Month.of(month).length(isLeapYear(2019)));
-        return visitRepository.countVisitsByVisitDateBetween(startDate, endDate);
-    }
 
     @Override
     public int countVisitsByEmployeeIdAndVisitStatus(int id, boolean visitStatus) {
@@ -39,27 +32,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public int countVisitsMonthlyByEmployee(int month, int employeeId) {
-        LocalDate startDate, endDate;
-        startDate = LocalDate.of(2019, month, 1);
-        endDate = LocalDate.of(2019, month, Month.of(month).length(isLeapYear(2019)));
-        return visitRepository.countVisitsByVisitDateBetweenAndEmployeeId(startDate, endDate, employeeId);
-    }
+   public int getSumOfVisits(Map<Integer, Integer> visitsPlannedByEmployees) {
+       int sumOfPlannedVisits = 0;
+       for (Integer num : visitsPlannedByEmployees.values())  sumOfPlannedVisits += num;
+       return sumOfPlannedVisits;
 
+   }
 
-    private static boolean isLeapYear(int year) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
-    }
-
-       public int getSumOfVisits(Map<Integer, Integer> visitsPlannedByEmployees) {
-           int sumOfPlannedVisits = 0;
-           for (Integer num : visitsPlannedByEmployees.values())  sumOfPlannedVisits += num;
-           return sumOfPlannedVisits;
-
-       }
-
+    @Override
     public Map<Integer, Integer> createEmployeesResultMap(boolean visitsStatus, List<? extends User> employees) {
         Map<Integer, Integer> resultMap = new LinkedHashMap<>();
         int iterMapKey = 0;
@@ -70,5 +50,33 @@ public class AnalysisServiceImpl implements AnalysisService {
             iterMapKey++;
         }
         return resultMap;
+    }
+
+    @Override
+    public int countVisitsMonthlyByEmployeeIdAndVisitStatus(int month, int employeeId, boolean visitStatus) {
+        LocalDate firstDayOfMonth, lastDayOfMonth;
+        firstDayOfMonth = LocalDate.of(2019, month, 1);
+        lastDayOfMonth = LocalDate.of(2019, month, Month.of(month).length(isLeapYear(2019)));
+        return visitRepository.countVisitsByVisitDateBetweenAndVisitStatusAndEmployeeId(firstDayOfMonth, lastDayOfMonth, visitStatus, employeeId);
+    }
+
+    @Override
+    public Map<Integer, Integer> createEmployeesResultMapByMonth(boolean visitsStatus, List<? extends User> employees, int month) {
+        Map<Integer, Integer> monthlyResultMap = new LinkedHashMap<>();
+        int iterMapKey = 0;
+
+        for (User employee : employees) {
+            Employee emp = (Employee) employee;
+            monthlyResultMap.put(iterMapKey, countVisitsMonthlyByEmployeeIdAndVisitStatus(month ,emp.getId(), visitsStatus));
+            iterMapKey++;
+        }
+        return monthlyResultMap;
+
+    }
+
+    private static boolean isLeapYear(int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
     }
 }
