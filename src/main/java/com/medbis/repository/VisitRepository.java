@@ -16,25 +16,16 @@ public interface VisitRepository extends JpaRepository<Visit, Integer> {
     List<Visit> findByVisitStatusIsFalse();
 
     List<Visit> findByVisitStatusIsTrue();
-/*
-    @Query("SELECT count(r) as number FROM Visit visits WHERE Visit.visitDate  = '2300-02-01'")*/
 
+    int countVisitsByEmployeeId(int id);
 
     int countVisitsByVisitDateBetween(LocalDate startDate, LocalDate endDate);
 
-    List<Visit> findByEmployeeId(int id);
 
-    List<Visit> findByVisitDateAfterAndVisitDateBefore(LocalDate startDate, LocalDate endDate);
+    int countVisitsByVisitDateBetweenAndEmployeeId(LocalDate startDate, LocalDate endDate, int employeeId);
+
+    int countVisitsByEmployeeIdAndVisitStatus(int id, boolean visitStatus);
 
 
-/*
-   default int countVisitByVisitDateMonthIsLike(String date){
-        System.out.println("jestem przy nativequery");
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Query query = entityManager.createNativeQuery("SELECT count(*) as number FROM visits WHERE extract(month FROM date) = 12;");
-        return query.getFirstResult();
-    }
-*/
 
 }

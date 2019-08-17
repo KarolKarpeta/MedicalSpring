@@ -43,10 +43,8 @@ public class VisitServiceImpl implements VisitService {
         this.visitRepository.deleteById(theId);
     }
 
-    @Override
-    public List<Visit> findAllVisits() {
-        return visitRepository.findAllVisits();
-    }
+
+
 
     @Override
     public List<Visit> findPlannedVisits(){ return visitRepository.findByVisitStatusIsFalse();}
