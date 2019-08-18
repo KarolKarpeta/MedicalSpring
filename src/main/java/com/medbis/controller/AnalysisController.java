@@ -27,7 +27,7 @@ public class AnalysisController {
         this.treatmentService = treatmentService;
     }
 
-    @GetMapping("/analysis-general")
+    @GetMapping("/analysis")
     public String getGeneralStats(Model model) {
         List<? extends User> employees = userService.findAll();
         Map<Integer, Integer> visitsDoneByEmployees = analysisService.createEmployeesResultMap(true, employees);
@@ -42,7 +42,7 @@ public class AnalysisController {
     }
 
 
-    @GetMapping("/analysis-details")
+    @GetMapping("/analysis/details")
     public String getStatsByMonth(Model model, @RequestParam("month") int month){
         List<? extends User> employees = userService.findAll();
         Map<Integer, Integer> visitsDoneMonthlyByEmployees = analysisService.createEmployeesResultMapByMonth(true, employees, month);

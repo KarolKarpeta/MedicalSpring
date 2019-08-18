@@ -2,9 +2,6 @@ package com.medbis.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,10 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.time.format.DateTimeFormatter;
 
 @Configuration
 @EnableWebSecurity
@@ -38,34 +32,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-
 @Override
 public void configure(HttpSecurity http) throws Exception{
     http
+            .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/css/**").permitAll()
-            .antMatchers("/js/**").permitAll()
+            .antMatchers("/css/**", "/js/**","/signin", "/login").permitAll()
             .antMatchers("/employees/change-password", "/employees/change-password-form").hasAnyRole("NURSE", "ADMIN")
-            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines").hasRole("ADMIN")
+            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines/**").hasRole("ADMIN")
             .and()
-            .formLogin()
-            .loginProcessingUrl("/signin").permitAll()
-            .loginPage("/login").permitAll()
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .successHandler(loginSuccessHandler)
+            .formLogin().loginProcessingUrl("/signin").loginPage("/login")
+            .usernameParameter("username").passwordParameter("password").successHandler(loginSuccessHandler)
             .and()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+            .logout().logoutRequestMatcher(antPathRequestMatcher()).logoutSuccessUrl("/login")
             .and()
             .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
             .and()
             .authorizeRequests()
             .anyRequest()
             .authenticated();
-}
+    }
 
 
 
+    private AntPathRequestMatcher antPathRequestMatcher(){
+        return new AntPathRequestMatcher("/logout", "GET");
+    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
