@@ -21,6 +21,11 @@ public interface VisitService {
     boolean checkIfNewVisitAdded(int initialAmountOfPlannedVisit);
 
 
+    List<Visit> findAllByEmployeeId(int id);
+
+    List<Visit> findAccomplishedVisitsByEmployeeId(int id);
+
+    List<Visit> findPlannedVisitsByEmployeeId(int id);
 }
 
 

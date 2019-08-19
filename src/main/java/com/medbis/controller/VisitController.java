@@ -6,6 +6,7 @@ import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
 import com.medbis.mail.MailService;
 import com.medbis.pdf.PdfGenerator;
+import com.medbis.security.UserPrincipal;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -102,14 +105,32 @@ public class VisitController {
 
     @GetMapping("visits")
     public String showSplittedList(@RequestParam(value = "status", required = false, defaultValue = "all") String isVisitDone, Model model){
-        if(isVisitDone.equals("all") ){
-            model.addAttribute("visitsList", visitService.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
+
+
+        if(isVisitDone.equals("all")){
+            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
+                model.addAttribute("visitsList", visitService.findAll());
+            } else {
+                model.addAttribute("visitsList", visitService.findAllByEmployeeId(userDetails.getEmployee().getId()));
+            }
         }
-        else if(Boolean.valueOf(isVisitDone)){
-            model.addAttribute("visitsList", visitService.findAccomplishedVisits());
+        else if(isVisitDone.equals("true")){
+            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
+                model.addAttribute("visitsList", visitService.findAccomplishedVisits());
+            }
+            else {
+                model.addAttribute("visitsList", visitService.findAccomplishedVisitsByEmployeeId(userDetails.getEmployee().getId()));
+            }
         }
-        else if(!Boolean.valueOf(isVisitDone)){
-            model.addAttribute("visitsList", visitService.findPlannedVisits());
+        else if(isVisitDone.equals("false")){
+            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
+                model.addAttribute("visitsList", visitService.findPlannedVisits());
+            }
+            else {
+                model.addAttribute("visitsList", visitService.findPlannedVisitsByEmployeeId(userDetails.getEmployee().getId()));
+            }
         }
         return "visits/visit-list";
     }
@@ -119,12 +140,10 @@ public class VisitController {
 
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
-        theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
+        theModel.addAttribute("patientId", visitToEdit.getVisitPatientId());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
 
-        String holdAction = "hold";
-
-        if(holdAction.equals(action)) {
+        if(action.equals("hold")) {
             return "visits/visit-hold";
         }
         else {

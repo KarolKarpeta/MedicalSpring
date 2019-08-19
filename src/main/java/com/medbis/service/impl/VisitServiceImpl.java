@@ -60,4 +60,20 @@ public class VisitServiceImpl implements VisitService {
         return initialAmountOfPlannedVisit + 1 == actualAmountOfPlannedVisit;
     }
 
+    @Override
+    public List<Visit> findAllByEmployeeId(int id) {
+        return visitRepository.findByVisitEmployeeId(id);
+    }
+
+    @Override
+    public List<Visit> findAccomplishedVisitsByEmployeeId(int id) {
+        return visitRepository.findByVisitStatusIsTrueAndEmployeeId(id);
+    }
+
+    @Override
+    public List<Visit> findPlannedVisitsByEmployeeId(int id) {
+        return visitRepository.findByVisitStatusIsFalseAndEmployeeId(id);
+    }
+
+
 }
