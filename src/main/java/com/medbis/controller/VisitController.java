@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class VisitController {
@@ -118,6 +120,7 @@ public class VisitController {
     public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action ,Model theModel) {
 
         Visit visitToEdit = visitService.findById(theId);
+        List<Treatment> services = new ArrayList<>();
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId() );
         theModel.addAttribute("allTreatments", treatmentService.findAll());
@@ -149,7 +152,7 @@ public class VisitController {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);
-        theVisit.getServices().add(new Treatment()); //.getRows().add(new Row());
+        //theVisit.getServices().add(new Treatment()); //.getRows().add(new Row());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
 
         if(action.equals("edit")){
@@ -168,7 +171,7 @@ public class VisitController {
         theVisit.setPatient(thePatient);
         theModel.addAttribute("allTreatments", treatmentService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-        theVisit.getServices().remove(rowId.intValue());
+        //theVisit.getServices().remove(rowId.intValue());
 
         if (action.equals("edit")) {
             return "visits/visit-form";

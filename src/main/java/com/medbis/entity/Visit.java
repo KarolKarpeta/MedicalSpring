@@ -10,7 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+
 @Table(name = "visits", schema = "public")
 public class Visit {
 
@@ -50,13 +53,30 @@ public class Visit {
     @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
     private Patient patient;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "visits_services",
-            joinColumns = { @JoinColumn(name = "visit_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
-    )
-    private List<Treatment> services = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "primaryKey.visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VisitTreatment> visitTreatments = new ArrayList<>();
+
+    public List<VisitTreatment> geVisitTreatments() {
+        return visitTreatments;
+    }
+    public void setVisitTreatments(List<VisitTreatment> visitTreatments) {
+        this.visitTreatments = visitTreatments;
+    }
+
+    public void addVisitTreatment(VisitTreatment visitTreatment){
+        this.visitTreatments.add(visitTreatment);
+    }
+
+
+    //    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+//    @JoinTable(
+//            name = "visits_services",
+//            joinColumns = { @JoinColumn(name = "visit_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "service_id") }
+//    )
+//    private List<Treatment> services = new ArrayList<>();
 
 }

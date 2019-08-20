@@ -47,7 +47,7 @@ public class PdfGenerator {
         document.add(new Paragraph("Data wizyty: " + this.visit.getVisitDate()));
         document.add(new Paragraph("Imię i nazwisko pacjenta: " + this.visit.getPatient().getName() + " " + this.visit.getPatient().getSurname()));
         document.add(new Paragraph("Pielęgniarka: " + this.visit.getEmployee().getName() + " " + this.visit.getEmployee().getSurname()));
-        document.add(new Paragraph("Wykonane zabiegi: " + visit.getServices()));
+        //document.add(new Paragraph("Wykonane zabiegi: " + visit.getServices()));
     }
 
     public void createVisitRaport() {
