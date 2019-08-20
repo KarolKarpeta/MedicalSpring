@@ -43,10 +43,8 @@ public class VisitServiceImpl implements VisitService {
         this.visitRepository.deleteById(theId);
     }
 
-    @Override
-    public List<Visit> findAllVisits() {
-        return visitRepository.findAllVisits();
-    }
+
+
 
     @Override
     public List<Visit> findPlannedVisits(){ return visitRepository.findByVisitStatusIsFalse();}
@@ -61,5 +59,21 @@ public class VisitServiceImpl implements VisitService {
         int actualAmountOfPlannedVisit = this.visitRepository.findByVisitStatusIsFalse().size();
         return initialAmountOfPlannedVisit + 1 == actualAmountOfPlannedVisit;
     }
+
+    @Override
+    public List<Visit> findAllByEmployeeId(int id) {
+        return visitRepository.findByVisitEmployeeId(id);
+    }
+
+    @Override
+    public List<Visit> findAccomplishedVisitsByEmployeeId(int id) {
+        return visitRepository.findByVisitStatusIsTrueAndEmployeeId(id);
+    }
+
+    @Override
+    public List<Visit> findPlannedVisitsByEmployeeId(int id) {
+        return visitRepository.findByVisitStatusIsFalseAndEmployeeId(id);
+    }
+
 
 }

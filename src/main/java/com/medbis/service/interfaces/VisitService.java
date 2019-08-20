@@ -1,26 +1,31 @@
 package com.medbis.service.interfaces;
 
 import com.medbis.entity.Visit;
+
 import java.util.List;
 
 public interface VisitService {
 
-    public List<Visit> findAll();
+    List<Visit> findAll();
 
-    public Visit findById(int theId);
+    Visit findById(int theId);
 
-    public void save(Visit theMedicine);
+    void save(Visit theMedicine);
 
-    public void deleteById(int theId);
+    void deleteById(int theId);
 
-    public List<Visit> findAllVisits();
+    List<Visit> findPlannedVisits();
 
-    public List<Visit> findPlannedVisits();
-
-    public List<Visit> findAccomplishedVisits();
+    List<Visit> findAccomplishedVisits();
 
     boolean checkIfNewVisitAdded(int initialAmountOfPlannedVisit);
 
+
+    List<Visit> findAllByEmployeeId(int id);
+
+    List<Visit> findAccomplishedVisitsByEmployeeId(int id);
+
+    List<Visit> findPlannedVisitsByEmployeeId(int id);
 }
 
 

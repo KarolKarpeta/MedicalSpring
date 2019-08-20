@@ -1,14 +1,9 @@
 package com.medbis.entity;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,12 +43,22 @@ public class Employee extends User{
     private String permissions;
 
     public Employee(String password, @NotEmpty String login, String permissions) {
+        this.id = id;
         this.password = password;
         this.login = login;
-        this.visitsEmployee = visitsEmployee;
         this.passwordChanged = false;
         this.permissions = permissions;
+
     }
+
+    public Set<Visit> getVisitsEmployee() {
+        return visitsEmployee;
+    }
+
+    public void setVisitsEmployee(Set<Visit> visitsEmployee) {
+        this.visitsEmployee = visitsEmployee;
+    }
+
 
     public Employee() {
 
@@ -64,7 +69,7 @@ public class Employee extends User{
            return Arrays.asList(permissions.split(","));
         }
         catch (NullPointerException err){
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
     }
 
