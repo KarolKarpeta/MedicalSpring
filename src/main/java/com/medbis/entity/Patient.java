@@ -1,5 +1,6 @@
 package com.medbis.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "patients", schema = "public")
 public class Patient extends User {
