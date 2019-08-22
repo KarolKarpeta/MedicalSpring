@@ -100,14 +100,6 @@ public class Employee extends User{
         this.login = login;
     }
 
-    public Set<Visit> getVisitsEmployee() {
-        return visitsEmployee;
-    }
-
-    public void setVisitsEmployee(Set<Visit> visitsEmployee) {
-        this.visitsEmployee = visitsEmployee;
-    }
-
 
     public boolean isPasswordChanged() {
         return passwordChanged;
