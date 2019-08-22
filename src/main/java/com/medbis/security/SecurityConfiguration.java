@@ -39,7 +39,7 @@ public void configure(HttpSecurity http) throws Exception{
             .authorizeRequests()
             .antMatchers("/css/**", "/js/**","/signin", "/login").permitAll()
             .antMatchers("/employees/change-password", "/employees/change-password-form").hasAnyRole("NURSE", "ADMIN")
-            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines/**").hasRole("ADMIN")
+            .antMatchers( "/categories/**", "/treatments/**", "/diseases/**", "/employees/**", "/medicines/**", "/visits/all-visits-list").hasRole("ADMIN")
             .and()
             .formLogin().loginProcessingUrl("/signin").loginPage("/login")
             .usernameParameter("username").passwordParameter("password").successHandler(loginSuccessHandler)

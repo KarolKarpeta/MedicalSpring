@@ -104,40 +104,31 @@ public class VisitController {
 
 
     @GetMapping("visits")
-    public String showSplittedList(@RequestParam(value = "status", required = false, defaultValue = "all") String isVisitDone, Model model){
+    public String showSplittedList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
-
-        if(isVisitDone.equals("all")){
-            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
-                model.addAttribute("visitsList", visitService.findAll());
-            } else {
+        switch (isVisitDone) {
+            case "all":
                 model.addAttribute("visitsList", visitService.findAllByEmployeeId(userDetails.getEmployee().getId()));
-            }
-        }
-        else if(isVisitDone.equals("true")){
-            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
-                model.addAttribute("visitsList", visitService.findAccomplishedVisits());
-            }
-            else {
+                break;
+            case "true":
                 model.addAttribute("visitsList", visitService.findAccomplishedVisitsByEmployeeId(userDetails.getEmployee().getId()));
-            }
-        }
-        else if(isVisitDone.equals("false")){
-            if(userDetails.getEmployee().getPermissionsList().contains("ADMIN")) {
-                model.addAttribute("visitsList", visitService.findPlannedVisits());
-            }
-            else {
+                break;
+            case "false":
                 model.addAttribute("visitsList", visitService.findPlannedVisitsByEmployeeId(userDetails.getEmployee().getId()));
-            }
         }
         return "visits/visit-list";
     }
 
-    @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action ,Model theModel) {
+    @GetMapping("/visits/all-visits-list")
+    public String showAllVisitsForAdmin(Model model){
+        model.addAttribute("visitsList", this.visitService.findAll());
+        return "visits/visit-list";
+    }
 
+    @GetMapping("/visits/showFormForEditVisit")
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action ,Model theModel) {
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId());
