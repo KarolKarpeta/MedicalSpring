@@ -1,9 +1,6 @@
 package com.medbis.controller;
 
-import com.medbis.entity.Employee;
-import com.medbis.entity.Patient;
-import com.medbis.entity.Treatment;
-import com.medbis.entity.Visit;
+import com.medbis.entity.*;
 import com.medbis.mail.MailService;
 import com.medbis.pdf.PdfGenerator;
 import com.medbis.service.interfaces.CategoryService;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,18 +84,26 @@ public class VisitController {
             return "visits/visit-form";
         }
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
+        for(VisitTreatment visitTreatment: theVisit.getVisitTreatments()){
+            visitTreatment.setVisit(theVisit);
+            System.out.println("Saving... "  + Instant.now());
+        }
         visitService.save(theVisit);
+        System.out.println("Saved... "  + Instant.now());
         if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
             sendMail(theVisit, "addVisit");
         }
         else if(action.equals("edit")) {
+            System.out.println("Send email... " + Instant.now() );
             sendMail(theVisit, "editVisit");
+            visitService.save(theVisit);
         }
         if(action.equals("hold")){
+            System.out.println("Holding... "  + Instant.now());
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
-
+        System.out.println("rendering............ "  + Instant.now());
         return "redirect:/visits";
     }
 
@@ -153,6 +159,8 @@ public class VisitController {
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);
         //theVisit.getServices().add(new Treatment()); //.getRows().add(new Row());
+        theVisit.getVisitTreatments().add(new VisitTreatment());
+
         theModel.addAttribute("allTreatments", treatmentService.findAll());
 
         if(action.equals("edit")){
@@ -172,8 +180,9 @@ public class VisitController {
         theModel.addAttribute("allTreatments", treatmentService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
         //theVisit.getServices().remove(rowId.intValue());
+        theVisit.getVisitTreatments().remove(rowId.intValue());
 
-        if (action.equals("edit")) {
+    if (action.equals("edit")) {
             return "visits/visit-form";
         } else {
             return "visits/visit-hold";
