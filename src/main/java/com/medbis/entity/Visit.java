@@ -55,10 +55,10 @@ public class Visit {
 
 
 
-    @OneToMany(mappedBy = "primaryKey.visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "primaryKey.visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<VisitTreatment> visitTreatments = new ArrayList<>();
 
-    public List<VisitTreatment> geVisitTreatments() {
+    public List<VisitTreatment> getVisitTreatments() {
         return visitTreatments;
     }
     public void setVisitTreatments(List<VisitTreatment> visitTreatments) {
