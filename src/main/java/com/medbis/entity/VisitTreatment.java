@@ -49,4 +49,11 @@ public class VisitTreatment {
         this.note = note;
     }
 
+    @Override
+    public String toString() {
+        return "VisitTreatment{" +
+                "primaryKey=" + primaryKey +
+                ", note='" + note + '\'' +
+                '}';
+    }
 }
