@@ -76,8 +76,8 @@ public class VisitController {
     }
 
     //ADDING NEW VISITS
-    @PostMapping("/visits/{action}/addNewNewVisit")
-    public String addNewMedicine(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
+    @PostMapping("/visits/{action}/addNewVisit")
+    public String addNewVisit(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
         if (bindingResult.hasErrors()) {
@@ -167,7 +167,7 @@ public class VisitController {
 
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
-    @PostMapping(value="/visits/{action}/addNewNewVisit", params={"addRow"})
+    @PostMapping(value="/visits/{action}/addNewVisit", params={"addRow"})
     public String addTreatmentRow(@PathVariable("action") String action,  Model theModel, @ModelAttribute("visit") Visit theVisit) {
 
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
@@ -187,7 +187,7 @@ public class VisitController {
 
     }
     //DELETE ONE ROW OF TREATMENTS, look params!
-    @PostMapping(value="/visits/{action}/addNewNewVisit", params={"removeRow"})
+    @PostMapping(value="/visits/{action}/addNewVisit", params={"removeRow"})
     public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest req, @PathVariable String action) {
         theModel.addAttribute("patientId", theVisit.getVisitPatientId());
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());

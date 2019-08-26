@@ -27,7 +27,7 @@
 
 <!--    <p class="btn btn-info btn-sm mb-1 mt-1">Fill form to add new visit</p>-->
 
-    <form action="#" th:action="@{/visits/{action}/addNewNewVisit(action='edit')}" th:object="${visit}" method="POST">
+    <form action="#" th:action="@{/visits/{action}/addNewVisit(action='edit')}" th:object="${visit}" method="POST">
         <input type="hidden" th:value="${patientId}" name="visitPatientId" />
         <input type="hidden" th:value="${employeeId}" name="visitEmployeeId" />
         <!--            for UPDATE -->
@@ -96,7 +96,6 @@
                             </div>
                         </div>
 
-<!--                        th:field="*{visitTreatments[__${visitTreatmentStat.index}__].getPrimaryKey().getVisit()}"-->
                         <div class="card">
                             <table class="table">
                                 <tbody th:each="visitTreatment,visitTreatmentStat : *{visitTreatments}">
@@ -115,8 +114,6 @@
                                                 </option>
                                             </select>
                                         </td>
-                                        <!--                                    <td class="align-middle text-center" th:field="*{visitTreatments[__${visitTreatmentStat.index}__].note}" th:text="lalalal">1xxx</td>-->
-
                                         <td class="text-center">
                                             <button type="submit" name="removeRow" th:value="${visitTreatmentStat.index}"
                                                     class="btn btn-outline-danger">Usuń świadczenie
