@@ -3,13 +3,9 @@ package com.medbis.controller;
 import com.medbis.dto.PasswordChangerDto;
 import com.medbis.entity.Employee;
 import com.medbis.factory.UserFactory;
-import com.medbis.security.RolesEnum;
 import com.medbis.service.interfaces.UserService;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.*;
 
 @Controller
 public class EmployeeController {
@@ -39,6 +34,13 @@ public class EmployeeController {
     public String findAll(Model theModel) {
         theModel.addAttribute("employees", userService.findAll());
         return "users/employee-list";
+    }
+
+    @GetMapping ("/employees/show-employee-details")
+    public String showPatientDetails(@RequestParam("id")int id, Model model){
+        Employee employee = (Employee) userService.findById(id);
+        model.addAttribute("employee", employee);
+        return "users/employee-details";
     }
 
     //ADDING NEW Employee
@@ -90,11 +92,6 @@ public class EmployeeController {
             return "users/password-changer";
     }
 
-
-
-
-
-
     @PostMapping("employees/change-password")
     public String changePassword(@Valid @ModelAttribute("dto") PasswordChangerDto dto, BindingResult bindingResult, BCryptPasswordEncoder bCryptPasswordEncoder) {
         String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -109,7 +106,6 @@ public class EmployeeController {
                     }
                 }
             }
-
         return "redirect:/employees/change-password-form";
     }
 }
