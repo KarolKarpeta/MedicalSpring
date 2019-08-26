@@ -1,5 +1,8 @@
 package com.medbis.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -33,9 +36,6 @@ public class Employee extends User{
     @OneToMany(mappedBy="employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Visit> visitsEmployee;
 
-
-
-
     public String getPermissions() {
         return permissions;
     }
@@ -48,19 +48,6 @@ public class Employee extends User{
         this.login = login;
         this.passwordChanged = false;
         this.permissions = permissions;
-
-    }
-
-    public Set<Visit> getVisitsEmployee() {
-        return visitsEmployee;
-    }
-
-    public void setVisitsEmployee(Set<Visit> visitsEmployee) {
-        this.visitsEmployee = visitsEmployee;
-    }
-
-
-    public Employee() {
 
     }
 

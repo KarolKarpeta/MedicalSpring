@@ -3,12 +3,9 @@ package com.medbis.security;
 import com.medbis.controller.HomeController;
 import com.medbis.entity.Employee;
 import com.medbis.repository.EmployeeRepository;
-import com.medbis.security.UserPrincipal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +27,6 @@ public class UserPrinicipalDetailsService implements UserDetailsService {
         }
         catch (NullPointerException err){
             System.out.println("NullPointerException in UserPrincipalDetailservice.loadByUserName");
-            //todo:add message to login form about an error;
           homeController.showLoginForm();
         }
         return null;

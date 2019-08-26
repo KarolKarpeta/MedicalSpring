@@ -19,12 +19,34 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/patients">Pacjenci <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li th:if="${isAdmin} == false" class="nav-item active">
+                    <a class="nav-link" th:href="@{/visits(status=false)}"><span class="sr-only">(current)</span>Wizyty zaplanowane</a>
+                </li>
+                <li th:if="${isAdmin} == false" class="nav-item active">
+                    <a class="nav-link" th:href="@{/visits(status=true)}"><span class="sr-only">(current)</span>Wizyty zrealizowane</a>
+                </li>
+                <li  th:if="${isAdmin} == true" class="nav-item active">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wizyty
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/visits(status=false)}"><span class="sr-only">(current)</span>Moje wizyty zaplanowane</a>
+                            <a class="dropdown-item" th:href="@{/visits(status=true)}"><span class="sr-only">(current)</span>Moje wizyty zrealizowane</a>
+                            <a class="dropdown-item" th:href="@{/visits/all-visits-list}"><span class="sr-only">(current)</span>Wszystkie wizyty</a>
+                        </div>
+                    </div>
+                </li>
+
+
+
+
+<!--                <li class="nav-item active">
                     <a class="nav-link" th:href="@{/visits(status=false)}"><span class="sr-only">(current)</span>Wizyty zaplanowane</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/visits(status=true)}"><span class="sr-only">(current)</span>Wizyty zrealizowane</a>
-                </li>
+                </li>-->
 
                    <!-- <a class="nav-link" href="/visits">Wizyty<span class="sr-only">(current)</span></a>-->
 

@@ -1,6 +1,5 @@
 package com.medbis.service.interfaces;
 
-import com.medbis.entity.Employee;
 import com.medbis.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,6 @@ public interface UserService {
     void save(User user);
 
     void deleteById(int id);
-
-    boolean checkIfPasswordChangeRequired(Employee employee);
 
     User findByName(String name);
 

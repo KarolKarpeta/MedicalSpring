@@ -1,6 +1,5 @@
 package com.medbis.service.impl;
 
-import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.User;
 import com.medbis.repository.PatientRepository;
@@ -48,10 +47,6 @@ public class PatientServiceImpl implements UserService {
         patientRepository.deleteById(theId);
     }
 
-    @Override
-    public boolean checkIfPasswordChangeRequired(Employee employee) {
-        return false;
-    }
 
     @Override
     public User findByName(String name) {
