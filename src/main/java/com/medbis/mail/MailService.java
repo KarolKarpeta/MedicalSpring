@@ -2,31 +2,35 @@ package com.medbis.mail;
 
 import com.medbis.entity.Employee;
 import com.medbis.entity.Visit;
+import com.medbis.service.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
-
 @Service
-public class MailService {
+public class MailService implements Runnable {
+
 
     private MailCfg mailCfg;
+    private MailContent mailContent;
+    private Visit visit;
+    private String action;
+    private UserService employeeService;
 
-    MailService(MailCfg mailCfg){
-        this.mailCfg = mailCfg;
+    public void setVisit(Visit visit) {
+        this.visit = visit;
     }
 
-   public JavaMailSenderImpl createMailSender(){
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setUsername(mailCfg.getUsername());
-        mailSender.setPassword(mailCfg.getPassword());
-        mailSender.setHost(mailCfg.getHost());
-        mailSender.setPort(Integer.parseInt(mailCfg.getPort()));
-        Properties properties = mailSender.getJavaMailProperties();
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-        return mailSender;
-   }
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+
+    MailService(MailCfg mailCfg, MailContent mailContent,@Qualifier("EmployeeServiceImpl") UserService employeeService){
+        this.mailCfg = mailCfg;
+        this.mailContent = mailContent;
+        this.employeeService = employeeService;
+    }
 
    public SimpleMailMessage createMailMessage(String mail, MailDto mailDto){
        SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -44,17 +48,16 @@ public class MailService {
 
         switch(action) {
             case "deleteVisit":
-                mailMessage.setSubject("Informacja o anulowaniu wizyty pielęgniarki w dn. " +
-                        visit.getVisitDate() + ".");
-                mailMessage.setText(createDeleteVisitMail(visit, employee));
+                mailMessage.setSubject(mailContent.getDeleteVisitSubject());
+                mailMessage.setText(mailContent.getDeleteVisitContent(visit, employee));
                 break;
             case "addVisit":
-                mailMessage.setSubject("Biuro Medical Spring");
-                mailMessage.setText(createNewVisitMail(visit, employee));
+                mailMessage.setSubject(mailContent.getAddVisitSubject());
+                mailMessage.setText(mailContent.getNewVisitContent(visit, employee));
                 break;
             case "editVisit":
-                mailMessage.setSubject(("Informacja o zmianie terminu wizyty pielęgniarki"));
-                mailMessage.setText(createEditVisitMail(visit, employee));
+                mailMessage.setSubject(mailContent.getEditVisitSubject());
+                mailMessage.setText(mailContent.getEditVisitContent(visit, employee));
                 break;
 
             default:
@@ -64,28 +67,19 @@ public class MailService {
         return mailMessage;
     }
 
-   public String createNewVisitMail(Visit visit, Employee employee) {
-        return "Dzień dobry,\n"  +
-                "Przypominamy o zaplanowanej wizycie, która odbędzie się dn. " + visit.getVisitDate() + ". " +
-                "Wizytę przeprowadzi " + employee.getName() + " " + employee.getSurname() +
-                " " + " W celu odwołania lub przełożenia wizyty prosimy o kontakt przynajmniej 24h przed planowaną wizytą. \n" +
-                "Do zobaczenia!";
-    }
+        private void sendMail(){
+            Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
+            String mail = visit.getPatient().getMail();
+            SimpleMailMessage mailMessage = createMailMessage(mail, visit, employee, action);
+            MailBox.getInstance().send(mailMessage);
+        }
 
-    public String createDeleteVisitMail(Visit visit, Employee employee) {
-        return "Dzień dobry,\n\n"  +
-                "Informujemy, że wizyta pielęgniarki "+ employee.getName() + " " + employee.getSurname() +
-                " zaplanowana na dzień " + visit.getVisitDate() + " została odwołana.\n" +
-                "W celu umówienia nowej wizyty prosimy o kontakt z ww. pielęgniarką pod nr. telefonu: " +
-                employee.getWorkPhoneNumber() +".\n\nPozdrawiamy,\nBiuro Medical Spring";
-    }
 
-    public String createEditVisitMail(Visit visit, Employee employee) {
-        return "Dzień dobry,\n\n"  +
-                "Informujemy, że wizyta pielęgniarki "+ employee.getName() + " " + employee.getSurname() +
-                " została przełożona na dzień " + visit.getVisitDate() + ".\n" +
-                "W razie pytań prosimy o kontakt z ww. pielęgniarką pod nr. telefonu: " +
-                employee.getWorkPhoneNumber() +".\n\nPozdrawiamy,\nBiuro Medical Spring";
+    @Override
+    public void run() {
+        System.out.println("Powinien powstac nowy watek ");
+        System.out.println("zaczynam wysylac o godz: " + System.currentTimeMillis());
+        sendMail();
+        System.out.println("Kokoncze wysylac o: " + System.currentTimeMillis());
     }
-
 }

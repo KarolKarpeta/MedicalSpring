@@ -1,6 +1,5 @@
 package com.medbis.controller;
 
-import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
@@ -13,8 +12,6 @@ import com.medbis.service.interfaces.UserService;
 import com.medbis.service.interfaces.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -53,7 +50,9 @@ public class VisitController {
 
     @GetMapping("visits/delete")
     public String deleteVisit(@RequestParam("visitId") int visitId) {
-        sendMail(visitService.findById(visitId), "deleteVisit");
+        mailService.setAction("deleteVisit");
+        mailService.setVisit(visitService.findById(visitId));
+        mailService.run();
         this.visitService.deleteById(visitId);
         return "redirect:/visits";
     }
@@ -89,10 +88,15 @@ public class VisitController {
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         visitService.save(theVisit);
         if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
-            sendMail(theVisit, "addVisit");
+            mailService.setVisit(theVisit);
+            mailService.setAction("addVisit");
+            Thread thread = new Thread(mailService);
+            thread.run();
         }
         else if(action.equals("edit")) {
-            sendMail(theVisit, "editVisit");
+            mailService.setVisit(theVisit);
+            mailService.setAction("editVisit");
+            mailService.run();
         }
         if(action.equals("hold")){
             theVisit.setVisitStatus(true);
@@ -187,12 +191,4 @@ public class VisitController {
         }
     }
 
-
-    private void sendMail(Visit theVisit, String action){
-        Employee employee = (Employee) employeeService.findById(theVisit.getVisitEmployeeId());
-        JavaMailSenderImpl mailSender = mailService.createMailSender();
-        String mail = theVisit.getPatient().getMail();
-        SimpleMailMessage mailMessage = this.mailService.createMailMessage(mail, theVisit, employee, action);
-        mailSender.send(mailMessage);
-    }
 }
