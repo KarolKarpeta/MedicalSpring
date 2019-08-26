@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -96,36 +96,47 @@
                             </div>
                         </div>
 
-
+<!--                        th:field="*{visitTreatments[__${visitTreatmentStat.index}__].getPrimaryKey().getVisit()}"-->
                         <div class="card">
                             <table class="table">
+                                <tbody th:each="visitTreatment,visitTreatmentStat : *{visitTreatments}">
+                                    <tr>
+                                        <td class="align-left text-center" th:text="${visitTreatmentStat.count}">1xxx</td>
+                                        <!--                                    onchange="checkMedicine()"-->
+                                        <td>
+                                            <select class="diffrentService form-control" onchange="checkServiceContent()" id="selectMedicine"
+                                                    th:field="*{visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment}"
+                                                    th:required="true">
+                                                <option value="" th:disabled="false" th:selected="true" formnovalidate>
+                                                    Wybierz świadczenie >> </option>
+                                                <option th:each="treatmentToAdd : ${allTreatments}"
+                                                        th:value="${treatmentToAdd.getTreatmentId()}"
+                                                        th:text="${treatmentToAdd.getName()}">Thymus Thymi
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <!--                                    <td class="align-middle text-center" th:field="*{visitTreatments[__${visitTreatmentStat.index}__].note}" th:text="lalalal">1xxx</td>-->
 
-                                <tbody>
-                                <tr th:each="service,serviceStat : *{services}">
-                                    <td class="align-middle text-center" th:text="${serviceStat.count}">1</td>
-<!--                                    onchange="checkMedicine()"-->
-                                    <td>
-                                        <select class="diffrentService form-control" onchange="checkServiceContent()" id="selectMedicine"
-                                                th:field="*{services[__${serviceStat.index}__]}" th:required="false">
-                                            <option value="" th:disabled="false" th:selected="true">
-                                                Wybierz świadczenie >> </option>
-                                            <option th:each="treatmentToAdd : ${allTreatments}"
-                                                    th:value="${treatmentToAdd.getTreatmentId()}"
-                                                    th:text="${treatmentToAdd.getName()}">Thymus Thymi
-                                            </option>
-                                        </select>
-                                    </td>
-<!--                                    <td>-->
-<!--                                        <input type="text" th:value="${service.getDescription()}">-->
-<!--                                    </td>-->
-                                    <td class="text-center">
-                                        <button type="submit" name="removeRow" th:value="${serviceStat.index}"
-                                                class="btn btn-outline-danger">Usuń świadczenie
-                                        </button>
-                                    </td>
-                                </tr>
+                                        <td class="text-center">
+                                            <button type="submit" name="removeRow" th:value="${visitTreatmentStat.index}"
+                                                    class="btn btn-outline-danger">Usuń świadczenie
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3" class="w-100 pb-0 mb-0">
+                                            <label class="w-100 pb-0 mb-0">
+                                                <textarea class="form-control" style="width: 100%" placeholder="note" rows="1" th:field="*{visitTreatments[__${visitTreatmentStat.index}__].note}"></textarea>
+                                            </label>
+                                        </td>
+
+                                    </tr>
+
                                 </tbody>
                             </table>
+
+
                         </div>
 
 

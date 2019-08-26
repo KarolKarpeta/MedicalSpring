@@ -67,7 +67,7 @@ public class MailService implements Runnable {
         return mailMessage;
     }
 
-        private void sendMail(){
+        public void sendMail(){
             Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
             String mail = visit.getPatient().getMail();
             SimpleMailMessage mailMessage = createMailMessage(mail, visit, employee, action);
