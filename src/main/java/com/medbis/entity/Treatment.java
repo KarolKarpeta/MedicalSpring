@@ -32,13 +32,27 @@ public class Treatment {
     @NotEmpty
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "services")
-    private Set<Visit> visits = new HashSet<>();
+    @OneToMany(mappedBy = "primaryKey.treatment", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<VisitTreatment> visitTreatments = new HashSet<VisitTreatment>();
+
+    public Set<VisitTreatment> geVisitTreatments() {
+        return visitTreatments;
+    }
+    public void setVisitTreatments(Set<VisitTreatment> visitTreatments) {
+        this.visitTreatments = visitTreatments;
+    }
+
+    public void addVisitTreatment(VisitTreatment visitTreatment){
+        this.visitTreatments.add(visitTreatment);
+    }
+
+    //    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE
+//            },
+//            mappedBy = "services")
+//    private Set<Visit> visits = new HashSet<>();
 
 
 

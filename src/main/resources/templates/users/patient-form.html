@@ -42,8 +42,7 @@
 
                     <div class="mb-3">
                         <input id="pesel" onkeyup="ParsePesel();" type="text" th:field="*{pesel}"  th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"  placeholder="Pesel"/>
-                        <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}"
-                              th:errors="*{pesel}"></mark>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('pesel')}"                            th:errors="*{pesel}"></mark>
                     </div>
 <!--                    <input type="date" th:value="*{date}" th:field="*{date}" />-->
 
