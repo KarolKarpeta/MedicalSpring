@@ -5,7 +5,6 @@ import com.medbis.entity.Patient;
 import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,9 +43,8 @@ public class MailController {
         }
         try {
             Patient patient = (Patient) userService.findById(Integer.parseInt(id));
-            JavaMailSenderImpl mailSender = mailService.createMailSender();
             SimpleMailMessage mailMessage = mailService.createMailMessage(patient.getMail(), mailDto);
-            mailSender.send(mailMessage);
+            MailBox.getInstance().send(mailMessage);
         }
         catch (NumberFormatException err){
             err.printStackTrace();

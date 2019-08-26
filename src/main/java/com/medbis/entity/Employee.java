@@ -14,9 +14,16 @@ import java.util.Set;
 
 
 @Component
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "employees", schema = "public")
 public class Employee extends User{
+
+    /*
+        plec oznaczac jako M/F zeby ujednolicic
+*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
