@@ -15,6 +15,5 @@ void deleteById(int id);
 
 void save(Treatment treatment);
 
-
-
+List<Treatment> findAllByCategoryId(int categoryId);
 }
