@@ -173,7 +173,6 @@ public class VisitController {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);
-        //theVisit.getServices().add(new Treatment()); //.getRows().add(new Row());
         theVisit.getVisitTreatments().add(new VisitTreatment());
 
         theModel.addAttribute("allTreatments", treatmentService.findAll());
@@ -194,7 +193,6 @@ public class VisitController {
         theVisit.setPatient(thePatient);
         theModel.addAttribute("allTreatments", treatmentService.findAll());
         final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-        //theVisit.getServices().remove(rowId.intValue());
         theVisit.getVisitTreatments().remove(rowId.intValue());
 
     if (action.equals("edit")) {
