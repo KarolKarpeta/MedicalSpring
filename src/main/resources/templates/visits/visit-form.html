@@ -16,6 +16,11 @@
             crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/theSameContent.js}"></script>
     <script type="text/javascript" th:src="@{/js/peselValidation.js}"></script>
+    <script type="text/javascript" th:src="@{/js/removeRequired.js}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -103,9 +108,9 @@
                                         <td class="align-left text-center" th:text="${visitTreatmentStat.count}">1xxx</td>
                                         <!--                                    onchange="checkMedicine()"-->
                                         <td>
-                                            <select class="diffrentService form-control" onchange="checkServiceContent()" id="selectMedicine"
+                                            <select th:id="${visitTreatmentStat.count}" class="diffrentService form-control" onchange="checkServiceContent()" id="selectMedicine"
                                                     th:field="*{visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment}"
-                                                    th:required="true">
+                                                    th:required="true" >
                                                 <option value="" th:disabled="false" th:selected="true" formnovalidate>
                                                     Wybierz świadczenie >> </option>
                                                 <option th:each="treatmentToAdd : ${allTreatments}"
@@ -116,7 +121,8 @@
                                         </td>
                                         <td class="text-center">
                                             <button type="submit" name="removeRow" th:value="${visitTreatmentStat.index}"
-                                                    class="btn btn-outline-danger">Usuń świadczenie
+                                                    class="btn btn-outline-danger" th:onclick="'removeRequired(\'' + ${visitTreatmentStat.count} + '\');'"
+                                            >Usuń świadczenie
                                             </button>
                                         </td>
                                     </tr>
