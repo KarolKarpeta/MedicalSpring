@@ -168,14 +168,16 @@ public class VisitController {
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
     @PostMapping(value="/visits/{action}/addNewVisit", params={"addRow"})
-    public String addTreatmentRow(@PathVariable("action") String action,  Model theModel, @ModelAttribute("visit") Visit theVisit) {
+    public String addTreatmentRow(@PathVariable("action") String action, final HttpServletRequest req, Model theModel, @ModelAttribute("visit") Visit theVisit) {
 
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);
         theVisit.getVisitTreatments().add(new VisitTreatment());
 
+        final Integer categoryId = Integer.valueOf(req.getParameter("addRow"));
         theModel.addAttribute("allTreatments", treatmentService.findAll());
+        theModel.addAttribute("selectedTreatments", treatmentService.findAllByCategoryId(categoryId));
 
         if(action.equals("edit")){
             return "visits/visit-form";

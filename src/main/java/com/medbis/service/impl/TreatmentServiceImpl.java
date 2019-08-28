@@ -42,4 +42,9 @@ public class TreatmentServiceImpl implements TreatmentService {
     public void save(Treatment treatment) {
         this.treatmentRepository.save(treatment);
     }
+
+    @Override
+    public List<Treatment> findAllByCategoryId(int categoryId) {
+        return treatmentRepository.findAllByCategoryId(categoryId);
+    }
 }
