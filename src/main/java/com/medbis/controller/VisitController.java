@@ -76,6 +76,7 @@ public class VisitController {
     public String addNewVisit(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
+        int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         if (bindingResult.hasErrors()) {
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId());
@@ -93,19 +94,13 @@ public class VisitController {
             visitService.save(theVisit);
         }
         else{
-            int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
-            mailService.setVisit(theVisit);
-            Thread email = new Thread(mailService);
-            sendMail(email, theVisit, initialAmountOfPlannedVisit);
+
+            mailService.prepareMailToSend(theVisit, initialAmountOfPlannedVisit);
         }
         return "redirect:/visits";
     }
 
-    private void sendMail(Thread email, Visit theVisit, int initialAmountOfPlannedVisit){
-        mailService.setAction(visitService.setCorrectAction(initialAmountOfPlannedVisit));
-        mailService.setVisit(theVisit);
-        email.start();
-    }
+
 
     @GetMapping("visits")
     public String showVisitsList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){

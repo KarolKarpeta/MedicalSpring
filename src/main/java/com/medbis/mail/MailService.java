@@ -4,6 +4,7 @@ import com.medbis.entity.Employee;
 import com.medbis.entity.Patient;
 import com.medbis.entity.Visit;
 import com.medbis.service.interfaces.UserService;
+import com.medbis.service.interfaces.VisitService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,15 @@ public class MailService implements Runnable {
 
     private UserService employeeService;
     private UserService patientService;
+    private VisitService visitService;
 
 
-    MailService(MailCfg mailCfg, MailContent mailContent,@Qualifier("EmployeeServiceImpl") UserService employeeService, @Qualifier("PatientServiceImpl") UserService patientService){
+    MailService(MailCfg mailCfg, MailContent mailContent,@Qualifier("EmployeeServiceImpl") UserService employeeService, @Qualifier("PatientServiceImpl") UserService patientService, VisitService visitService){
         this.mailCfg = mailCfg;
         this.mailContent = mailContent;
         this.employeeService = employeeService;
         this.patientService = patientService;
+        this.visitService  = visitService;
     }
 
     public void setAction(String action) {
@@ -79,10 +82,16 @@ public class MailService implements Runnable {
         MailBox.getInstance().send(mailMessage);
     }
 
+    public void prepareMailToSend(Visit theVisit, int initialAmountOfPlannedVisit){
+        Thread email = new Thread(this);
+        this.setAction(visitService.setCorrectAction(initialAmountOfPlannedVisit));
+        this.setVisit(theVisit);
+        email.start();
+    }
+
 
     @Override
     public void run() {
-        System.out.println("wysylam maila nowym watkiem");
         sendMail();
     }
 
