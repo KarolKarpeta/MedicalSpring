@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Controller
 public class VisitController {
@@ -76,7 +77,7 @@ public class VisitController {
     public String addNewVisit(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
-        int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
+
         if (bindingResult.hasErrors()) {
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId());
@@ -84,17 +85,17 @@ public class VisitController {
             return "visits/visit-form";
         }
 
+        int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         for(VisitTreatment visitTreatment: theVisit.getVisitTreatments()){
             visitTreatment.setVisit(theVisit);
         }
         visitService.save(theVisit);
 
-        if(action.equals("hold")){
+        if(action.equals("hold") || theVisit.getVisitDate().isBefore(LocalDate.now())){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
         else{
-
             mailService.prepareMailToSend(theVisit, initialAmountOfPlannedVisit);
         }
         return "redirect:/visits";
