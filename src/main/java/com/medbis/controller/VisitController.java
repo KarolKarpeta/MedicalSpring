@@ -30,7 +30,6 @@ public class VisitController {
     private CategoryService categoryService;
     private TreatmentService treatmentService;
     private MailService mailService;
-    private UserService employeeService;
 
 
     @Autowired
@@ -38,14 +37,12 @@ public class VisitController {
                            @Qualifier("PatientServiceImpl") UserService userService,
                            CategoryService categoryService,
                            TreatmentService treatmentService,
-                           MailService mailService,
-                           @Qualifier("EmployeeServiceImpl") UserService employeeService) {
+                           MailService mailService) {
         this.visitService = visitService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.treatmentService = treatmentService;
         this.mailService = mailService;
-        this.employeeService = employeeService;
     }
 
     @GetMapping("visits/delete")
@@ -85,32 +82,33 @@ public class VisitController {
             theModel.addAttribute("allTreatments", treatmentService.findAll());
             return "visits/visit-form";
         }
-        int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
+
         for(VisitTreatment visitTreatment: theVisit.getVisitTreatments()){
             visitTreatment.setVisit(theVisit);
         }
         visitService.save(theVisit);
-        if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
-            mailService.setVisit(theVisit);
-            mailService.setAction("addVisit");
-            Thread thread = new Thread(mailService);
-            thread.run();
-        }
-        else if(action.equals("edit")) {
-            mailService.setVisit(theVisit);
-            mailService.setAction("editVisit");
-            mailService.run();
-            visitService.save(theVisit);
-        }
+
         if(action.equals("hold")){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
+        else{
+            int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
+            mailService.setVisit(theVisit);
+            Thread email = new Thread(mailService);
+            sendMail(email, theVisit, initialAmountOfPlannedVisit);
+        }
         return "redirect:/visits";
     }
 
+    private void sendMail(Thread email, Visit theVisit, int initialAmountOfPlannedVisit){
+        mailService.setAction(visitService.setCorrectAction(initialAmountOfPlannedVisit));
+        mailService.setVisit(theVisit);
+        email.start();
+    }
+
     @GetMapping("visits")
-    public String showSplittedList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){
+    public String showVisitsList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 

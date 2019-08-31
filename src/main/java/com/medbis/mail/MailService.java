@@ -1,6 +1,7 @@
 package com.medbis.mail;
 
 import com.medbis.entity.Employee;
+import com.medbis.entity.Patient;
 import com.medbis.entity.Visit;
 import com.medbis.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,23 +14,27 @@ public class MailService implements Runnable {
 
     private MailCfg mailCfg;
     private MailContent mailContent;
+
     private Visit visit;
     private String action;
-    private UserService employeeService;
 
-    public void setVisit(Visit visit) {
-        this.visit = visit;
+    private UserService employeeService;
+    private UserService patientService;
+
+
+    MailService(MailCfg mailCfg, MailContent mailContent,@Qualifier("EmployeeServiceImpl") UserService employeeService, @Qualifier("PatientServiceImpl") UserService patientService){
+        this.mailCfg = mailCfg;
+        this.mailContent = mailContent;
+        this.employeeService = employeeService;
+        this.patientService = patientService;
     }
 
     public void setAction(String action) {
         this.action = action;
     }
 
-
-    MailService(MailCfg mailCfg, MailContent mailContent,@Qualifier("EmployeeServiceImpl") UserService employeeService){
-        this.mailCfg = mailCfg;
-        this.mailContent = mailContent;
-        this.employeeService = employeeService;
+    public void setVisit(Visit visit) {
+        this.visit = visit;
     }
 
    public SimpleMailMessage createMailMessage(String mail, MailDto mailDto){
@@ -40,13 +45,15 @@ public class MailService implements Runnable {
        mailMessage.setText(mailDto.getMessage());
        return mailMessage;
    }
-// respodnsvile for automatic mails
-   public SimpleMailMessage createMailMessage(String mail, Visit visit, Employee employee, String action){
+// respodnsvile for automatic mails//
+   public SimpleMailMessage createMailMessage(){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
+        Patient patient = (Patient) patientService.findById(visit.getVisitPatientId());
         mailMessage.setFrom(mailCfg.getUsername());
-        mailMessage.setTo(mail);
+        mailMessage.setTo(patient.getMail());
+        Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
 
-        switch(action) {
+        switch(this.action) {
             case "deleteVisit":
                 mailMessage.setSubject(mailContent.getDeleteVisitSubject());
                 mailMessage.setText(mailContent.getDeleteVisitContent(visit, employee));
@@ -67,16 +74,15 @@ public class MailService implements Runnable {
         return mailMessage;
     }
 
-    public void sendMail(){
-        Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
-        String mail = visit.getPatient().getMail();
-        SimpleMailMessage mailMessage = createMailMessage(mail, visit, employee, action);
+    private void sendMail(){
+        SimpleMailMessage mailMessage = createMailMessage();
         MailBox.getInstance().send(mailMessage);
     }
 
 
     @Override
     public void run() {
+        System.out.println("wysylam maila nowym watkiem");
         sendMail();
     }
 
