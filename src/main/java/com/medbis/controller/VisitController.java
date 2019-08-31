@@ -91,7 +91,7 @@ public class VisitController {
         }
         visitService.save(theVisit);
 
-        if(action.equals("hold") || theVisit.getVisitDate().isBefore(LocalDate.now())){
+        if(action.equals("hold") || theVisit.getVisitDate().isBefore(LocalDate.now().plusDays(1))){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
