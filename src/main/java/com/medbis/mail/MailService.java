@@ -40,7 +40,7 @@ public class MailService implements Runnable {
        mailMessage.setText(mailDto.getMessage());
        return mailMessage;
    }
-
+// respodnsvile for automatic mails
    public SimpleMailMessage createMailMessage(String mail, Visit visit, Employee employee, String action){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(mailCfg.getUsername());
@@ -67,19 +67,17 @@ public class MailService implements Runnable {
         return mailMessage;
     }
 
-        public void sendMail(){
-            Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
-            String mail = visit.getPatient().getMail();
-            SimpleMailMessage mailMessage = createMailMessage(mail, visit, employee, action);
-            MailBox.getInstance().send(mailMessage);
-        }
+    public void sendMail(){
+        Employee employee = (Employee) employeeService.findById(visit.getVisitEmployeeId());
+        String mail = visit.getPatient().getMail();
+        SimpleMailMessage mailMessage = createMailMessage(mail, visit, employee, action);
+        MailBox.getInstance().send(mailMessage);
+    }
 
 
     @Override
     public void run() {
-        System.out.println("Powinien powstac nowy watek ");
-        System.out.println("zaczynam wysylac o godz: " + System.currentTimeMillis());
         sendMail();
-        System.out.println("Kokoncze wysylac o: " + System.currentTimeMillis());
     }
+
 }
