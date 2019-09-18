@@ -1,6 +1,8 @@
 package com.medbis.controller;
 
-import com.medbis.entity.*;
+import com.medbis.entity.Patient;
+import com.medbis.entity.Visit;
+import com.medbis.entity.VisitTreatment;
 import com.medbis.mail.MailService;
 import com.medbis.pdf.PdfGenerator;
 import com.medbis.security.UserPrincipal;
@@ -19,9 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Controller
 public class VisitController {
@@ -31,7 +31,6 @@ public class VisitController {
     private CategoryService categoryService;
     private TreatmentService treatmentService;
     private MailService mailService;
-    private UserService employeeService;
 
 
     @Autowired
@@ -39,14 +38,12 @@ public class VisitController {
                            @Qualifier("PatientServiceImpl") UserService userService,
                            CategoryService categoryService,
                            TreatmentService treatmentService,
-                           MailService mailService,
-                           @Qualifier("EmployeeServiceImpl") UserService employeeService) {
+                           MailService mailService) {
         this.visitService = visitService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.treatmentService = treatmentService;
         this.mailService = mailService;
-        this.employeeService = employeeService;
     }
 
     @GetMapping("visits/delete")
@@ -80,45 +77,34 @@ public class VisitController {
     public String addNewVisit(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
+
         if (bindingResult.hasErrors()) {
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId());
             theModel.addAttribute("allTreatments", treatmentService.findAll());
             return "visits/visit-form";
         }
+
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
         for(VisitTreatment visitTreatment: theVisit.getVisitTreatments()){
             visitTreatment.setVisit(theVisit);
-            System.out.println("Saving... "  + Instant.now());
         }
         visitService.save(theVisit);
-        System.out.println("Saved... "  + Instant.now());
-        if (visitService.checkIfNewVisitAdded(initialAmountOfPlannedVisit)) {
-            mailService.setVisit(theVisit);
-            mailService.setAction("addVisit");
-            Thread thread = new Thread(mailService);
-            thread.run();
-        }
-        else if(action.equals("edit")) {
-            mailService.setVisit(theVisit);
-            mailService.setAction("editVisit");
-            mailService.run();
-            System.out.println("Send email... " + Instant.now() );
-            mailService.sendMail();
-            visitService.save(theVisit);
-        }
-        if(action.equals("hold")){
-            System.out.println("Holding... "  + Instant.now());
+
+        if(action.equals("hold") || theVisit.getVisitDate().isBefore(LocalDate.now().plusDays(1))){
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
-        System.out.println("rendering............ "  + Instant.now());
+        else{
+            mailService.prepareMailToSend(theVisit, initialAmountOfPlannedVisit);
+        }
         return "redirect:/visits";
     }
 
 
+
     @GetMapping("visits")
-    public String showSplittedList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){
+    public String showVisitsList(@RequestParam(value = "status", defaultValue = "all") String isVisitDone, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 

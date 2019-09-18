@@ -109,6 +109,12 @@
                         <mark class="error-sign small" th:if="${#fields.hasErrors('apartmentNumber')}"
                               th:errors="*{apartmentNumber}"></mark>
                     </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{mail}"
+                               th:class="${#fields.hasErrors('mail')}? 'form-control is-invalid' : 'form-control'" placeholder="Adres mail"/>
+                        <mark class="error-sign small" th:if="${#fields.hasErrors('mail')}"
+                              th:errors="*{mail}"></mark>
+                    </div>
                 </div>
 
 
