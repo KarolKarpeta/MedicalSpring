@@ -11,47 +11,80 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tableC.css}"/>
+
 </head>
 <body>
 
 <div class="mt-10">
     <header id="header" class="alt" th:include="menu :: title-menu" />
 </div>
-<div class="container">
-    <p>Patient:</p><br>
-    <H3 th:text="${patient.name + ' ' + patient.surname}"  ></H3>
 
-    <ul class="list-group list-group-flush" >
-        <li class="list-group-item" th:text="${'PESEL: ' +patient.pesel}"></li>
-        <li class="list-group-item" th:text="${'Data urodzenia: ' +patient.birthday}"></li>
-        <li class="list-group-item" th:text="${'Lekarz prowadzący: ' + doctor.name + ' ' + doctor.surname}"></li>
-    </ul><br>
 
-    <p class="text-uppercase font-weight-bold">Adres:</p>
-    <ul class="list-group list-group-flush" >
-        <li class="list-group-item" th:text="${patient.community}"></li>
-        <li class="list-group-item" th:text="${patient.zipCode +', ' +patient.city}"></li>
-        <li class="list-group-item" th:text="${patient.street + ' ' +patient.houseNumber +'/' +patient.apartmentNumber }"></li>
-    </ul><br>
 
-    <p class="text-uppercase font-weight-bold">Kontakt:</p>
-    <ul class="list-group list-group-flush" >
-        <li class="list-group-item" th:text="${patient.homePhoneNumber}"></li>
-        <li class="list-group-item" th:text="${patient.workPhoneNumber}"></li>
-        <li class="list-group-item" th:text="${patient.mobilePhoneNumber}"></li>
-    </ul>
+<div class="container mt-2">
+    <div class="row">
 
-    <p class="text-uppercase font-weight-bold">Medicines:</p>
-    <ul class="list-group list-group-flush" th:each="medicine, medicineStat : ${patient.patientMedicines}" >
-        <li class="list-group-item" th:text="${medicineStat.count+ ' '+ medicine.medicineName}"></li>
-    </ul>
+        <div class="col-md-4">
 
-    <p class="text-uppercase font-weight-bold">Diseases:</p>
-    <ul class="list-group list-group-flush" th:each="disease, diseaseStat : ${patient.patientDiseases}" >
-        <li class="list-group-item" th:text="${diseaseStat.count+ ' '+ disease.diseaseName}"></li>
-    </ul>
+            <div class="row">
+                <div class="card" style="width:100%">
+                    <h2 class="text-center mb-2 mt-2" th:text="${patient.name + ' ' + patient.surname}"></h2>
+                    <img class="card-img-top rounded mx-auto d-block " th:src="@{/images/avatar.png}" alt="Card image" style="width:60%" src="">
+                    <div class="card-body">
+                        <h6 class="card-title mb-1">Adres</h6>
+                        <p class="list-group-item" >
+                            <th:block th:text="${patient.street + ' ' + patient.houseNumber + '/' + patient.apartmentNumber}"/>    <br/>
+                            <th:block th:text="${#strings.substring(patient.zipCode,0,2) +'-'+ #strings.substring(patient.zipCode,2,5) +', '+ patient.city}"/>
+                        </p>
 
-    <a class="btn btn-outline-dark mb-3 mt-3" th:href="@{/patients}">Back to list</a>
+                        <h6 class="card-title mb-1 mt-3">Kontakt</h6>
+                        <p class="list-group-item" >
+                            <th:block th:text="${'+48 ' + patient.mobilePhoneNumber}"/> <br/>
+                            <th:block th:text="${'+48 ' + patient.workPhoneNumber}"/>  <br/>
+                            <th:block th:text="${'+48 ' + patient.homePhoneNumber}"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="card" style="width:100%">
+<!--                    choroby i leki-->
+                </div>
+            </div>
+            <div class="row mt-1">
+                <a class="btn btn-outline-dark mb-1 mt-1" th:href="@{/patients/}">Wstecz</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-8 pr-0">
+            <div class="card w-100 pb-0 mb-0">
+                <div class="w-100 mt-1 mb-1 ml-1">
+                    <label>Lista wizyt środowiskowych:</label>
+                </div>
+
+                <div class="card" style="overflow: auto; height: 75vh">
+                    <table class="table">
+                        <tbody th:each="visit: ${patient.getVisitsPatients()}">
+                        <tr>
+                            <td colspan="2" style="background-color: antiquewhite;" th:text="${'Data wizyty: ' + visit.visitDate}"> </td>
+                        </tr>
+                        <tr th:each="visitTreatment : ${visit.visitTreatments}">
+                            <td th:text="${visitTreatment.treatment.getName()}" > </td>
+                            <td th:text="${visitTreatment.note}"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 
