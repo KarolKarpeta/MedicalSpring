@@ -1,15 +1,9 @@
 package com.medbis.controller;
 
-import com.medbis.entity.Disease;
-import com.medbis.entity.Doctor;
-import com.medbis.entity.Medicine;
-import com.medbis.entity.Patient;
+import com.medbis.entity.*;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.impl.DoctorServiceImpl;
-import com.medbis.service.interfaces.DiseaseService;
-import com.medbis.service.interfaces.DoctorService;
-import com.medbis.service.interfaces.MedicineService;
-import com.medbis.service.interfaces.UserService;
+import com.medbis.service.interfaces.*;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +19,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,14 +30,16 @@ public class PatientController {
     private UserService userService;
     private UserFactory userFactory;
     private DoctorServiceImpl doctorService;
+    private VisitService visitService;
 
     @Autowired
-    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService, MedicineService medicineService, DoctorServiceImpl doctorService) {
+    public PatientController(@Qualifier(value = "PatientServiceImpl") UserService userService, UserFactory userFactory, DiseaseService diseaseService, MedicineService medicineService, DoctorServiceImpl doctorService, VisitService visitService) {
         this.userService = userService;
         this.userFactory = userFactory;
         this.diseaseService = diseaseService;
         this.medicineService = medicineService;
         this.doctorService = doctorService;
+        this.visitService = visitService;
     }
 
 
@@ -144,11 +141,15 @@ public class PatientController {
     @GetMapping ("/patients/showPatientDetails")
     public String showPatientDetails(@RequestParam("patientIdDetails")int theId, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
+        List<Visit> patientVisitList = visitService.findAllByVisitPatientIdOrderByVisitDateDesc(theId);
         Integer doctorId = newPatient.getDoctorId();
         Doctor doctor = doctorService.findById(doctorId);
         theModel.addAttribute("patient", newPatient);
         theModel.addAttribute("doctor", doctor);
-        return "users/patient-details";
+        theModel.addAttribute("patientVisitList", patientVisitList);
+
+//        return "users/patient-details";
+        return "users/index";
     }
 
 
