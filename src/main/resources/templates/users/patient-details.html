@@ -67,15 +67,14 @@
 
                 <div class="card" style="overflow: auto; height: 75vh">
                     <table class="table">
-                        <tbody th:each="visit: ${patient.getVisitsPatients()}">
-                        <tr>
-                            <td colspan="2" style="background-color: antiquewhite;" th:text="${'Data wizyty: ' + visit.visitDate}"> </td>
-                        </tr>
-                        <tr th:each="visitTreatment : ${visit.visitTreatments}">
-                            <td th:text="${visitTreatment.treatment.getName()}" > </td>
-                            <td th:text="${visitTreatment.note}"></td>
-                        </tr>
-
+                        <tbody th:each="visit: ${patient.getVisitsPatients()}" >
+                            <tr>
+                                <td colspan="2" style="background-color: antiquewhite;" th:text="${'Data wizyty: ' + visit.visitDate}"> </td>
+                            </tr>
+                            <tr th:each="visitTreatment : ${visit.visitTreatments}">
+                                <td th:text="${visitTreatment.treatment.getName()}" > </td>
+                                <td th:text="${visitTreatment.note}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
