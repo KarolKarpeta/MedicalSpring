@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -47,12 +48,19 @@ public class VisitController {
     }
 
     @GetMapping("visits/delete")
-    public String deleteVisit(@RequestParam("visitId") int visitId) {
+    public String deleteVisit(RedirectAttributes redirectAttributes,@RequestParam("visitId") int visitId, @RequestParam("backTo") String backTo) {
+        Visit visit = visitService.findById(visitId);
         mailService.setAction("deleteVisit");
         mailService.setVisit(visitService.findById(visitId));
         mailService.run();
         this.visitService.deleteById(visitId);
-        return "redirect:/visits";
+
+        if("patientDetails".equals(backTo)){
+            redirectAttributes.addAttribute("patientIdDetails", visit.getVisitPatientId());
+            return "redirect:/patients/showPatientDetails";
+        }else{
+            return "redirect:/visits";
+        }
     }
 
 
@@ -74,7 +82,7 @@ public class VisitController {
 
     //ADDING NEW VISITS
     @PostMapping("/visits/{action}/addNewVisit")
-    public String addNewVisit(@PathVariable("action") String action, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
+    public String addNewVisit(RedirectAttributes redirectAttributes, @PathVariable("action") String action, @RequestParam("backTo") String backTo, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
 
@@ -98,7 +106,12 @@ public class VisitController {
         else{
             mailService.prepareMailToSend(theVisit, initialAmountOfPlannedVisit);
         }
-        return "redirect:/visits";
+        if("patientDetails".equals(backTo)){
+            redirectAttributes.addAttribute("patientIdDetails", theVisit.getVisitPatientId());
+            return "redirect:/patients/showPatientDetails";
+        }else{
+            return "redirect:/visits";
+        }
     }
 
 
@@ -128,12 +141,12 @@ public class VisitController {
     }
 
     @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action ,Model theModel) {
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action , @RequestParam("backTo") String backTo, Model theModel) {
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
-
+        theModel.addAttribute("backTo", backTo);
         if(action.equals("hold")) {
             return "visits/visit-hold";
         }
