@@ -33,4 +33,6 @@ public interface VisitRepository extends JpaRepository<Visit, Integer> {
 
     List<Visit> findByVisitStatusIsFalseAndEmployeeId(int id);
 
+    List<Visit> findAllByVisitPatientIdOrderByVisitDateDesc(int id);
+
 }

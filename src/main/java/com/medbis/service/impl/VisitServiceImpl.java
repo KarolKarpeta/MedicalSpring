@@ -80,5 +80,10 @@ public class VisitServiceImpl implements VisitService {
         else return "editVisit";
     }
 
+    @Override
+    public List<Visit> findAllByVisitPatientIdOrderByVisitDateDesc(int id) {
+        return visitRepository.findAllByVisitPatientIdOrderByVisitDateDesc(id);
+    }
+
 
 }

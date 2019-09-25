@@ -25,6 +25,8 @@ public interface VisitService {
     List<Visit> findPlannedVisitsByEmployeeId(int id);
 
     String setCorrectAction(int isNewVisitAdded);
+
+    List<Visit> findAllByVisitPatientIdOrderByVisitDateDesc(int id);
 }
 
 
