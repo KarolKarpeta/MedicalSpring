@@ -48,7 +48,7 @@ public class VisitController {
     }
 
     @GetMapping("visits/delete")
-    public String deleteVisit(RedirectAttributes redirectAttributes,@RequestParam("visitId") int visitId, @RequestParam("backTo") String backTo) {
+    public String deleteVisit(RedirectAttributes redirectAttributes, @RequestParam("visitId") int visitId, @RequestParam("backTo") String backTo) {
         Visit visit = visitService.findById(visitId);
         mailService.setAction("deleteVisit");
         mailService.setVisit(visitService.findById(visitId));
@@ -67,7 +67,7 @@ public class VisitController {
 
     //Show form for ADD NEW VISIT
     @GetMapping("/visits/showFormForAddVisit")
-    public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, Model theModel){
+    public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, @RequestParam("backTo") String backTo, Model theModel){
         Patient thePatient = (Patient) userService.findById(thePatientId);
         Visit newVisit = new Visit();
 
@@ -77,7 +77,8 @@ public class VisitController {
 
         theModel.addAttribute("categories", categoryService.findAll());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
-         return "visits/visit-form";
+        theModel.addAttribute("backTo", backTo);
+        return "visits/visit-form";
     }
 
     //ADDING NEW VISITS
