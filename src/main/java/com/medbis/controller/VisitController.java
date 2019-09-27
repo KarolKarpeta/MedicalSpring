@@ -67,7 +67,7 @@ public class VisitController {
 
     //Show form for ADD NEW VISIT
     @GetMapping("/visits/showFormForAddVisit")
-    public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, @RequestParam("backTo") String backTo, Model theModel){
+    public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, @RequestParam(name = "backTo", required = false) String backTo, Model theModel){
         Patient thePatient = (Patient) userService.findById(thePatientId);
         Visit newVisit = new Visit();
 

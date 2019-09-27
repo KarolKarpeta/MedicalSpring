@@ -4,11 +4,8 @@ import com.medbis.entity.*;
 import com.medbis.factory.UserFactory;
 import com.medbis.service.impl.DoctorServiceImpl;
 import com.medbis.service.interfaces.*;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -148,8 +141,7 @@ public class PatientController {
         theModel.addAttribute("doctor", doctor);
         theModel.addAttribute("patientVisitList", patientVisitList);
 
-//        return "users/patient-details";
-        return "users/index";
+        return "users/patient_details";
     }
 
 
