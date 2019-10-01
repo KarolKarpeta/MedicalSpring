@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Medical Spring</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css}"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/tableC.css}"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css}"
+          type="text/css"/>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/tableC.css}" type="text/css"/>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    <script crossorigin="anonymous"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" th:src="@{/js/searchPatient.js}"></script>
+            src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script th:src="@{/js/searchPatient.js}" type="text/javascript"></script>
 
 </head>
 <body>
 
 <div class="mt-10">
-    <header id="header" class="alt" th:include="menu :: title-menu" />
+    <header class="alt" id="header" th:include="menu :: title-menu"/>
 </div>
 <div class="container">
 
     <!--    Add a button-->
-    <a th:href="@{/patients/showFormForAddPatient}"
-       class="btn btn-info btn-sm mb-3 mt-3">
+    <a class="btn btn-info btn-sm mb-3 mt-3"
+       th:href="@{/patients/showFormForAddPatient}">
         Dodaj nowego pacjenta <i class="fas fa-user-edit"></i>
     </a>
 
@@ -38,11 +40,12 @@
 
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-            <table  id="myTable" class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered">
+            <table class="text-nowrap fixed_headers table table-striped table-hover table-sm table-bordered"
+                   id="myTable">
                 <thead class="thead-dark">
                 <tr>
                     <td colspan="13">
-                        <a class="text-right" data-toggle="collapse" data-target="#target2">
+                        <a class="text-right" data-target="#target2" data-toggle="collapse">
                             Zaawansowane wyszukiwanie ...
                         </a>
                     </td>
@@ -62,17 +65,21 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr id="target2" class="collapse">
+                <tr class="collapse" id="target2">
                     <th></th>
-                    <th><input type="text" style="width: 100%" id="pesel" onkeyup="searchByPesel()" placeholder="pesel" >            </th>
-                    <th><input type="text" style="width: 100%" id="surname" onkeyup="searchBySurname()" placeholder="nazwisko" >            </th>
-                    <th><input type="text" style="width: 100%" id="name" onkeyup="searchByName()" placeholder="imię" >            </th>
-                    <th><input type="text" style="width: 100%" id="birthday" onkeyup="birthday()" placeholder="data" >            </th>
-                    <th><input type="text" style="width: 100%" id="zip" onkeyup="zip()" placeholder="kod" >            </th>
-                    <th><input type="text" style="width: 100%" id="city" onkeyup="city()" placeholder="miasto" >            </th>
-                    <th><input type="text" style="width: 100%" id="street" onkeyup="street()" placeholder="ulica" >            </th>
-                    <th><input type="text" style="width: 100%" id="hNumber" onkeyup="hNumber()" placeholder="" >            </th>
-                    <th><input type="text" style="width: 100%" id="aNumber" onkeyup="aNumber()" placeholder="" >            </th>
+                    <th><input id="pesel" onkeyup="searchByPesel()" placeholder="pesel" style="width: 100%" type="text">
+                    </th>
+                    <th><input id="surname" onkeyup="searchBySurname()" placeholder="nazwisko" style="width: 100%"
+                               type="text"></th>
+                    <th><input id="name" onkeyup="searchByName()" placeholder="imię" style="width: 100%" type="text">
+                    </th>
+                    <th><input id="birthday" onkeyup="birthday()" placeholder="data" style="width: 100%" type="text">
+                    </th>
+                    <th><input id="zip" onkeyup="zip()" placeholder="kod" style="width: 100%" type="text"></th>
+                    <th><input id="city" onkeyup="city()" placeholder="miasto" style="width: 100%" type="text"></th>
+                    <th><input id="street" onkeyup="street()" placeholder="ulica" style="width: 100%" type="text"></th>
+                    <th><input id="hNumber" onkeyup="hNumber()" placeholder="" style="width: 100%" type="text"></th>
+                    <th><input id="aNumber" onkeyup="aNumber()" placeholder="" style="width: 100%" type="text"></th>
                     <th>-</th>
                     <th>-</th>
                     <th>-</th>
@@ -83,53 +90,55 @@
                 <tr th:each="patient : ${patientList}">
                     <td>
                         <a th:href="@{/patients/showPatientDetails(patientIdDetails=${patient.patientId})}">
-                            <span th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"><i class="far fa-user"></i></span>
-                            <span th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"><i class="far fa-user"></i></span>
+                            <span style="font-size: 1em; color: mediumvioletred;" th:if="${patient.sex == 'Kobieta'}"><i
+                                    class="far fa-user"></i></span>
+                            <span style="font-size: 1em; color: dodgerblue;" th:unless="${patient.sex == 'Kobieta'}"><i
+                                    class="far fa-user"></i></span>
 
-                            <span th:text="${patient.patientId}" th:if="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: mediumvioletred;"></span>
-                            <span th:text="${patient.patientId}" th:unless="${patient.sex == 'Kobieta'}" style="font-size: 1em; color: dodgerblue;"></span>
+                            <span style="font-size: 1em; color: mediumvioletred;" th:if="${patient.sex == 'Kobieta'}"
+                                  th:text="${patient.patientId}"></span>
+                            <span style="font-size: 1em; color: dodgerblue;" th:text="${patient.patientId}"
+                                  th:unless="${patient.sex == 'Kobieta'}"></span>
 
                         </a>
                     </td>
-                    <td th:text="${patient.pesel}" > </td>
+                    <td th:text="${patient.pesel}"></td>
                     <td th:text="${patient.surname}"></td>
-                    <td th:text="${patient.name}" ></td>
-                    <td th:text="${patient.birthday}" ></td>
-                    <td th:text="${patient.zipCode}" ></td>
-                    <td th:text="${patient.city}" ></td>
-                    <td th:text="${patient.street}" ></td>
-                    <td th:text="${patient.houseNumber}" ></td>
-                    <td th:text="${patient.apartmentNumber}" ></td>
+                    <td th:text="${patient.name}"></td>
+                    <td th:text="${patient.birthday}"></td>
+                    <td th:text="${patient.zipCode}"></td>
+                    <td th:text="${patient.city}"></td>
+                    <td th:text="${patient.street}"></td>
+                    <td th:text="${patient.houseNumber}"></td>
+                    <td th:text="${patient.apartmentNumber}"></td>
 
-                <td class="text center text-nowrap">
-                    <a th:href="@{mails/show-mail-form(patientId=${patient.patientId})}">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </td>
+                    <td class="text center text-nowrap">
+                        <a th:href="@{mails/show-mail-form(patientId=${patient.patientId})}">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </td>
 
-                <td class="text-center text-nowrap">
+                    <td class="text-center text-nowrap">
 
                         <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId})}">
                             <span style="font-size: 1em; color: green;"><i class="fas fa-user-nurse"></i></span>
                         </a>
 
 
-
                     </td>
                     <td class="text-center">
                         <a th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId})}">
-                    <span style="font-size: 1em; color: dodgerblue;">
-                            <i class="fas fa-user-edit"></i>
-                    </span>
+                            <span style="font-size: 1em; color: dodgerblue;">
+                                    <i class="fas fa-user-edit"></i>
+                            </span>
                         </a>
                     </td>
                     <td class="text-center">
-                        <a th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}"
-                           onclick="if(!(confirm('Czy jesteś pewien?')))return false">
+                        <a onclick="if(!(confirm('Czy jesteś pewien?')))return false"
+                           th:href="@{/patients/delete(patientIdToDelete=${patient.patientId})}">
                         <span style="font-size: 1em; color: firebrick;">
                             <i class="fas fa-trash-alt"></i>
                         </span>
-
 
 
                         </a>
@@ -149,14 +158,7 @@
     </div>
 
 
-
-
-
-
 </div>
-
-
-
 
 
 </body>
