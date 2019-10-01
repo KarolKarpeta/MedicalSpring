@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -102,24 +103,31 @@ public class PatientController {
 
     //ADD NEW PATIENT
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, BindingResult bindingResult){
+    public String addNewPatient(RedirectAttributes redirectAttributes, Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, @RequestParam(name = "backTo", required = false)String backTo, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
             return "users/patient-form";
         }else{
             userService.save(thePatient);
-            return "redirect:/patients";
+
+            if("patientDetails".equals(backTo)){
+                redirectAttributes.addAttribute("patientIdDetails", thePatient.getPatientId());
+                return "redirect:/patients/showPatientDetails";
+            }else{
+                return "redirect:/patients";
+            }
         }
     }
 
     //EDITING NEW PATIENT
     @GetMapping ("/patients/showFormForEditPatient")
-    public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId, Model theModel){
+    public String showFormForEditMedicine(@RequestParam("patientIdToEdit")int theId, @RequestParam(name = "backTo", required = false) String backTo, Model theModel){
         Patient newPatient = (Patient) userService.findById(theId);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
         theModel.addAttribute("patient", newPatient);
+        theModel.addAttribute("backTo", backTo);
         return "users/patient-form";
     }
 
