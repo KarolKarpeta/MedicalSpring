@@ -31,7 +31,7 @@
 <div class="container">
     <p class="btn btn-info btn-sm mb-3 mt-3">Wypełnij aby dodać nowego pacjenta</p>
 
-    <form action="#" th:action="@{/patients/addNewPatient}" th:object="${patient}" method="POST">
+    <form action="#" th:action="@{/patients/addNewPatient(backTo=${backTo})}" th:object="${patient}" method="POST">
         <div class="container">
 
 
