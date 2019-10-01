@@ -34,7 +34,8 @@
 
 <!--    <p class="btn btn-info btn-sm mb-1 mt-1">Fill form to add new visit</p>-->
 
-    <form action="#" th:action="@{/visits/{action}/addNewVisit(action='edit')}" th:object="${visit}" method="POST">
+    <form action="#" th:action="@{/visits/{action}/addNewVisit(action='edit', backTo=${backTo})}" th:object="${visit}" method="POST">
+        <h1 th:text="${'Backo To : ' + backTo}"> </h1>
         <input type="hidden" th:value="${patientId}" name="visitPatientId" />
         <input type="hidden" th:value="${employeeId}" name="visitEmployeeId" />
         <!--            for UPDATE -->
@@ -85,6 +86,7 @@
                     </div>
                     <div class="row mt-1">
                         <input type="submit" value="Wyślij" class="btn btn-outline-primary w-100">
+                        <input type="button" value="Go Back From Whence You Came!" onclick="history.back(-1)" />
                         <a class="btn btn-outline-dark mb-1 mt-1" th:href="@{/visits/}">Wstecz</a>
                     </div>
 
