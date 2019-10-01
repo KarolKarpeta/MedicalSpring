@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title>Material Design Bootstrap</title>
+    <title>Medical Spring</title>
     <!-- Font Awesome -->
     <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
@@ -34,7 +34,7 @@
                 <!--Grid column-->
                 <div class="col-md-4 mb-4" style="min-height: 85vh; display: flex; flex-direction: column">
 
-                    <div class="card" style="">
+                    <div class="card" style="flex: 1;">
                         <div class="text-center heavy-rain-gradient">
                             <h6 class="pb-1 pt-1 mb-0">DANE PACJENTA:</h6>
                         </div>
@@ -67,17 +67,20 @@
                         </div>
                     </div>
 
-                    <div class="card mt-2 align-middle" style=" flex: 1;">
-                        <button class="btn btn-outline-info waves-effect" th:href="@{/patients/}" type="button">EDYTUJ PACJENTA </button>
-
-                        <a th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId}, backTo='patientDetails')}">
-                            <button class="btn btn-outline-info waves-effect" th:href="@{/patients/}" type="button">
-                                DODAJ WIZYTĘ
-                            </button>
+                    <div class="card mt-2 align-middle text-center" style=" ">
+                        <a class="btn btn-outline-info waves-effect"
+                           th:href="@{/patients/showFormForEditPatient(patientIdToEdit=${patient.patientId}, backTo='patientDetails')}">
+                            EDYTUJ PACJENTA
                         </a>
 
-                        <button class="btn btn-outline-info waves-effect" th:href="@{/patients/}" type="button">WSTECZ
-                        </button>
+                        <a class="btn btn-outline-info waves-effect"
+                           th:href="@{/visits/showFormForAddVisit(patientId=${patient.patientId}, backTo='patientDetails')}">
+                            DODAJ WIZYTĘ
+                        </a>
+
+                        <a class="btn btn-outline-info waves-effect" th:href="@{/patients/}">
+                            WSTECZ
+                        </a>
                     </div>
 
                 </div>
@@ -169,7 +172,7 @@
             <!--Grid row-->
         </div>
 
-        <p class="animated  heartBeat pb-0 mb-0 text-center text-black-50"> @2019 Copyright MedicalSpring.pl</p>
+        <p class="pb-0 mb-0 text-center text-black-50"> @2019 Copyright MedicalSpring.pl</p>
 
     </main>
 
