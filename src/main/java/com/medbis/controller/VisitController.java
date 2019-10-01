@@ -48,7 +48,7 @@ public class VisitController {
     }
 
     @GetMapping("visits/delete")
-    public String deleteVisit(RedirectAttributes redirectAttributes, @RequestParam("visitId") int visitId, @RequestParam("backTo") String backTo) {
+    public String deleteVisit(RedirectAttributes redirectAttributes, @RequestParam("visitId") int visitId, @RequestParam(name = "backTo", required = false) String backTo) {
         Visit visit = visitService.findById(visitId);
         mailService.setAction("deleteVisit");
         mailService.setVisit(visitService.findById(visitId));
@@ -83,7 +83,7 @@ public class VisitController {
 
     //ADDING NEW VISITS
     @PostMapping("/visits/{action}/addNewVisit")
-    public String addNewVisit(RedirectAttributes redirectAttributes, @PathVariable("action") String action, @RequestParam("backTo") String backTo, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
+    public String addNewVisit(RedirectAttributes redirectAttributes, @PathVariable("action") String action, @RequestParam(name = "backTo", required = false) String backTo, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
 
@@ -100,7 +100,9 @@ public class VisitController {
         }
         visitService.save(theVisit);
 
-        if(action.equals("hold") || theVisit.getVisitDate().isBefore(LocalDate.now().plusDays(1))){
+        if(action.equals("hold") ){
+            //realizacaj wizyty wyłącznie poprzez przycisk zrealizuj
+//            ||theVisit.getVisitDate().isBefore(LocalDate.now().plusDays(1))
             theVisit.setVisitStatus(true);
             visitService.save(theVisit);
         }
@@ -142,7 +144,7 @@ public class VisitController {
     }
 
     @GetMapping ("/visits/showFormForEditVisit")
-    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action , @RequestParam("backTo") String backTo, Model theModel) {
+    public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action , @RequestParam(name = "backTo", required = false) String backTo, Model theModel) {
         Visit visitToEdit = visitService.findById(theId);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId());
