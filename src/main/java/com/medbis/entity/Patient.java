@@ -1,5 +1,6 @@
 package com.medbis.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class Patient extends User {
     private int patientId;
 
     @OneToMany(mappedBy="patient", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonManagedReference
     private Set<Visit> visitsPatients;
 
     @Column(name = "comments")
