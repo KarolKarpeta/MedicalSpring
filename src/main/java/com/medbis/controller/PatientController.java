@@ -79,12 +79,21 @@ public class PatientController {
     }
     //DELETE ONE ROW OF MEDICINE, look params!
     @PostMapping(value="/patients/addNewPatient", params={"removeRow"})
-    public String delMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
+    public String delMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+
+        final Integer rowId = Integer.valueOf(request.getParameter("removeRow"));
+        System.out.println("usun wiersz: " + rowId);
         thePatient.getPatientMedicines().remove(rowId.intValue());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            return "users/patient-form::#medicineTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form";
+        }
     }
 
 
@@ -120,6 +129,7 @@ public class PatientController {
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
+
             return "users/patient-form";
         }else{
             userService.save(thePatient);
