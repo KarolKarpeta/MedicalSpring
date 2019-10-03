@@ -55,14 +55,27 @@ public class PatientController {
         return "users/patient-form";
     }
 
+    private static final String AJAX_HEADER_NAME = "X-Requested-With";
+    private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
+
     /* MEDICINES ***************************************/
     //Add NEW ROW FOR MEDICINE, look params!
     @PostMapping(value="/patients/addNewPatient", params={"addRow"})
-    public String addMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
-        thePatient.getPatientMedicines().add(new Medicine()); //.getRows().add(new Row());
+    public String addMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
+        System.out.println("model: " + theModel);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            thePatient.getPatientMedicines().add(new Medicine());
+            return "users/patient-form::#medicineTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form";
+        }
+
+
     }
     //DELETE ONE ROW OF MEDICINE, look params!
     @PostMapping(value="/patients/addNewPatient", params={"removeRow"})
@@ -103,7 +116,7 @@ public class PatientController {
 
     //ADD NEW PATIENT
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(RedirectAttributes redirectAttributes, Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, @RequestParam(name = "backTo", required = false)String backTo, BindingResult bindingResult){
+    public String addNewPatient(RedirectAttributes redirectAttributes, Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, BindingResult bindingResult, @RequestParam(name = "backTo", required = false) String backTo){
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
