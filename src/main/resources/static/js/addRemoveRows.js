@@ -15,27 +15,13 @@ function addRowMedicine() {
         $.post('/patients/addNewPatient', data, replaceTable);
     }
 
-function dellMedicine() {
-    $('button[name="removeRow"]').click(function (event) {
-        event.preventDefault();
+function dellRowMedicine(e) {
+        // event.preventDefault();
         var data = $('form').serialize();
         // Add parameter and index of item that is going to be removed.
-        data += 'removeItem=' + $(this).val();
+        data += '&removeRow=' + e.target.value;
         $.post('/patients/addNewPatient', data, replaceTable);
-    });
-}
-
-function startAlert(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    alert("ole ile");
-    // $(document).on('click', function (e) {
-    //     alert("ole ile");
-    //     e.preventDefault();
-
     }
-
-
 
 
 // function addRowMedicine() {
