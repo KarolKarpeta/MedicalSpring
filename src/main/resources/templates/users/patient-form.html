@@ -17,8 +17,11 @@
             src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script th:src="@{/js/theSameContent.js}" type="text/javascript"></script>
     <script th:src="@{/js/peselValidation.js}" type="text/javascript"></script>
+    <script th:src="@{/js/addRemoveRows.js}" type="text/javascript"></script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+    <script th:src="@{/MDB/js/jquery-3.4.1.min.js}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
@@ -32,8 +35,8 @@
     <p class="btn btn-info btn-sm mb-3 mt-3">Wypełnij aby dodać nowego pacjenta</p>
 
     <form action="#" method="POST" th:action="@{/patients/addNewPatient(backTo=${backTo})}" th:object="${patient}">
-        <div class="container">
 
+        <div class="container">
             <div class="row">
                 <div class="col-md-5">
 
@@ -42,7 +45,8 @@
                     <input th:field="*{patientId}" type="hidden"/>
 
                     <div class="mb-3">
-                        <input id="pesel" onkeyup="ParsePesel();" placeholder="Pesel" th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"
+                        <input id="pesel" onkeyup="ParsePesel();" placeholder="Pesel"
+                               th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"
                                th:field="*{pesel}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{pesel}"
@@ -51,7 +55,8 @@
                     <!--                    <input type="date" th:value="*{date}" th:field="*{date}" />-->
 
                     <div class="mb-3">
-                        <input id="birthday" placeholder="Data urodzenia" th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"
+                        <input id="birthday" placeholder="Data urodzenia"
+                               th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"
                                th:field="*{birthday}"
                                type="date"/>
                         <mark class="error-sign small" th:errors="*{birthday}"
@@ -59,7 +64,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <input id="sex" placeholder="Płeć" readonly th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"
+                        <input id="sex" placeholder="Płeć"
+                               th:class="${#fields.hasErrors('sex')}? 'form-control  is-invalid' : 'form-control'"
                                th:field="*{sex}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{sex}" th:if="${#fields.hasErrors('sex')}"></mark>
@@ -67,14 +73,16 @@
 
 
                     <div class="mb-3">
-                        <input placeholder="Nazwisko" th:class="${#fields.hasErrors('surname')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Nazwisko"
+                               th:class="${#fields.hasErrors('surname')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{surname}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{surname}"
                               th:if="${#fields.hasErrors('surname')}"></mark>
                     </div>
                     <div class="mb-3">
-                        <input placeholder="Imię" th:class="${#fields.hasErrors('name')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Imię"
+                               th:class="${#fields.hasErrors('name')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{name}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></mark>
@@ -83,14 +91,16 @@
 
                     <h3>ADRES:</h3>
                     <div class="mb-3">
-                        <input placeholder="Gmina" th:class="${#fields.hasErrors('community')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Gmina"
+                               th:class="${#fields.hasErrors('community')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{community}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{community}"
                               th:if="${#fields.hasErrors('community')}"></mark>
                     </div>
                     <div class="mb-3">
-                        <input placeholder="Kod pocztowy" th:class="${#fields.hasErrors('zipCode')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Kod pocztowy"
+                               th:class="${#fields.hasErrors('zipCode')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{zipCode}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{zipCode}"
@@ -98,14 +108,16 @@
                     </div>
 
                     <div class="mb-3">
-                        <input placeholder="Miasto" th:class="${#fields.hasErrors('city')}? 'form-control  is-invalid' : 'form-control'"
+                        <input placeholder="Miasto"
+                               th:class="${#fields.hasErrors('city')}? 'form-control  is-invalid' : 'form-control'"
                                th:field="*{city}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{city}" th:if="${#fields.hasErrors('city')}"></mark>
                     </div>
 
                     <div class="mb-3">
-                        <input placeholder="Ulica" th:class="${#fields.hasErrors('street')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Ulica"
+                               th:class="${#fields.hasErrors('street')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{street}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{street}"
@@ -113,7 +125,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <input placeholder="Numer domu" th:class="${#fields.hasErrors('houseNumber')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Numer domu"
+                               th:class="${#fields.hasErrors('houseNumber')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{houseNumber}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{houseNumber}"
@@ -121,14 +134,16 @@
                     </div>
 
                     <div class="mb-3">
-                        <input placeholder="Numer mieszkania" th:class="${#fields.hasErrors('apartmentNumber')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Numer mieszkania"
+                               th:class="${#fields.hasErrors('apartmentNumber')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{apartmentNumber}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{apartmentNumber}"
                               th:if="${#fields.hasErrors('apartmentNumber')}"></mark>
                     </div>
                     <div class="mb-3">
-                        <input placeholder="Adres mail" th:class="${#fields.hasErrors('mail')}? 'form-control is-invalid' : 'form-control'"
+                        <input placeholder="Adres mail"
+                               th:class="${#fields.hasErrors('mail')}? 'form-control is-invalid' : 'form-control'"
                                th:field="*{mail}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{mail}"
@@ -146,19 +161,21 @@
                                 <th class="align-middle text-center" style="width: 20px" th:text="LP">Row</th>
                                 <th class="align-middle" th:text="LEK"></th>
                                 <th class="text-center" style="width: 170px;">
-                                    <button class="btn btn-outline-info btn-block" name="addRow" type="submit"
-                                            value="addRow">Dodaj lek
+                                    <button class="btn btn-outline-info btn-block" name="addRow" onclick="addRowMedicine()"
+                                            type="button" value="addRow">Dodaj lek
                                     </button>
                                 </th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr th:each="medicine,medicineStat : *{patientMedicines}">
+
+
+                            <tbody id="medicineTableF" th:fragment="medicineTableF">
+                            <tr th:each="medicine,medicineStat : ${patient.patientMedicines}">
                                 <td class="align-middle text-center" th:text="${medicineStat.count}">1</td>
                                 <td>
                                     <select class="diffrentMedicine form-control" id="selectMedicine"
                                             onchange="checkMedicine()"
-                                            th:field="*{patientMedicines[__${medicineStat.index}__]}"
+                                            th:field="${patient.patientMedicines[__${medicineStat.index}__]}"
                                             th:required="false">
                                         <option th:disabled="false" th:selected="true" value="">
                                             Wybierz lek >>
@@ -170,7 +187,8 @@
                                     </select>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" name="removeRow" th:value="${medicineStat.index}"
+                                    <button class="btn btn-outline-danger" name="removeRow"
+                                            th:value="${medicineStat.index}"
                                             type="submit">Usuń lek
                                     </button>
                                 </td>
@@ -211,7 +229,8 @@
                                     </select>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" name="removeDiseaseRow" th:value="${diseaseStat.index}"
+                                    <button class="btn btn-outline-danger" name="removeDiseaseRow"
+                                            th:value="${diseaseStat.index}"
                                             type="submit">Usuń chorobę
                                     </button>
                                 </td>
@@ -219,7 +238,8 @@
                                     <div class="form-group">
                                         <label for="selectdoctor">Wybierz Lekarza prowadzącego</label>
                                         <select class="form-control" id="selectdoctor" th:field="*{doctorId}">
-                                            <option th:each="doctor : ${doctors}" th:text="${doctor.getName() + ' ' + doctor.getSurname()}"
+                                            <option th:each="doctor : ${doctors}"
+                                                    th:text="${doctor.getName() + ' ' + doctor.getSurname()}"
                                                     th:value="${doctor.getId()}"></option>
                                         </select>
                                     </div>
