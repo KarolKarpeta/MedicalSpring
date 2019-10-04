@@ -129,7 +129,7 @@ public class PatientController {
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
-
+            theModel.addAttribute("backTo", backTo);
             return "users/patient-form";
         }else{
             userService.save(thePatient);
