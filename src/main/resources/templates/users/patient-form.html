@@ -45,22 +45,24 @@
                     <input th:field="*{patientId}" type="hidden"/>
 
                     <div class="mb-3">
-                        <input id="pesel" onkeyup="ParsePesel();" placeholder="Pesel"
+                        <!--                        onkeyup="ParsePesel();"-->
+                        <input id="pesel" placeholder="Pesel"
                                th:class="${#fields.hasErrors('pesel')}? 'form-control   is-invalid' : 'form-control '"
                                th:field="*{pesel}"
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{pesel}"
                               th:if="${#fields.hasErrors('pesel')}"></mark>
                     </div>
-                    <!--                    <input type="date" th:value="*{date}" th:field="*{date}" />-->
-
+                    <!--                    th:field="*{birthday}"-->
+                    <!--                    th:value="19-08-2011"-->
+                    <!--                    -->
                     <div class="mb-3">
-                        <input id="birthday" placeholder="Data urodzenia"
+                        <label for="birthdayd"></label>
+                        <input id="birthdayd"
                                th:class="${#fields.hasErrors('birthday')}? 'form-control  is-invalid' : 'form-control'"
-                               th:field="*{birthday}"
-                               type="date"/>
-                        <mark class="error-sign small" th:errors="*{birthday}"
-                              th:if="${#fields.hasErrors('birthday')}"></mark>
+                               th:field="*{birthday}" type="date">
+                        <mark class="error-sign small" th:errors="*{birthday}" th:if="${#fields.hasErrors('birthday')}">
+                        </mark>
                     </div>
 
                     <div class="mb-3">
@@ -71,7 +73,6 @@
                         <mark class="error-sign small" th:errors="*{sex}" th:if="${#fields.hasErrors('sex')}"></mark>
                     </div>
 
-
                     <div class="mb-3">
                         <input placeholder="Nazwisko"
                                th:class="${#fields.hasErrors('surname')}? 'form-control is-invalid' : 'form-control'"
@@ -80,6 +81,7 @@
                         <mark class="error-sign small" th:errors="*{surname}"
                               th:if="${#fields.hasErrors('surname')}"></mark>
                     </div>
+
                     <div class="mb-3">
                         <input placeholder="Imię"
                                th:class="${#fields.hasErrors('name')}? 'form-control is-invalid' : 'form-control'"
@@ -87,7 +89,6 @@
                                type="text"/>
                         <mark class="error-sign small" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></mark>
                     </div>
-
 
                     <h3>ADRES:</h3>
                     <div class="mb-3">
@@ -98,6 +99,7 @@
                         <mark class="error-sign small" th:errors="*{community}"
                               th:if="${#fields.hasErrors('community')}"></mark>
                     </div>
+
                     <div class="mb-3">
                         <input placeholder="Kod pocztowy"
                                th:class="${#fields.hasErrors('zipCode')}? 'form-control is-invalid' : 'form-control'"
@@ -141,6 +143,7 @@
                         <mark class="error-sign small" th:errors="*{apartmentNumber}"
                               th:if="${#fields.hasErrors('apartmentNumber')}"></mark>
                     </div>
+
                     <div class="mb-3">
                         <input placeholder="Adres mail"
                                th:class="${#fields.hasErrors('mail')}? 'form-control is-invalid' : 'form-control'"
@@ -161,7 +164,8 @@
                                 <th class="align-middle text-center" style="width: 20px" th:text="LP">Row</th>
                                 <th class="align-middle" th:text="LEK"></th>
                                 <th class="text-center" style="width: 170px;">
-                                    <button class="btn btn-outline-info btn-block" name="addRow" onclick="addRowMedicine()"
+                                    <button class="btn btn-outline-info btn-block" name="addRow"
+                                            onclick="addRowMedicine()"
                                             type="button" value="addRow">Dodaj lek
                                     </button>
                                 </th>
@@ -187,7 +191,8 @@
                                     </select>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" name="removeRow" onclick="dellRowMedicine(event)"
+                                    <button class="btn btn-outline-danger" name="removeRow"
+                                            onclick="dellRowMedicine(event)"
                                             th:value="${medicineStat.index}"
                                             type="button">Usuń lek
                                     </button>
