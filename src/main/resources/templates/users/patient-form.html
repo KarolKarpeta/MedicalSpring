@@ -267,37 +267,3 @@
 
 </body>
 </html>
-
-<!--&lt;!&ndash;&ndash;&gt;-->
-<!--<div>-->
-<!--    <label th:text="ROWS">Rows</label>-->
-<!--    <table>-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th th:text="cda1">Row</th>-->
-<!--            <th th:text="cda2">Variety</th>-->
-<!--            <th th:text="cda3">Seeds per cell</th>-->
-<!--            &lt;!&ndash;                        <th>&ndash;&gt;-->
-<!--            &lt;!&ndash;                            <button type="submit" name="addRow" th:text="Add row">Add row</button>&ndash;&gt;-->
-<!--            &lt;!&ndash;                        </th>&ndash;&gt;-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr th:each="medicine,medicineStat : *{patientMedicines}">-->
-<!--            <td th:text="${medicineStat.count}">1</td>-->
-<!--            <td>-->
-<!--                <label for="selectMedicine">Select medicine</label>-->
-<!--                <select class="form-control" id="selectMedicine" th:field="*{patientMedicines[__${medicineStat.index}__].medicineName}">-->
-<!--                    <option th:each="medicineToAdd : ${allMedicines}" th:value="${medicineToAdd.getMedicineId()}" th:text="${medicineToAdd.getMedicineName()}">Thymus Thymi</option>-->
-<!--                </select>-->
-<!--            </td>-->
-<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
-<!--            &lt;!&ndash;                            <input type="text" th:field="*{patientMedicines[__${medicineStat.index}__].seedsPerCell}" th:errorclass="fieldError" />&ndash;&gt;-->
-<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
-<!--            &lt;!&ndash;                        <td>&ndash;&gt;-->
-<!--            &lt;!&ndash;                            <button type="submit" name="removeRow" th:value="${medicineStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>&ndash;&gt;-->
-<!--            &lt;!&ndash;                        </td>&ndash;&gt;-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->
