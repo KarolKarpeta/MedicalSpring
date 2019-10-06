@@ -18,7 +18,6 @@
 </head>
 
 <body>
-
 <!-- Start your project here-->
 <div class="pb-0 mb-0" style="height: 100vh">
     <div>
@@ -47,18 +46,20 @@
                             </a>
                         </div>
 
-                        <div class="card-body pt-1 pb-2">
+                        <div class="card-body pt-1 pb-2 mt-2 pl-4">
 
-                            <fieldset class="mb-2 text-center">
+                            <fieldset class="mt-2">
                                 <legend>Dane:</legend>
-                                <p style="margin-bottom: 0">
-                                    <th:block th:text="${'Pesel: ' + patient.pesel+ '   -   ' + patient.birthday}"/>
+                                <p class="pl-3" style="margin-bottom: 0">
+                                    <th:block th:text="${'Pesel: ' + patient.pesel}"/>
+                                    <br/>
+                                    <th:block th:text="${'Data ur. ' + patient.birthday}"/>
                                 </p>
                             </fieldset>
 
-                            <fieldset class="mb-2">
+                            <fieldset class="mt-2">
                                 <legend>Adres:</legend>
-                                <p style="margin-bottom: 0">
+                                <p class="pl-3" style="margin-bottom: 0">
                                     <th:block th:text="${patient.street + ' ' + patient.houseNumber + '/' + patient.apartmentNumber}"/>
                                     <br/>
                                     <th:block th:text="${#strings.substring(patient.zipCode,0,2) +'-'+ #strings.substring(patient.zipCode,2,5) +', '+ patient.city}"/>
@@ -67,10 +68,8 @@
 
                             <fieldset class="mt-2">
                                 <legend>Kontakt:</legend>
-                                <p style="margin-bottom: 0">
-                                    <th:block th:text="${'+48 ' + patient.mobilePhoneNumber}"/>
-                                    <br/>
-                                    <th:block th:text="${'+48 ' + patient.workPhoneNumber}"/>
+                                <p class="pl-3" style="margin-bottom: 0">
+                                    <th:block th:text="${'+48 ' + patient.homePhoneNumber + ',  +48 ' + patient.workPhoneNumber}"/>
                                 </p>
                             </fieldset>
 
