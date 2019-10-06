@@ -67,13 +67,27 @@ public class Patient extends User {
     private int doctorId;
 
 
+//    @Override
+//    public String toString() {
+//        return "Patient{" +
+//                "patientId=" + patientId +
+//                ", comments='" + comments + '\'' +
+//                ", patientMedicines=" + patientMedicines +
+//                ", patientDiseases=" + patientDiseases +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
         return "Patient{" +
                 "patientId=" + patientId +
+                ", visitsPatients=" + visitsPatients +
                 ", comments='" + comments + '\'' +
+                ", mail='" + mail + '\'' +
                 ", patientMedicines=" + patientMedicines +
                 ", patientDiseases=" + patientDiseases +
+                ", doctorId=" + doctorId +
                 '}';
     }
 }
