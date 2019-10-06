@@ -48,11 +48,12 @@ public class PatientController {
     public String showFormForAddPatient(Model theModel){
 //        theModel.addAttribute("diseases", diseaseService.findAll());
         Patient newPatient = (Patient) userFactory.getNewUser("patient");
+        System.out.println("pacjent:" + newPatient);
         theModel.addAttribute("patient",newPatient);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        theModel.addAttribute("doctors", doctorService.findAll());
-        return "users/patient-form";
+        theModel.addAttribute("allDoctors", doctorService.findAll());
+        return "users/patient-form2";
     }
 
     private static final String AJAX_HEADER_NAME = "X-Requested-With";
@@ -129,11 +130,12 @@ public class PatientController {
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
+            theModel.addAttribute("allDoctors", doctorService.findAll());
             theModel.addAttribute("backTo", backTo);
-            return "users/patient-form";
+            return "users/patient-form2";
         }else{
             userService.save(thePatient);
-
+            System.out.println("modek " + theModel);
             if("patientDetails".equals(backTo)){
                 redirectAttributes.addAttribute("patientIdDetails", thePatient.getPatientId());
                 return "redirect:/patients/showPatientDetails";
@@ -149,9 +151,10 @@ public class PatientController {
         Patient newPatient = (Patient) userService.findById(theId);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         theModel.addAttribute("patient", newPatient);
         theModel.addAttribute("backTo", backTo);
-        return "users/patient-form";
+        return "users/patient-form2";
     }
 
     //DELETING NEW PATIENT
