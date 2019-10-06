@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>Medical Spring</title>
+    <!-- Font Awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/MDB/css/bootstrap.min.css}">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/MDB/css/mdb.min.css}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/MDB/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/tableC.css}" type="text/css"/>
+</head>
+
+<body>
+<!-- Start your project here-->
+<div class="pb-0 mb-0" style="height: 100vh">
+    <div>
+        <header class="alt" id="header" th:include="menu :: title-menu"></header>
+    </div>
+
+    <!--Main layout-->
+    <main class="mt-2 mb-0 pb-0">
+        <!--Main container-->
+        <div class="container">
+            <!--Grid row-->
+            <form action="#" class="md-form pb-0 pt-0 mb-0 mt-0" method="POST"
+                  th:action="@{/patients/addNewPatient(backTo=${backTo})}"
+                  th:object="${patient}">
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-5 mb-4" style="min-height: 85vh; display: flex; flex-direction: column">
+                        <div class="card" style="flex: 1;">
+                            <!--            for UPDATE -->
+                            <input th:field="*{patientId}" type="hidden"/>
+
+                            <!--                            <div class="row">-->
+                            <!--                                <div th:class="${#fields.hasErrors('pesel')}? 'col-sm-9' : 'col-sm-12'">-->
+                            <!--                                    <label for="pesel" style="left: auto"-->
+                            <!--                                           th:class="${#fields.hasErrors('pesel')}? 'text-danger' : 'grey-text'"-->
+                            <!--                                           th:text="${#fields.hasErrors('pesel')}? 'wpisz 11 znaków !' : 'Pesel:'"> </label>-->
+                            <!--                                    <input id="pesel"-->
+                            <!--                                           th:class="${#fields.hasErrors('pesel')}? 'pl-3 form-control   is-invalid' : 'pl-3 form-control '"-->
+                            <!--                                           th:field="*{pesel}"-->
+                            <!--                                           type="text"/>-->
+                            <!--                                </div>-->
+                            <!--                                <div th:class="${#fields.hasErrors('pesel')}? 'col-sm-3' : 'col-sm-0'">-->
+                            <!--                                    <span class="badge badge-danger" th:errors="*{pesel}"-->
+                            <!--                                          th:if="${#fields.hasErrors('pesel')}">-->
+                            <!--                                    </span>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">WYPEŁNIJ FORMULARZ:</h6>
+                            </div>
+
+                            <div class="pl-2 pr-4 mt-2">
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="pesel" style="left: auto"
+                                               th:class="${#fields.hasErrors('pesel')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('pesel')}? 'Pesel - wpisz 11 znaków !' : 'Pesel:'"> </label>
+                                        <input id="pesel"
+                                               th:class="${#fields.hasErrors('pesel')}? 'pb-0 pl-3 form-control   is-invalid' : 'pb-0 pl-3 form-control '"
+                                               th:field="*{pesel}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+                                <!--                            onkeyup="ParsePesel();"-->
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="sex" style="left: auto"
+                                               th:class="${#fields.hasErrors('sex')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('sex')}? 'Uzupełnij płeć !' : 'Płeć:'"> </label>
+                                        <input id="sex"
+                                               th:class="${#fields.hasErrors('sex')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{sex}"
+                                               th:required="true" type="text">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input class="pb-0 mb-0" id="birthdayd"
+                                               th:class="${#fields.hasErrors('birthday')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{birthday}"
+                                               th:required="true" type="date">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="nazwisko" style="left: auto"
+                                               th:class="${#fields.hasErrors('surname')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('surname')}? 'Nazwisko za krótkie !' : 'Nazwisko:'"> </label>
+                                        <input id="nazwisko"
+                                               th:class="${#fields.hasErrors('surname')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{surname}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="imie" style="left: auto"
+                                               th:class="${#fields.hasErrors('name')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('name')}? 'Imię za krótkie!' : 'Imię:'"> </label>
+                                        <input id="imie"
+                                               th:class="${#fields.hasErrors('name')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{name}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="Gmina" style="left: auto"
+                                               th:class="${#fields.hasErrors('community')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('community')}? 'Gmina za krótka!' : 'Gmina:'"> </label>
+                                        <input id="Gmina"
+                                               th:class="${#fields.hasErrors('community')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{community}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="Miasto" style="left: auto"
+                                               th:class="${#fields.hasErrors('city')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('city')}? 'Miasto za krótkie!' : 'Miasto:'"> </label>
+                                        <input id="Miasto"
+                                               th:class="${#fields.hasErrors('city')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{city}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="kod_pocztowy" style="left: auto"
+                                               th:class="${#fields.hasErrors('zipCode')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('zipCode')}? 'Kod pocztowy - tylko 5 cyfr !' : 'Kod:'"> </label>
+                                        <input id="kod_pocztowy"
+                                               th:class="${#fields.hasErrors('zipCode')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{zipCode}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="Ulica" style="left: auto"
+                                               th:class="${#fields.hasErrors('street')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('street')}? 'Ulica za krótka !' : 'Ulica:'"> </label>
+                                        <input id="Ulica"
+                                               th:class="${#fields.hasErrors('street')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{street}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="nr_domu" style="left: auto"
+                                               th:class="${#fields.hasErrors('houseNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('houseNumber')}? 'Nr domu za krótki !' : 'Nr domu:'"> </label>
+                                        <input id="nr_domu"
+                                               th:class="${#fields.hasErrors('houseNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{houseNumber}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="nr_mieszka" style="left: auto"
+                                               th:class="${#fields.hasErrors('apartmentNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('apartmentNumber')}? 'Nr lokalu za krótki !' : 'Nr lokalu:'"> </label>
+                                        <input id="nr_mieszka"
+                                               th:class="${#fields.hasErrors('apartmentNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{apartmentNumber}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="kontakt1" style="left: auto"
+                                               th:class="${#fields.hasErrors('homePhoneNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('homePhoneNumber')}? 'Numer za krótki !' : 'Tel #1:'"> </label>
+                                        <input id="kontakt1"
+                                               th:class="${#fields.hasErrors('homePhoneNumber')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{homePhoneNumber}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="kontakt2" style="left: auto"
+                                               th:class="${#fields.hasErrors('workPhoneNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('workPhoneNumber')}? 'Numer za krótki !' : 'Tel #2:'"> </label>
+                                        <input id="kontakt2"
+                                               th:class="${#fields.hasErrors('workPhoneNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{workPhoneNumber}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="email" style="left: auto"
+                                               th:class="${#fields.hasErrors('mail')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('mail')}? 'Nieprawidłowy email !' : 'E-mail:'"> </label>
+                                        <input id="email"
+                                               th:class="${#fields.hasErrors('mail')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{mail}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-0">
+                                    <div class="col-sm-12">
+                                        <select class="mdb-select md-form" th:field="*{doctorId}"
+                                                th:required="true">
+                                            <option class="pb-0 pl-2" disabled selected value=999>Wybierz lekarza
+                                            </option>
+                                            <option class="pb-0 pl-2" th:each="doctor : ${allDoctors}"
+                                                    th:text="${'  dr. ' + doctor.getName() + ' ' + doctor.getSurname()}"
+                                                    th:value="${ doctor.getId()}">Thymus Thymi
+                                            </option>
+                                        </select>
+                                        <label class="mdb-main-label grey-text" style="left: auto">Lekarz rodzinny</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+                        <div class="card mt-2 align-middle text-center" style=" ">
+                            <input class="btn btn-outline-info waves-effect" type="submit" value="DODAJ PACJENTA">
+
+                            <a class="btn btn-outline-info waves-effect" th:href="@{/patients/}">
+                                WSTECZ
+                            </a>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+
+                    <div class="col-md-7 mb-4" style="height: 85vh; display: flex; flex-direction: column">
+
+<!--                        <div class="text-center heavy-rain-gradient">-->
+<!--                            <h6 class="pb-1 pt-1 mb-0">CHOROBY I LEKI:</h6>-->
+<!--                        </div>-->
+<!--                        <div class="card" style="height: auto; overflow: auto;">-->
+<!--                            <h3>test test test</h3>-->
+
+<!--                        </div>-->
+
+
+<!--                        <div class="mt-2 card text-center heavy-rain-gradient">-->
+<!--                            <h6 class="pb-1 pt-1 mb-0">WIZYTY ŚRODOWISKOWE:</h6>-->
+<!--                        </div>-->
+
+<!--                        <div class="card" style="overflow: auto; flex: 1;">-->
+
+
+<!--                        </div>-->
+                    </div>
+
+                </div>
+            </form>
+            <!--Grid row-->
+        </div>
+
+        <p class="pb-0 mb-0 text-center text-black-50"> @2019 Copyright MedicalSpring.pl</p>
+
+    </main>
+
+
+</div>
+<!-- Start your project here-->
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script th:src="@{/MDB/js/jquery-3.4.1.min.js}" type="text/javascript"></script>
+<!-- Bootstrap tooltips -->
+<script th:src="@{/MDB/js/popper.min.js}" type="text/javascript"></script>
+<!-- Bootstrap core JavaScript -->
+<script th:src="@{/MDB/js/bootstrap.min.js}" type="text/javascript"></script>
+<!-- MDB core JavaScript -->
+<script th:src="@{/MDB/js/mdb.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/theSameContent.js}" type="text/javascript"></script>
+</body>
+
+</html>
+
+
