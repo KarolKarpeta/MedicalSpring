@@ -318,14 +318,64 @@
 
                         </div>
 
-<!--                        <div class="mt-2 card text-center heavy-rain-gradient">-->
-<!--                            <h6 class="pb-1 pt-1 mb-0">WIZYTY ŚRODOWISKOWE:</h6>-->
-<!--                        </div>-->
+                        <div class="card mt-2" style="flex: 1;max-height: 50%">
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">LISTA CHORÓB:</h6>
+                            </div>
 
-<!--                        <div class="card" style="overflow: auto; flex: 1;">-->
+                            <div class="card" style="overflow: auto; flex: 1;">
 
 
-<!--                        </div>-->
+
+                                <table class="table w-100 mb-0">
+                                    <tr>
+                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle w-75" th:text="CHOROBA"></th>
+                                        <th class="py-0 pl-0 pr-1 text-right w-25 ">
+                                            <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"
+                                                    name="addRow"
+                                                    onclick="addRowDisease()"
+                                                    type="button" value="addRow">Dodaj chorobę
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </table>
+                                <table class="table">
+                                    <tbody id="diseaseTableF" th:fragment="diseaseTableF">
+                                    <tr id="diseaseCss" th:each="disease,diseaseStat : ${patient.patientDiseases}">
+                                        <td class="py-0 align-middle text-center" th:text="${diseaseStat.count}">1</td>
+                                        <td class="py-0 w-75">
+                                            <select class="py-0 my-0 diffrentDisease mdb-select md-form selectDisease"
+                                                    onchange="checkDisease()"
+                                                    searchable="Szukaj choroby.."
+                                                    size="6"
+                                                    th:field="${patient.patientDiseases[__${diseaseStat.index}__]}"
+                                                    th:required="true">
+                                                <option class="mb-0" th:disabled="false" th:selected="true" value="">
+                                                    Wybierz chorobę >>
+                                                </option>
+                                                <option th:each="diseaseToAdd : ${allDiseases}"
+                                                        th:text="${diseaseToAdd.getDiseaseName()}"
+                                                        th:value="${diseaseToAdd.getDiseaseId()}">Thymus Thymi
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="py-0 text-center w-25">
+                                            <button class="py-1 px-2 btn btn-outline-danger btn-rounded waves-effect"
+                                                    name="removeRow"
+                                                    onclick="dellRowDisease(event)"
+                                                    th:value="${diseaseStat.index}"
+                                                    type="button">Usuń
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
