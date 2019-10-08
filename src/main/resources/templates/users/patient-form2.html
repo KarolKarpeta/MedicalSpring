@@ -67,30 +67,32 @@
                                         <label for="pesel" style="left: auto"
                                                th:class="${#fields.hasErrors('pesel')}? 'text-danger' : 'grey-text'"
                                                th:text="${#fields.hasErrors('pesel')}? 'Pesel - wpisz 11 znaków !' : 'Pesel:'"> </label>
-                                        <input id="pesel"
+                                        <input id="pesel" maxlength="11"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                               onkeyup="ParsePesel();"
                                                th:class="${#fields.hasErrors('pesel')}? 'pb-0 pl-3 form-control   is-invalid' : 'pb-0 pl-3 form-control '"
                                                th:field="*{pesel}"
                                                th:required="true"
                                                type="text"/>
                                     </div>
                                 </div>
-                                <!--                            onkeyup="ParsePesel();"-->
 
                                 <div class="row mt-2">
                                     <div class="col-sm-6">
                                         <label for="sex" style="left: auto"
                                                th:class="${#fields.hasErrors('sex')}? 'text-danger' : 'grey-text'"
                                                th:text="${#fields.hasErrors('sex')}? 'Uzupełnij płeć !' : 'Płeć:'"> </label>
-                                        <input id="sex"
+                                        <input id="sex" readonly
                                                th:class="${#fields.hasErrors('sex')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
                                                th:field="*{sex}"
                                                th:required="true" type="text">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="pb-0 mb-0" id="birthdayd"
+                                        <label for="birthdayd" style="left: auto">Data urodzenia:</label>
+                                        <input class="pb-0 mb-0" id="birthdayd" readonly
                                                th:class="${#fields.hasErrors('birthday')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
                                                th:field="*{birthday}"
-                                               th:required="true" type="date">
+                                               th:required="false" type="text">
                                     </div>
                                 </div>
 
@@ -148,7 +150,8 @@
                                         <label for="kod_pocztowy" style="left: auto"
                                                th:class="${#fields.hasErrors('zipCode')}? 'text-danger' : 'grey-text'"
                                                th:text="${#fields.hasErrors('zipCode')}? 'Kod pocztowy - tylko 5 cyfr !' : 'Kod:'"> </label>
-                                        <input id="kod_pocztowy"
+                                        <input id="kod_pocztowy" maxlength="5"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                th:class="${#fields.hasErrors('zipCode')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
                                                th:field="*{zipCode}"
                                                th:required="true"
@@ -195,20 +198,22 @@
                                         <label for="kontakt1" style="left: auto"
                                                th:class="${#fields.hasErrors('homePhoneNumber')}? 'text-danger' : 'grey-text'"
                                                th:text="${#fields.hasErrors('homePhoneNumber')}? 'Numer za krótki !' : 'Tel #1:'"> </label>
-                                        <input id="kontakt1"
+                                        <input id="kontakt1" maxlength="9"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                th:class="${#fields.hasErrors('homePhoneNumber')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
                                                th:field="*{homePhoneNumber}"
-                                               th:required="true"
+                                               th:required="false"
                                                type="text"/>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="kontakt2" style="left: auto"
                                                th:class="${#fields.hasErrors('workPhoneNumber')}? 'text-danger' : 'grey-text'"
                                                th:text="${#fields.hasErrors('workPhoneNumber')}? 'Numer za krótki !' : 'Tel #2:'"> </label>
-                                        <input id="kontakt2"
+                                        <input id="kontakt2" maxlength="9"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                                                th:class="${#fields.hasErrors('workPhoneNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
                                                th:field="*{workPhoneNumber}"
-                                               th:required="true"
+                                               th:required="false"
                                                type="text"/>
                                     </div>
                                 </div>
@@ -227,7 +232,7 @@
 
                                 <div class="row mt-0">
                                     <div class="col-sm-12">
-                                        <select class="mdb-select md-form" th:field="*{doctorId}"
+                                        <select class="mdb-select md-form" id="selectDoctor" th:field="*{doctorId}"
                                                 th:required="true">
                                             <option class="pb-0 pl-2" disabled selected value=999>Wybierz lekarza
                                             </option>
@@ -236,20 +241,19 @@
                                                     th:value="${ doctor.getId()}">Thymus Thymi
                                             </option>
                                         </select>
-                                        <label class="mdb-main-label grey-text" style="left: auto">Lekarz rodzinny</label>
+                                        <label class="mdb-main-label grey-text" style="left: auto">Lekarz
+                                            rodzinny</label>
                                     </div>
                                 </div>
 
                             </div>
 
 
-
-
                         </div>
 
                         <div class="card mt-2 align-middle text-center" style=" ">
-                            <input class="btn btn-outline-info waves-effect" type="submit" value="DODAJ PACJENTA">
-
+                            <input class="btn btn-outline-info waves-effect" id="addUpdatePatient" type="submit"
+                                   value="DODAJ PACJENTA">
                             <a class="btn btn-outline-info waves-effect" th:href="@{/patients/}">
                                 WSTECZ
                             </a>
@@ -259,14 +263,60 @@
 
                     <div class="col-md-7 mb-4" style="height: 85vh; display: flex; flex-direction: column">
 
-<!--                        <div class="text-center heavy-rain-gradient">-->
-<!--                            <h6 class="pb-1 pt-1 mb-0">CHOROBY I LEKI:</h6>-->
-<!--                        </div>-->
-<!--                        <div class="card" style="height: auto; overflow: auto;">-->
-<!--                            <h3>test test test</h3>-->
+                        <div class="card" style="flex: 1;max-height: 50%">
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">LISTA LEKÓW:</h6>
+                            </div>
 
-<!--                        </div>-->
+                            <div class="card" style="overflow: auto; flex: 1;">
+                                <table class="table w-100 mb-0">
+                                    <tr>
+                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle w-75" th:text="LEK"></th>
+                                        <th class="py-0 pl-0 pr-1 text-center w-25 ">
+                                            <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"
+                                                    name="addRow"
+                                                    onclick="addRowMedicine()"
+                                                    type="button" value="addRow">Dodaj lek
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </table>
+                                <table class="table">
+                                    <tbody id="medicineTableF" th:fragment="medicineTableF">
+                                    <tr id="medicineCss" th:each="medicine,medicineStat : ${patient.patientMedicines}">
+                                        <td class="py-0 align-middle text-center" th:text="${medicineStat.count}">1</td>
+                                        <td class="py-0 w-75">
+                                            <select class="py-0 my-0 diffrentMedicine mdb-select md-form selectMedicine"
+                                                    id="selectMedicine"
+                                                    onchange="checkMedicine()" searchable="Szukaj leku.."
+                                                    size="6"
+                                                    th:field="${patient.patientMedicines[__${medicineStat.index}__]}"
+                                                    th:required="true">
+                                                <option class="mb-0" th:disabled="false" th:selected="true" value="">
+                                                    Wybierz lek >>
+                                                </option>
+                                                <option class="mb-0" th:each="medicineToAdd : ${allMedicines}"
+                                                        th:text="${medicineToAdd.getMedicineName()}"
+                                                        th:value="${medicineToAdd.getMedicineId()}">Thymus Thymi
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="py-0 text-center w-25">
+                                            <button class="py-1 px-2 btn btn-outline-danger btn-rounded waves-effect"
+                                                    name="removeRow"
+                                                    onclick="dellRowMedicine(event)"
+                                                    th:value="${medicineStat.index}"
+                                                    type="button">Usuń
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
+                            </div>
+
+                        </div>
 
 <!--                        <div class="mt-2 card text-center heavy-rain-gradient">-->
 <!--                            <h6 class="pb-1 pt-1 mb-0">WIZYTY ŚRODOWISKOWE:</h6>-->
@@ -302,6 +352,11 @@
 <script th:src="@{/MDB/js/mdb.min.js}" type="text/javascript"></script>
 
 <script th:src="@{/js/theSameContent.js}" type="text/javascript"></script>
+<script th:src="@{/js/peselValidation.js}" type="text/javascript"></script>
+<script th:src="@{/js/addRemoveRows.js}" type="text/javascript"></script>
+<script th:src="@{/js/initializeMaterial.js}" type="text/javascript"></script>
+
+
 </body>
 
 </html>
