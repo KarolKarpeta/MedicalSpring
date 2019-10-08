@@ -3,6 +3,7 @@
     height: 78vh;
     overflow: auto;
 }
+
 .table-wrapper-scroll-y {
     display: block;
 }
@@ -11,16 +12,36 @@
     background-color: lemonchiffon;
 }
 
-/*tr.border_bottom{*/
-/*    border-top:1pt solid black;*/
-/*}*/
-
 .gradient {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ecf0e8+1,f7fffa+2,fdfffe+22,fdfffe+22,fdfffe+46,ffffff+85,ffffff+100 */
-    background: rgb(236,240,232); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(236,240,232,1) 1%, rgba(247,255,250,1) 2%, rgba(253,255,254,1) 22%, rgba(253,255,254,1) 22%, rgba(253,255,254,1) 46%, rgba(255,255,255,1) 85%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(236,240,232,1) 1%,rgba(247,255,250,1) 2%,rgba(253,255,254,1) 22%,rgba(253,255,254,1) 22%,rgba(253,255,254,1) 46%,rgba(255,255,255,1) 85%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(236,240,232,1) 1%,rgba(247,255,250,1) 2%,rgba(253,255,254,1) 22%,rgba(253,255,254,1) 22%,rgba(253,255,254,1) 46%,rgba(255,255,255,1) 85%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ecf0e8', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    background: rgb(236, 240, 232); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(236, 240, 232, 1) 1%, rgba(247, 255, 250, 1) 2%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 46%, rgba(255, 255, 255, 1) 85%, rgba(255, 255, 255, 1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(236, 240, 232, 1) 1%, rgba(247, 255, 250, 1) 2%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 46%, rgba(255, 255, 255, 1) 85%, rgba(255, 255, 255, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(236, 240, 232, 1) 1%, rgba(247, 255, 250, 1) 2%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 22%, rgba(253, 255, 254, 1) 46%, rgba(255, 255, 255, 1) 85%, rgba(255, 255, 255, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ecf0e8', endColorstr='#ffffff', GradientType=0); /* IE6-9 */
+}
 
+legend {
+    font-size: 100%;
+    color: #90a4ae;
+    margin-bottom: 0;
+}
+
+
+.select-wrapper input.select-dropdown {
+    margin-bottom: 0;
+}
+
+#medicineCss td {
+    border-top: 0;
+    vertical-align: bottom;
+}
+
+#diseaseCss td {
+    border-top: 0;
+    vertical-align: bottom;
+}
+
+.select-dropdown {
+    top: 0 !important;
 }

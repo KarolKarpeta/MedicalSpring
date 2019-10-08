@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>Medical Spring</title>
+    <!-- Font Awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/MDB/css/bootstrap.min.css}">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/MDB/css/mdb.min.css}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/MDB/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/tableC.css}" type="text/css"/>
+</head>
+
+<body>
+<!-- Start your project here-->
+<div class="pb-0 mb-0" style="height: 100vh">
+    <div>
+        <header class="alt" id="header" th:include="menu :: title-menu"></header>
+    </div>
+
+    <!--Main layout-->
+    <main class="mt-2 mb-0 pb-0">
+        <!--Main container-->
+        <div class="container">
+            <!--Grid row-->
+            <form action="#" class="md-form pb-0 pt-0 mb-0 mt-0" method="POST"
+                  th:action="@{/patients/addNewPatient(backTo=${backTo})}"
+                  th:object="${patient}">
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-5 mb-4" style="min-height: 85vh; display: flex; flex-direction: column">
+                        <div class="card" style="flex: 1;">
+                            <!--            for UPDATE -->
+                            <input th:field="*{patientId}" type="hidden"/>
+
+                            <!--                            <div class="row">-->
+                            <!--                                <div th:class="${#fields.hasErrors('pesel')}? 'col-sm-9' : 'col-sm-12'">-->
+                            <!--                                    <label for="pesel" style="left: auto"-->
+                            <!--                                           th:class="${#fields.hasErrors('pesel')}? 'text-danger' : 'grey-text'"-->
+                            <!--                                           th:text="${#fields.hasErrors('pesel')}? 'wpisz 11 znaków !' : 'Pesel:'"> </label>-->
+                            <!--                                    <input id="pesel"-->
+                            <!--                                           th:class="${#fields.hasErrors('pesel')}? 'pl-3 form-control   is-invalid' : 'pl-3 form-control '"-->
+                            <!--                                           th:field="*{pesel}"-->
+                            <!--                                           type="text"/>-->
+                            <!--                                </div>-->
+                            <!--                                <div th:class="${#fields.hasErrors('pesel')}? 'col-sm-3' : 'col-sm-0'">-->
+                            <!--                                    <span class="badge badge-danger" th:errors="*{pesel}"-->
+                            <!--                                          th:if="${#fields.hasErrors('pesel')}">-->
+                            <!--                                    </span>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">WYPEŁNIJ FORMULARZ:</h6>
+                            </div>
+
+                            <div class="pl-2 pr-4 mt-2">
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="pesel" style="left: auto"
+                                               th:class="${#fields.hasErrors('pesel')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('pesel')}? 'Pesel - wpisz 11 znaków !' : 'Pesel:'"> </label>
+                                        <input id="pesel" maxlength="11"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                               onkeyup="ParsePesel();"
+                                               th:class="${#fields.hasErrors('pesel')}? 'pb-0 pl-3 form-control   is-invalid' : 'pb-0 pl-3 form-control '"
+                                               th:field="*{pesel}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="sex" style="left: auto"
+                                               th:class="${#fields.hasErrors('sex')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('sex')}? 'Uzupełnij płeć !' : 'Płeć:'"> </label>
+                                        <input id="sex" readonly
+                                               th:class="${#fields.hasErrors('sex')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{sex}"
+                                               th:required="true" type="text">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="birthdayd" style="left: auto">Data urodzenia:</label>
+                                        <input class="pb-0 mb-0" id="birthdayd" readonly
+                                               th:class="${#fields.hasErrors('birthday')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{birthday}"
+                                               th:required="false" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="nazwisko" style="left: auto"
+                                               th:class="${#fields.hasErrors('surname')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('surname')}? 'Nazwisko za krótkie !' : 'Nazwisko:'"> </label>
+                                        <input id="nazwisko"
+                                               th:class="${#fields.hasErrors('surname')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{surname}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="imie" style="left: auto"
+                                               th:class="${#fields.hasErrors('name')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('name')}? 'Imię za krótkie!' : 'Imię:'"> </label>
+                                        <input id="imie"
+                                               th:class="${#fields.hasErrors('name')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{name}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="Gmina" style="left: auto"
+                                               th:class="${#fields.hasErrors('community')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('community')}? 'Gmina za krótka!' : 'Gmina:'"> </label>
+                                        <input id="Gmina"
+                                               th:class="${#fields.hasErrors('community')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{community}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="Miasto" style="left: auto"
+                                               th:class="${#fields.hasErrors('city')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('city')}? 'Miasto za krótkie!' : 'Miasto:'"> </label>
+                                        <input id="Miasto"
+                                               th:class="${#fields.hasErrors('city')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{city}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="kod_pocztowy" style="left: auto"
+                                               th:class="${#fields.hasErrors('zipCode')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('zipCode')}? 'Kod pocztowy - tylko 5 cyfr !' : 'Kod:'"> </label>
+                                        <input id="kod_pocztowy" maxlength="5"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                               th:class="${#fields.hasErrors('zipCode')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{zipCode}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="Ulica" style="left: auto"
+                                               th:class="${#fields.hasErrors('street')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('street')}? 'Ulica za krótka !' : 'Ulica:'"> </label>
+                                        <input id="Ulica"
+                                               th:class="${#fields.hasErrors('street')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{street}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="nr_domu" style="left: auto"
+                                               th:class="${#fields.hasErrors('houseNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('houseNumber')}? 'Nr domu za krótki !' : 'Nr domu:'"> </label>
+                                        <input id="nr_domu"
+                                               th:class="${#fields.hasErrors('houseNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{houseNumber}"
+                                               th:required="true"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="nr_mieszka" style="left: auto"
+                                               th:class="${#fields.hasErrors('apartmentNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('apartmentNumber')}? 'Nr lokalu za krótki !' : 'Nr lokalu:'"> </label>
+                                        <input id="nr_mieszka"
+                                               th:class="${#fields.hasErrors('apartmentNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{apartmentNumber}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label for="kontakt1" style="left: auto"
+                                               th:class="${#fields.hasErrors('homePhoneNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('homePhoneNumber')}? 'Numer za krótki !' : 'Tel #1:'"> </label>
+                                        <input id="kontakt1" maxlength="9"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                               th:class="${#fields.hasErrors('homePhoneNumber')}? 'pb-0 pl-3 form-control  is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{homePhoneNumber}"
+                                               th:required="false"
+                                               type="text"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="kontakt2" style="left: auto"
+                                               th:class="${#fields.hasErrors('workPhoneNumber')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('workPhoneNumber')}? 'Numer za krótki !' : 'Tel #2:'"> </label>
+                                        <input id="kontakt2" maxlength="9"
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                               th:class="${#fields.hasErrors('workPhoneNumber')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{workPhoneNumber}"
+                                               th:required="false"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label for="email" style="left: auto"
+                                               th:class="${#fields.hasErrors('mail')}? 'text-danger' : 'grey-text'"
+                                               th:text="${#fields.hasErrors('mail')}? 'Nieprawidłowy email !' : 'E-mail:'"> </label>
+                                        <input id="email"
+                                               th:class="${#fields.hasErrors('mail')}? 'pb-0 pl-3 form-control is-invalid' : 'pb-0 pl-3 form-control'"
+                                               th:field="*{mail}"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-0">
+                                    <div class="col-sm-12">
+                                        <select class="mdb-select md-form" id="selectDoctor" th:field="*{doctorId}"
+                                                th:required="true">
+                                            <option class="pb-0 pl-2" disabled selected value=999>Wybierz lekarza
+                                            </option>
+                                            <option class="pb-0 pl-2" th:each="doctor : ${allDoctors}"
+                                                    th:text="${'  dr. ' + doctor.getName() + ' ' + doctor.getSurname()}"
+                                                    th:value="${ doctor.getId()}">Thymus Thymi
+                                            </option>
+                                        </select>
+                                        <label class="mdb-main-label grey-text" style="left: auto">Lekarz
+                                            rodzinny</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="card mt-2 align-middle text-center" style=" ">
+                            <input class="btn btn-outline-info waves-effect" id="addUpdatePatient" type="submit"
+                                   value="DODAJ PACJENTA">
+                            <a class="btn btn-outline-info waves-effect" th:href="@{/patients/}">
+                                WSTECZ
+                            </a>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+
+                    <div class="col-md-7 mb-4" style="height: 85vh; display: flex; flex-direction: column">
+
+                        <div class="card" style="flex: 1;max-height: 50%">
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">LISTA LEKÓW:</h6>
+                            </div>
+
+                            <div class="card" style="overflow: auto; flex: 1;">
+                                <table class="table w-100 mb-0">
+                                    <tr>
+                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle w-75" th:text="LEK"></th>
+                                        <th class="py-0 pl-0 pr-1 text-center w-25 ">
+                                            <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"
+                                                    name="addRow"
+                                                    onclick="addRowMedicine()"
+                                                    type="button" value="addRow">Dodaj lek
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </table>
+                                <table class="table">
+                                    <tbody id="medicineTableF" th:fragment="medicineTableF">
+                                    <tr id="medicineCss" th:each="medicine,medicineStat : ${patient.patientMedicines}">
+                                        <td class="py-0 align-middle text-center" th:text="${medicineStat.count}">1</td>
+                                        <td class="py-0 w-75">
+                                            <select class="py-0 my-0 diffrentMedicine mdb-select md-form selectMedicine"
+                                                    id="selectMedicine"
+                                                    onchange="checkMedicine()" searchable="Szukaj leku.."
+                                                    size="6"
+                                                    th:field="${patient.patientMedicines[__${medicineStat.index}__]}"
+                                                    th:required="true">
+                                                <option class="mb-0" th:disabled="false" th:selected="true" value="">
+                                                    Wybierz lek >>
+                                                </option>
+                                                <option class="mb-0" th:each="medicineToAdd : ${allMedicines}"
+                                                        th:text="${medicineToAdd.getMedicineName()}"
+                                                        th:value="${medicineToAdd.getMedicineId()}">Thymus Thymi
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="py-0 text-center w-25">
+                                            <button class="py-1 px-2 btn btn-outline-danger btn-rounded waves-effect"
+                                                    name="removeRow"
+                                                    onclick="dellRowMedicine(event)"
+                                                    th:value="${medicineStat.index}"
+                                                    type="button">Usuń
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card mt-2" style="flex: 1;max-height: 50%">
+                            <div class="text-center heavy-rain-gradient">
+                                <h6 class="pb-1 pt-1 mb-0">LISTA CHORÓB:</h6>
+                            </div>
+
+                            <div class="card" style="overflow: auto; flex: 1;">
+
+
+
+                                <table class="table w-100 mb-0">
+                                    <tr>
+                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle w-75" th:text="CHOROBA"></th>
+                                        <th class="py-0 pl-0 pr-1 text-right w-25 ">
+                                            <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"
+                                                    name="addRow"
+                                                    onclick="addRowDisease()"
+                                                    type="button" value="addRow">Dodaj chorobę
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </table>
+                                <table class="table">
+                                    <tbody id="diseaseTableF" th:fragment="diseaseTableF">
+                                    <tr id="diseaseCss" th:each="disease,diseaseStat : ${patient.patientDiseases}">
+                                        <td class="py-0 align-middle text-center" th:text="${diseaseStat.count}">1</td>
+                                        <td class="py-0 w-75">
+                                            <select class="py-0 my-0 diffrentDisease mdb-select md-form selectDisease"
+                                                    onchange="checkDisease()"
+                                                    searchable="Szukaj choroby.."
+                                                    size="6"
+                                                    th:field="${patient.patientDiseases[__${diseaseStat.index}__]}"
+                                                    th:required="true">
+                                                <option class="mb-0" th:disabled="false" th:selected="true" value="">
+                                                    Wybierz chorobę >>
+                                                </option>
+                                                <option th:each="diseaseToAdd : ${allDiseases}"
+                                                        th:text="${diseaseToAdd.getDiseaseName()}"
+                                                        th:value="${diseaseToAdd.getDiseaseId()}">Thymus Thymi
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="py-0 text-center w-25">
+                                            <button class="py-1 px-2 btn btn-outline-danger btn-rounded waves-effect"
+                                                    name="removeRow"
+                                                    onclick="dellRowDisease(event)"
+                                                    th:value="${diseaseStat.index}"
+                                                    type="button">Usuń
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+            <!--Grid row-->
+        </div>
+
+        <p class="pb-0 mb-0 text-center text-black-50"> @2019 Copyright MedicalSpring.pl</p>
+
+    </main>
+
+
+</div>
+<!-- Start your project here-->
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script th:src="@{/MDB/js/jquery-3.4.1.min.js}" type="text/javascript"></script>
+<!-- Bootstrap tooltips -->
+<script th:src="@{/MDB/js/popper.min.js}" type="text/javascript"></script>
+<!-- Bootstrap core JavaScript -->
+<script th:src="@{/MDB/js/bootstrap.min.js}" type="text/javascript"></script>
+<!-- MDB core JavaScript -->
+<script th:src="@{/MDB/js/mdb.min.js}" type="text/javascript"></script>
+
+<script th:src="@{/js/theSameContent.js}" type="text/javascript"></script>
+<script th:src="@{/js/peselValidation.js}" type="text/javascript"></script>
+<script th:src="@{/js/addRemoveRows.js}" type="text/javascript"></script>
+<script th:src="@{/js/initializeMaterial.js}" type="text/javascript"></script>
+
+
+</body>
+
+</html>
+
+

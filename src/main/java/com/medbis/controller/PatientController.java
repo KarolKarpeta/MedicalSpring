@@ -46,53 +46,105 @@ public class PatientController {
     //Show form for ADD NEW PATIENT
     @GetMapping("/patients/showFormForAddPatient")
     public String showFormForAddPatient(Model theModel){
-//        theModel.addAttribute("diseases", diseaseService.findAll());
         Patient newPatient = (Patient) userFactory.getNewUser("patient");
         theModel.addAttribute("patient",newPatient);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        theModel.addAttribute("doctors", doctorService.findAll());
-        return "users/patient-form";
+        theModel.addAttribute("allDoctors", doctorService.findAll());
+        return "users/patient-form2";
     }
+
+    private static final String AJAX_HEADER_NAME = "X-Requested-With";
+    private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
     /* MEDICINES ***************************************/
     //Add NEW ROW FOR MEDICINE, look params!
-    @PostMapping(value="/patients/addNewPatient", params={"addRow"})
-    public String addMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
-        thePatient.getPatientMedicines().add(new Medicine()); //.getRows().add(new Row());
+    @PostMapping(value="/patients/addNewPatient", params={"addMedicineRow"})
+    public String addMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            thePatient.getPatientMedicines().add(new Medicine());
+            return "users/patient-form2::#medicineTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form2";
+        }
     }
+
     //DELETE ONE ROW OF MEDICINE, look params!
-    @PostMapping(value="/patients/addNewPatient", params={"removeRow"})
-    public String delMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
+    @PostMapping(value="/patients/addNewPatient", params={"removeMedicineRow"})
+    public String delMedicineRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+
+        final Integer rowId = Integer.valueOf(request.getParameter("removeMedicineRow"));
         thePatient.getPatientMedicines().remove(rowId.intValue());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            return "users/patient-form2::#medicineTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form2";
+        }
     }
 
 
 
     /* DISEASE ***************************************/
     //Add NEW ROW FOR DISEASE, look params!
+//    @PostMapping(value="/patients/addNewPatient", params={"addDiseaseRow"})
+//    public String addDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
+//        thePatient.getPatientDiseases().add(new Disease()); //.getRows().add(new Row());
+//        theModel.addAttribute("allMedicines", medicineService.findAll());
+//        theModel.addAttribute("allDiseases", diseaseService.findAll());
+//        return "users/patient-form2";
+//    }
+
     @PostMapping(value="/patients/addNewPatient", params={"addDiseaseRow"})
-    public String addDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient) {
-        thePatient.getPatientDiseases().add(new Disease()); //.getRows().add(new Row());
+    public String addDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            thePatient.getPatientDiseases().add(new Disease());
+            return "users/patient-form2::#diseaseTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form2";
+        }
     }
+
+
     //DELETE ONE ROW OF DISEASE, look params!
+//    @PostMapping(value="/patients/addNewPatient", params={"removeDiseaseRow"})
+//    public String cdelDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
+//        theModel.addAttribute("allMedicines", medicineService.findAll());
+//        theModel.addAttribute("allDiseases", diseaseService.findAll());
+//        final Integer rowId = Integer.valueOf(req.getParameter("removeDiseaseRow"));
+//        thePatient.getPatientDiseases().remove(rowId.intValue());
+//        return "users/patient-form2";
+//    }
+
     @PostMapping(value="/patients/addNewPatient", params={"removeDiseaseRow"})
-    public String delDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient, final HttpServletRequest req) {
+    public String delDiseaseRow(Model theModel, @ModelAttribute("patient") Patient thePatient, HttpServletRequest request) {
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
-        final Integer rowId = Integer.valueOf(req.getParameter("removeDiseaseRow"));
+
+        final Integer rowId = Integer.valueOf(request.getParameter("removeDiseaseRow"));
         thePatient.getPatientDiseases().remove(rowId.intValue());
-        return "users/patient-form";
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            return "users/patient-form2::#diseaseTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
+            return "users/patient-form2";
+        }
     }
 
 
@@ -103,14 +155,16 @@ public class PatientController {
 
     //ADD NEW PATIENT
     @PostMapping("/patients/addNewPatient")
-    public String addNewPatient(RedirectAttributes redirectAttributes, Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, @RequestParam(name = "backTo", required = false)String backTo, BindingResult bindingResult){
+    public String addNewPatient(RedirectAttributes redirectAttributes, Model theModel, @Valid @ModelAttribute("patient") Patient thePatient, BindingResult bindingResult, @RequestParam(name = "backTo", required = false) String backTo){
         if (bindingResult.hasErrors()){
             theModel.addAttribute("allMedicines", medicineService.findAll());
             theModel.addAttribute("allDiseases", diseaseService.findAll());
-            return "users/patient-form";
+            theModel.addAttribute("allDoctors", doctorService.findAll());
+            theModel.addAttribute("backTo", backTo);
+            return "users/patient-form2";
         }else{
             userService.save(thePatient);
-
+            System.out.println("modek " + theModel);
             if("patientDetails".equals(backTo)){
                 redirectAttributes.addAttribute("patientIdDetails", thePatient.getPatientId());
                 return "redirect:/patients/showPatientDetails";
@@ -126,9 +180,10 @@ public class PatientController {
         Patient newPatient = (Patient) userService.findById(theId);
         theModel.addAttribute("allMedicines", medicineService.findAll());
         theModel.addAttribute("allDiseases", diseaseService.findAll());
+        theModel.addAttribute("allDoctors", doctorService.findAll());
         theModel.addAttribute("patient", newPatient);
         theModel.addAttribute("backTo", backTo);
-        return "users/patient-form";
+        return "users/patient-form2";
     }
 
     //DELETING NEW PATIENT

@@ -1,5 +1,5 @@
 
-function checkContent() {
+function checkDisease() {
     $(document).on('change', '.diffrentDisease', function(e) {
         var tralse = true;
         var selectRound_arr = []; // for contestant name
@@ -67,4 +67,3 @@ function checkServiceContent() {
         }
     });
 }
-

@@ -1,5 +1,6 @@
 package com.medbis.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,10 +45,12 @@ public class Visit {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", insertable = false, updatable = false)
+    @JsonBackReference
     private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
+    @JsonBackReference
     private Patient patient;
 
 
