@@ -45,3 +45,37 @@ legend {
 .select-dropdown {
     top: 0 !important;
 }
+
+#patientInfo {
+    table-layout: fixed;
+    width: 100%
+}
+
+td {
+    word-wrap: break-word;
+}
+
+#patientInfo .dataType {
+    width: 25%;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-left: 0;
+    text-align: right;
+}
+
+#patientInfo .dataValue {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-left: 0;
+    padding-right: 0;
+    font-weight: 400;
+    text-align: left;
+}
+#patientImage{
+    max-width: 75%;
+}
+
+#addUpdatePatient{
+    display: block;
+    width: 97%;
+}
