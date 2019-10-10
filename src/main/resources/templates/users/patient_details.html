@@ -33,45 +33,56 @@
                 <!--Grid column-->
                 <div class="col-md-4 mb-4" style="min-height: 85vh; display: flex; flex-direction: column">
 
-                    <div class="card" style="flex: 1;">
+                    <div class="card text-center" style="flex: 1;">
                         <div class="text-center heavy-rain-gradient">
                             <h6 class="pb-1 pt-1 mb-0">DANE PACJENTA:</h6>
                         </div>
                         <h3 class="text-center mb-1 mt-2" th:text="${patient.name + ' ' + patient.surname}"></h3>
-                        <div class="view overlay">
-                            <img alt="Card image" class=" w-responsive card-img-top rounded mx-auto d-block"
-                                 th:src="@{/images/avatar.png}">
-                            <a href="#">
-                                <div class="mask rgba-white-slight"></div>
-                            </a>
+                        <div class="text-center">
+                            <img id="patientImage" alt="Card image" class=" w-responsive card-img-top rounded img-fluid"                                 th:src="@{/images/avatar.png}">
                         </div>
 
                         <div class="card-body pt-1 pb-2 mt-2 pl-4">
 
-                            <fieldset class="mt-2">
-                                <legend>Dane:</legend>
-                                <p class="pl-3" style="margin-bottom: 0">
-                                    <th:block th:text="${'Pesel: ' + patient.pesel}"/>
-                                    <br/>
-                                    <th:block th:text="${'Data ur. ' + patient.birthday}"/>
-                                </p>
-                            </fieldset>
 
-                            <fieldset class="mt-2">
-                                <legend>Adres:</legend>
-                                <p class="pl-3" style="margin-bottom: 0">
-                                    <th:block th:text="${patient.street + ' ' + patient.houseNumber + '/' + patient.apartmentNumber}"/>
-                                    <br/>
-                                    <th:block th:text="${#strings.substring(patient.zipCode,0,2) +'-'+ #strings.substring(patient.zipCode,2,5) +', '+ patient.city}"/>
-                                </p>
-                            </fieldset>
+                            <table class="table .w-auto" id="patientInfo">
+                                <tbody>
+                                <tr>
+                                    <td class="dataType">Pesel:</td>
+                                    <td class="dataValue" th:text="${patient.pesel}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">Data:</td>
+                                    <td class="dataValue" th:text="${patient.birthday}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">Adres:</td>
+                                    <td class="dataValue"
+                                        th:text="${patient.street + ' ' + patient.houseNumber + '/' + patient.apartmentNumber}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">Adres:</td>
+                                    <td class="dataValue"
+                                        th:text="${#strings.substring(patient.zipCode,0,2) +'-'+ #strings.substring(patient.zipCode,2,5) +', '+ patient.city}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">Kontakt:</td>
+                                    <td class="dataValue"
+                                        th:text="${'+48' + patient.homePhoneNumber + ',  +48' + patient.workPhoneNumber}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">E-mail:</td>
+                                    <td class="dataValue" th:text="${patient.mail}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dataType">Lekarz:</td>
+                                    <td class="dataValue" th:text="${doctor.name + '' + doctor.surname}"></td>
+                                </tr>
 
-                            <fieldset class="mt-2">
-                                <legend>Kontakt:</legend>
-                                <p class="pl-3" style="margin-bottom: 0">
-                                    <th:block th:text="${'+48 ' + patient.homePhoneNumber + ',  +48 ' + patient.workPhoneNumber}"/>
-                                </p>
-                            </fieldset>
+                                </tbody>
+
+
+                            </table>
 
                         </div>
                     </div>
