@@ -3,6 +3,7 @@ package com.medbis.service.interfaces;
 import com.medbis.entity.Treatment;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 @Service
 public interface TreatmentService {
@@ -16,4 +17,7 @@ void deleteById(int id);
 void save(Treatment treatment);
 
 List<Treatment> findAllByCategoryId(int categoryId);
+
+
+HashMap<String, List<HashMap<String, Object>>> findAllTreatmentsByCategory();
 }
