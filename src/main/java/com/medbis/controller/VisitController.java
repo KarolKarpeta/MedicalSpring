@@ -1,10 +1,12 @@
 package com.medbis.controller;
 
 import com.medbis.entity.Patient;
+import com.medbis.entity.Treatment;
 import com.medbis.entity.Visit;
 import com.medbis.entity.VisitTreatment;
 import com.medbis.mail.MailService;
 import com.medbis.pdf.PdfGenerator;
+import com.medbis.repository.TreatmentRepository;
 import com.medbis.security.UserPrincipal;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
@@ -23,6 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class VisitController {
@@ -64,21 +68,23 @@ public class VisitController {
     }
 
 
-
     //Show form for ADD NEW VISIT
     @GetMapping("/visits/showFormForAddVisit")
     public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, @RequestParam(name = "backTo", required = false) String backTo, Model theModel){
         Patient thePatient = (Patient) userService.findById(thePatientId);
         Visit newVisit = new Visit();
 
+        HashMap<String, List<HashMap<String, Object>>> categoryAndTreatments = treatmentService.findAllTreatmentsByCategory();
         newVisit.setPatient(thePatient);
         theModel.addAttribute("visit", newVisit);
         theModel.addAttribute("patientId", thePatientId);
 
         theModel.addAttribute("categories", categoryService.findAll());
         theModel.addAttribute("allTreatments", treatmentService.findAll());
+        theModel.addAttribute("categoryAndTreatments", categoryAndTreatments);
+
         theModel.addAttribute("backTo", backTo);
-        return "visits/visit-form";
+        return "visits/visit-form2";
     }
 
     //ADDING NEW VISITS
@@ -91,7 +97,7 @@ public class VisitController {
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId());
             theModel.addAttribute("allTreatments", treatmentService.findAll());
-            return "visits/visit-form";
+            return "visits/visit-form2";
         }
 
         int initialAmountOfPlannedVisit = visitService.findPlannedVisits().size();
@@ -154,7 +160,7 @@ public class VisitController {
             return "visits/visit-hold";
         }
         else {
-            return "visits/visit-form";
+            return "visits/visit-form2";
         }
     }
 
@@ -182,7 +188,7 @@ public class VisitController {
         theModel.addAttribute("selectedTreatments", treatmentService.findAllByCategoryId(categoryId));
 
         if(action.equals("edit")){
-            return "visits/visit-form";
+            return "visits/visit-form2";
         }
         else {
             return "visits/visit-hold";
@@ -200,7 +206,7 @@ public class VisitController {
         theVisit.getVisitTreatments().remove(rowId.intValue());
 
     if (action.equals("edit")) {
-            return "visits/visit-form";
+            return "visits/visit-form2";
         } else {
             return "visits/visit-hold";
         }
