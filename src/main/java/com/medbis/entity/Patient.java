@@ -82,7 +82,6 @@ public class Patient extends User {
     public String toString() {
         return "Patient{" +
                 "patientId=" + patientId +
-                ", visitsPatients=" + visitsPatients +
                 ", comments='" + comments + '\'' +
                 ", mail='" + mail + '\'' +
                 ", patientMedicines=" + patientMedicines +

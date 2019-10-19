@@ -94,4 +94,11 @@ public class Visit {
     public int hashCode() {
         return Objects.hash(getVisitId(), getVisitEmployeeId(), getVisitPatientId());
     }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "visitId=" + visitId +
+                '}';
+    }
 }
