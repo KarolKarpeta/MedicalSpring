@@ -39,7 +39,8 @@
                         </div>
                         <h3 class="text-center mb-1 mt-2" th:text="${patient.name + ' ' + patient.surname}"></h3>
                         <div class="text-center">
-                            <img id="patientImage" alt="Card image" class=" w-responsive card-img-top rounded img-fluid"                                 th:src="@{/images/avatar.png}">
+                            <img alt="Card image" class=" w-responsive card-img-top rounded img-fluid" id="patientImage"
+                                 th:src="@{/images/avatar.png}">
                         </div>
 
                         <div class="card-body pt-1 pb-2 mt-2 pl-4">
@@ -136,15 +137,15 @@
                         </table>
                     </div>
 
-                    <div class="mt-2 card text-center heavy-rain-gradient">
-                        <h6 class="pb-1 pt-1 mb-0">WIZYTY ŚRODOWISKOWE:</h6>
-                    </div>
-                    <div class="card" style="overflow: auto; flex: 1;">
 
+                    <div class="mt-2 card" style="overflow: auto; flex: 1;">
+                        <div class=" card text-center heavy-rain-gradient">
+                            <h6 class="pb-1 pt-1 mb-0">WIZYTY ŚRODOWISKOWE:</h6>
+                        </div>
 
                         <!--                        <div class="card" style="overflow: auto; height: 20vh ">-->
                         <table class="table" style="overflow: auto;">
-                            <tbody class=" gradient rounded-lg pl-3 pr-3 mb-3"
+                            <tbody class="gradient rounded-lg pl-3 pr-3 mb-3"
                                    th:each="visit: ${patientVisitList}">
 
                             <tr class="pt-1 mt-1">
