@@ -133,3 +133,17 @@ td {
         padding: 0;
     }
 }
+
+.borderTop{
+    border-top: 0 !important;
+}
+
+.rowMaxWajd{
+    max-width: 98% !important;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.texAreaMaxWajd{
+    max-width: 96% !important;
+}
