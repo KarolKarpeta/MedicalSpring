@@ -27,7 +27,8 @@
     <!--Main layout-->
     <main class="mt-2 mb-0 pb-0">
 
-        <form action="#" method="POST" th:action="@{/visits/{action}/addNewVisit(action='edit', backTo=${backTo})}"
+        <form action="#" class="md-form my-0" method="POST"
+              th:action="@{/visits/{action}/addNewVisit(action='edit', backTo=${backTo})}"
               th:object="${visit}">
             <input name="visitPatientId" th:value="${patientId}" type="hidden"/>
             <input name="visitEmployeeId" th:value="${employeeId}" type="hidden"/>
@@ -46,10 +47,7 @@
                             <div class="text-center heavy-rain-gradient">
                                 <h6 class="pb-1 pt-1 mb-0">DANE PACJENTA:</h6>
                             </div>
-                            <!--                        <div class="card text-center" style="flex: 1;">-->
-                            <!--                            <div class="text-center heavy-rain-gradient">-->
-                            <!--                                <h6 class="pb-1 pt-1 mb-0">DANE PACJENTA:</h6>-->
-                            <!--                            </div>-->
+
                             <h3 class="text-center mb-1 mt-2"
                                 th:text="${visit.patient.name + ' ' + visit.patient.surname}"></h3>
                             <div class="text-center">
@@ -88,10 +86,10 @@
                                         <td class="dataType">E-mail:</td>
                                         <td class="dataValue" th:text="${visit.patient.mail}"></td>
                                     </tr>
-                                    <!--                                    <tr>-->
-                                    <!--                                        <td class="dataType">Lekarz:</td>-->
-                                    <!--                                        <td class="dataValue" th:text="${doctor.name + '' + doctor.surname}"></td>-->
-                                    <!--                                    </tr>-->
+                                    <tr>
+                                        <td class="dataType">Lekarz:</td>
+                                        <td class="dataValue" th:text="${doctor.name + '' + doctor.surname}"></td>
+                                    </tr>
 
                                     </tbody>
 
@@ -102,18 +100,29 @@
 
                         <div class="card mt-2 align-middle text-center" style="height: auto; overflow: auto;">
                             <div class="text-center heavy-rain-gradient">
-                                <h6 class="pb-1 pt-1 mb-0">DATA WIZYTY:</h6>
+                                <h6 class="pb-1 pt-1 mb-0"
+                                    th:text="${#fields.hasErrors('visitDate')}? 'WSTAW DATĘ !' : 'DATA WIZYTY'">
+                                </h6>
                             </div>
-                            <input id="visitDate1"
-                                   th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"
-                                   th:field="*{visitDate}"
-                                   th:unless="${visit.getVisitStatus()}"
-                                   type="date"/>
-                            <input disabled id="visitDate2" th:class="form-control" th:field="*{visitDate}"
-                                   th:if="${visit.getVisitStatus()}" type="date"/>
+                            <div class="pl-3 pr-3 text-center" style="margin-left: auto; margin-right: auto">
+                                <input id="visitDate1"
+                                       th:class="${#fields.hasErrors('visitDate')}? 'text-centre pb-0 form-control  is-invalid' : ' text-centre pb-0 form-control'"
+                                       th:field="*{visitDate}"
+                                       th:required="true" type="date">
+                            </div>
 
-                            <label class="error-sign col-form-label" th:errors="*{visitDate}"
-                                   th:if="${#fields.hasErrors('visitDate')}"></label>
+
+
+                            <!--                            <input id="visitDate1"-->
+                            <!--                                   th:class="${#fields.hasErrors('visitDate')}? 'is-invalid form-control' : 'form-control'"-->
+                            <!--                                   th:field="*{visitDate}"-->
+                            <!--                                   th:unless="${visit.getVisitStatus()}"-->
+                            <!--                                   type="date"/>-->
+                            <!--                            <input disabled id="visitDate2" th:class="form-control" th:field="*{visitDate}"-->
+                            <!--                                   th:if="${visit.getVisitStatus()}" type="date"/>-->
+
+                            <!--                            <label class="error-sign col-form-label" th:errors="*{visitDate}"-->
+                            <!--                                   th:if="${#fields.hasErrors('visitDate')}"></label>-->
                         </div>
 
                         <div class="card mt-2 align-middle text-center" style=" ">
@@ -141,9 +150,7 @@
                     </div>
                     <!--Grid column-->
 
-                    <!--                    style="height: auto; overflow: auto;-->
-
-                    <div class="col-md-8 mb-4" style="height: 85vh; display: flex; flex-direction: column">
+                    <div class="col-md-8 mb-4 mobileVH" style="display: flex; flex-direction: column">
                         <div class="card">
                             <div class="text-center heavy-rain-gradient">
                                 <h6 class="pb-1 pt-1 mb-0">DODAJ ŚWIADCZENIE Z WYBRANEJ KATEGORII:</h6>
@@ -195,7 +202,8 @@
                                         <h6 class="mb-0 px-0"
                                             th:text="${visitTreatmentStat.count} + ' - '+ ${visit.visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment.name}"></h6>
 
-                                        <input th:field="${visit.visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment}"
+                                        <input class="diffrentTreatment"
+                                               th:field="${visit.visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment}"
                                                th:value="${visit.visitTreatments[__${visitTreatmentStat.index}__].primaryKey.treatment.treatmentId}"
                                                type="hidden">
                                     </td>
@@ -215,16 +223,17 @@
                                         </button>
                                     </td>
                                 </tr>
-<!--                                th:style="${visit.visitTreatments[__${visitTreatmentStat.index}__].note == ''} ? 'display:none;':''"-->
+                                <!--                                th:style="${visit.visitTreatments[__${visitTreatmentStat.index}__].note == ''} ? 'display:none;':''"-->
                                 <tr>
                                     <td class=" borderTop py-0 mb-0" colspan="3">
                                         <div class="md-form mb-1 mt-1 ">
-                                            <textarea class="texAreaMaxWajd my-0 py-0 pl-3 pr-3 md-textarea form-control"
-                                                      placeholder="...."
-                                                      wrap="hard"
-                                                      style="display: none; height: 26px"
-                                                      th:field="${visit.visitTreatments[__${visitTreatmentStat.index}__].note}"
-                                                      th:id="'note' + ${visitTreatmentStat.count}"></textarea>
+                                            <textarea
+                                                    class="texAreaMaxWajd my-0 py-0 pl-3 pr-3 md-textarea form-control"
+                                                    placeholder="...."
+                                                    style="display: none; height: 26px"
+                                                    th:field="${visit.visitTreatments[__${visitTreatmentStat.index}__].note}"
+                                                    th:id="'note' + ${visitTreatmentStat.count}"
+                                                    wrap="hard"></textarea>
                                             <!--                                            <label class="py-0 my-0" for="form7">Notatka</label>-->
                                         </div>
                                     </td>
