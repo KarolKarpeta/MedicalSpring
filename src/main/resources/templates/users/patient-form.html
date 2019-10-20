@@ -252,7 +252,7 @@
                         </div>
 
 
-                        <div class="card mt-2 align-middle text-center" >
+                        <div class="card mt-2 align-middle text-center">
                             <input class="btn btn-outline-info waves-effect" id="addUpdatePatient" type="submit"
                                    value="DODAJ PACJENTA">
                             <a class="btn btn-outline-info waves-effect" th:href="@{/patients/}">
@@ -270,9 +270,10 @@
                             </div>
 
                             <div class="card" style="overflow: auto; flex: 1;">
+
                                 <table class="table w-100 mb-0">
                                     <tr>
-                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle text-center" th:text="LP"></th>
                                         <th class="py-0 align-middle w-75" th:text="LEK"></th>
                                         <th class="py-0 pl-0 pr-1 text-center w-25 ">
                                             <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"
@@ -283,6 +284,7 @@
                                         </th>
                                     </tr>
                                 </table>
+
                                 <table class="table">
                                     <tbody id="medicineTableF" th:fragment="medicineTableF">
                                     <tr id="medicineCss" th:each="medicine,medicineStat : ${patient.patientMedicines}">
@@ -327,10 +329,9 @@
                             <div class="card" style="overflow: auto; flex: 1;">
 
 
-
                                 <table class="table w-100 mb-0">
                                     <tr>
-                                        <th class="py-0 align-middle text-center"  th:text="LP"></th>
+                                        <th class="py-0 align-middle text-center" th:text="LP"></th>
                                         <th class="py-0 align-middle w-75" th:text="CHOROBA"></th>
                                         <th class="py-0 pl-0 pr-1 text-right w-25 ">
                                             <button class="py-1 px-2 btn btn-outline-primary btn-rounded waves-effect"

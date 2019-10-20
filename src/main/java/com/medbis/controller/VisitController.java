@@ -1,13 +1,11 @@
 package com.medbis.controller;
 
-import com.medbis.entity.Patient;
-import com.medbis.entity.Treatment;
-import com.medbis.entity.Visit;
-import com.medbis.entity.VisitTreatment;
+import com.medbis.entity.*;
 import com.medbis.mail.MailService;
 import com.medbis.pdf.PdfGenerator;
 import com.medbis.repository.TreatmentRepository;
 import com.medbis.security.UserPrincipal;
+import com.medbis.service.impl.DoctorServiceImpl;
 import com.medbis.service.interfaces.CategoryService;
 import com.medbis.service.interfaces.TreatmentService;
 import com.medbis.service.interfaces.UserService;
@@ -36,6 +34,7 @@ public class VisitController {
     private CategoryService categoryService;
     private TreatmentService treatmentService;
     private MailService mailService;
+    private DoctorServiceImpl doctorService;
 
 
     @Autowired
@@ -43,12 +42,14 @@ public class VisitController {
                            @Qualifier("PatientServiceImpl") UserService userService,
                            CategoryService categoryService,
                            TreatmentService treatmentService,
-                           MailService mailService) {
+                           MailService mailService,
+                           DoctorServiceImpl doctorService ) {
         this.visitService = visitService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.treatmentService = treatmentService;
         this.mailService = mailService;
+        this.doctorService = doctorService;
     }
 
     @GetMapping("visits/delete")
@@ -72,15 +73,16 @@ public class VisitController {
     @GetMapping("/visits/showFormForAddVisit")
     public String showFormForAddVisit(@RequestParam("patientId")int thePatientId, @RequestParam(name = "backTo", required = false) String backTo, Model theModel){
         Patient thePatient = (Patient) userService.findById(thePatientId);
+        Doctor doctor = doctorService.findById(thePatient.getDoctorId());
         Visit newVisit = new Visit();
-
         HashMap<String, List<HashMap<String, Object>>> categoryAndTreatments = treatmentService.findAllTreatmentsByCategory();
         newVisit.setPatient(thePatient);
+
         theModel.addAttribute("visit", newVisit);
         theModel.addAttribute("patientId", thePatientId);
-
-        theModel.addAttribute("categories", categoryService.findAll());
-        theModel.addAttribute("allTreatments", treatmentService.findAll());
+        theModel.addAttribute("doctor", doctor);
+//        theModel.addAttribute("categories", categoryService.findAll());
+//        theModel.addAttribute("allTreatments", treatmentService.findAll());
         theModel.addAttribute("categoryAndTreatments", categoryAndTreatments);
 
         theModel.addAttribute("backTo", backTo);
@@ -92,11 +94,13 @@ public class VisitController {
     public String addNewVisit(RedirectAttributes redirectAttributes, @PathVariable("action") String action, @RequestParam(name = "backTo", required = false) String backTo, Model theModel, @Valid @ModelAttribute("visit") Visit theVisit, BindingResult bindingResult) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
+        HashMap<String, List<HashMap<String, Object>>> categoryAndTreatments = treatmentService.findAllTreatmentsByCategory();
 
         if (bindingResult.hasErrors()) {
             theVisit.setPatient(thePatient);
             theModel.addAttribute("patientId", theVisit.getVisitPatientId());
             theModel.addAttribute("allTreatments", treatmentService.findAll());
+            theModel.addAttribute("categoryAndTreatments", categoryAndTreatments);
             return "visits/visit-form2";
         }
 
@@ -152,9 +156,16 @@ public class VisitController {
     @GetMapping ("/visits/showFormForEditVisit")
     public String showFormForEditMedicine(@RequestParam("visitIdToEdit")int theId, @RequestParam("action") String action , @RequestParam(name = "backTo", required = false) String backTo, Model theModel) {
         Visit visitToEdit = visitService.findById(theId);
+        System.out.println("Visit To Edit: " + visitToEdit.getVisitTreatments().size());
+        HashMap<String, List<HashMap<String, Object>>> categoryAndTreatments = treatmentService.findAllTreatmentsByCategory();
+        Patient thePatient = visitToEdit.getPatient();
+        Doctor doctor = doctorService.findById(thePatient.getDoctorId());
+
+        theModel.addAttribute("doctor", doctor);
         theModel.addAttribute("visit", visitToEdit);
         theModel.addAttribute("patientId", visitToEdit.getVisitPatientId());
-        theModel.addAttribute("allTreatments", treatmentService.findAll());
+//        theModel.addAttribute("allTreatments", treatmentService.findAll());
+        theModel.addAttribute("categoryAndTreatments", categoryAndTreatments);
         theModel.addAttribute("backTo", backTo);
         if(action.equals("hold")) {
             return "visits/visit-hold";
@@ -173,42 +184,51 @@ public class VisitController {
     }
 
 
+    private static final String AJAX_HEADER_NAME = "X-Requested-With";
+    private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
+
     /* TREATMENTS ***************************************/
     //Add NEW ROW FOR TREATMENTS, look params!
-    @PostMapping(value="/visits/{action}/addNewVisit", params={"addRow"})
-    public String addTreatmentRow(@PathVariable("action") String action, final HttpServletRequest req, Model theModel, @ModelAttribute("visit") Visit theVisit) {
-
+    @PostMapping(value="/visits/{action}/addNewVisit", params={"addTreatment"})
+    public String addTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, HttpServletRequest request) {
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theModel.addAttribute("patientId", theVisit.getVisitPatientId() );
         theVisit.setPatient(thePatient);
-        theVisit.getVisitTreatments().add(new VisitTreatment());
 
-        final Integer categoryId = Integer.valueOf(req.getParameter("addRow"));
-        theModel.addAttribute("allTreatments", treatmentService.findAll());
-        theModel.addAttribute("selectedTreatments", treatmentService.findAllByCategoryId(categoryId));
+        Integer treatmentId = Integer.valueOf(request.getParameter("addTreatment"));
+        Treatment treatmentToAdd =  treatmentService.findById(treatmentId);
+        VisitTreatment thatVisitTreatment = new VisitTreatment();
+        thatVisitTreatment.setTreatment(treatmentToAdd);
+        thatVisitTreatment.setVisit(theVisit);
 
-        if(action.equals("edit")){
+        theVisit.getVisitTreatments().add(thatVisitTreatment);
+        theModel.addAttribute("visit", theVisit);
+
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            return "visits/visit-form2::#treatmentTableF";
+        } else {
+            // It is a standard HTTP request, render whole page.
             return "visits/visit-form2";
         }
-        else {
-            return "visits/visit-hold";
-        }
-
     }
+
+
     //DELETE ONE ROW OF TREATMENTS, look params!
-    @PostMapping(value="/visits/{action}/addNewVisit", params={"removeRow"})
-    public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest req, @PathVariable String action) {
+    @PostMapping(value="/visits/{action}/addNewVisit", params={"removeTreatment"})
+    public String delTreatmentRow(Model theModel, @ModelAttribute("visit") Visit theVisit, final HttpServletRequest request, @PathVariable String action) {
         theModel.addAttribute("patientId", theVisit.getVisitPatientId());
         Patient thePatient = (Patient) userService.findById(theVisit.getVisitPatientId());
         theVisit.setPatient(thePatient);
-        theModel.addAttribute("allTreatments", treatmentService.findAll());
-        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+        final Integer rowId = Integer.valueOf(request.getParameter("removeTreatment"));
         theVisit.getVisitTreatments().remove(rowId.intValue());
 
-    if (action.equals("edit")) {
-            return "visits/visit-form2";
+        if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
+            // It is an Ajax request, render only #items fragment of the page.
+            return "visits/visit-form2::#treatmentTableF";
         } else {
-            return "visits/visit-hold";
+            // It is a standard HTTP request, render whole page.
+            return "visits/visit-form2";
         }
     }
 

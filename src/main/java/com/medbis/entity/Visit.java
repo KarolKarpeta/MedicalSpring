@@ -36,7 +36,7 @@ public class Visit {
     private int visitPatientId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "is required")
+    @NotNull(message = "Ustaw datę")
     @Column(name = "date")
     private LocalDate visitDate;
 
@@ -93,5 +93,12 @@ public class Visit {
     @Override
     public int hashCode() {
         return Objects.hash(getVisitId(), getVisitEmployeeId(), getVisitPatientId());
+    }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "visitId=" + visitId +
+                '}';
     }
 }
