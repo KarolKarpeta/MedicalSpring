@@ -73,7 +73,18 @@ td {
 }
 
 #patientImage {
-    max-width: 75%;
+    max-width: 70%;
+}
+
+#employeeImage {
+    max-width: 35%;
+}
+
+
+@media all and (max-width: 600px) {
+    #employeeImage {
+        max-width: 70%;
+    }
 }
 
 #addUpdatePatient {
@@ -91,12 +102,6 @@ td {
     pointer-events: none;
     z-index: 1111;
 }
-
-/*.categoryDropdown{*/
-/*    margin: 2px;*/
-/*    padding-left: 2%;*/
-/*    padding-right: 2%;*/
-/*}*/
 
 .flex-container {
     padding: 0;
@@ -147,3 +152,19 @@ td {
 .texAreaMaxWajd{
     max-width: 96% !important;
 }
+
+.employDetailsBorder{
+    border-top: 0 !important;
+}
+
+.mobileVH{
+    height: 85vh;
+}
+
+@media all and (max-width: 600px) {
+    .mobileVH {
+        height: 150vh;
+    }
+}
+
+
