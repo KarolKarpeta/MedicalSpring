@@ -76,6 +76,14 @@ function replaceTableTreatment(html) {
 
 
 function addTreatments(param) {
+    var allTreatmentsInputs = document.querySelectorAll(".diffrentTreatment");
+    for (var i = 0, len = allTreatmentsInputs.length; i < len; i++) {
+        if (allTreatmentsInputs[i].value == param) {
+            alert("Dodano już to świadczenie!");
+            return;
+        }
+    }
+
     var data = $('form').serialize();
     data += '&addTreatment=' + param;
     $.post('/visits/{action}/addNewVisit', data, replaceTableTreatment);
