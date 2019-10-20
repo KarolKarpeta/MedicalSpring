@@ -36,7 +36,7 @@ public class Visit {
     private int visitPatientId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "is required")
+    @NotNull(message = "Ustaw datę")
     @Column(name = "date")
     private LocalDate visitDate;
 
