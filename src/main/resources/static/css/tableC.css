@@ -1,7 +1,7 @@
 .my-custom-scrollbar {
     position: relative;
     height: 78vh;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 .table-wrapper-scroll-y {
@@ -167,4 +167,24 @@ td {
     }
 }
 
+.paddingClass{
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .lessColumn{
+        display: none;
+    }
+
+    .navigation {
+        -webkit-flex-flow: column wrap;
+        flex-flow: column wrap;
+        padding: 0;
+    }
+}
 
